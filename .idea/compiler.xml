@@ -2,11 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="clients-common" />
+        <module name="authentication-service" />
         <module name="category-service" />
         <module name="article-service" />
         <module name="user-service" />
@@ -15,5 +17,8 @@
         <module name="jwt-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Jwt-service" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
