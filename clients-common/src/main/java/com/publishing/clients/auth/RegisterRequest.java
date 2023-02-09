@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegisterRequest extends UserRequest{
     private String firstName;
     private String lastName;
