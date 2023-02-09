@@ -6,8 +6,8 @@ spring:
     name: article
   datasource:
     url: jdbc:postgresql://localhost:5432/article
-    username: postgres
-    password: postgres
+    username: mike
+    password: password
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -16,3 +16,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
       show-sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
