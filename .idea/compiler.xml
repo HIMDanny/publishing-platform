@@ -10,6 +10,7 @@
         <module name="clients-common" />
         <module name="authentication-service" />
         <module name="category-service" />
+        <module name="Article-service" />
         <module name="article-service" />
         <module name="user-service" />
         <module name="eureka-server" />
