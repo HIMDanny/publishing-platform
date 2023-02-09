@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
+@Entity(name = "app_user")
 public class User {
     @SequenceGenerator(
             name = "app_user_sequence",
