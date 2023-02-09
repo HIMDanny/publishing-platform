@@ -8,9 +8,9 @@ spring:
   application:
     name: user
   datasource:
-    password:
-    url: jdbc:postgresql://localhost:5432/user
-    username:
+    password: password
+    url: jdbc:postgresql://localhost:5432/app_user
+    username: mike
   jpa:
     hibernate:
       ddl-auto: create-drop
