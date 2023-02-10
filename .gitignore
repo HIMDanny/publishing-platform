@@ -1,0 +1,7 @@
+/user-service/target/
+/article-service/target/
+/category-service/target/
+/eureka-server/target/
+/authentication-service/target/
+/clients-common/target/
+/notification-service/target/
