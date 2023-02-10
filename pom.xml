@@ -28,7 +28,7 @@
     <maven.compiler.target>17</maven.compiler.target>
     <spring.boot.version>3.0.1</spring.boot.version>
     <spring.boot.plugin.version>3.0.1</spring.boot.plugin.version>
-    <spring.cloud.version>2020.0.3</spring.cloud.version>
+    <spring.cloud.version>2022.0.1</spring.cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -63,6 +63,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <version>4.0.1</version>
     </dependency>
   </dependencies>
 
