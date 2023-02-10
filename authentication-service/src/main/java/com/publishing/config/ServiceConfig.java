@@ -29,7 +29,7 @@ public class ServiceConfig {
   }
 
   @Bean
-  private UserDetailsService userDetailsService() {
+  public UserDetailsService userDetailsService() {
     return username -> {
       var userResponse = userClient.getByEmail(username)
           .orElseThrow(() -> new UsernameNotFoundException("User not found"));
