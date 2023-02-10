@@ -19,5 +19,5 @@ public interface UserClient {
     boolean saveUser(@RequestBody RegisterRequest user);
 
     @GetMapping("api/v1/user/{email}")
-    Optional<RegisterRequest> getByEmail(@PathVariable String email);
+    Optional<RegisterRequest> getByEmail(@PathVariable("email") String email);
 }
