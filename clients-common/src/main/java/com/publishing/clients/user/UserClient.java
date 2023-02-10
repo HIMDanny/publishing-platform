@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "http://localhost:8080"
+        value = "http://localhost:8080",
+        path = "http://localhost:8080",
+        name = "user_client",
+        url = "http://localhost:8080"
 )
 public interface UserClient {
 
