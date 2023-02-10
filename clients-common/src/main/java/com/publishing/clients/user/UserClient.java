@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        path = "http://localhost:8080",
+//        path = "http://localhost:8080",
         name = "userClient",
         url = "http://localhost:8080"
 )
 public interface UserClient {
 
-    @PostMapping("api/v1/user")
+    @PostMapping("api/v1/users")
     boolean saveUser(@RequestBody RegisterRequest user);
 
-    @GetMapping("api/v1/user/{email}")
+    @GetMapping("api/v1/users/{email}")
     Optional<RegisterRequest> getByEmail(@PathVariable("email") String email);
 }
