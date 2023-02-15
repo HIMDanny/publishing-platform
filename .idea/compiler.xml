@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="User-service" />
         <module name="clients-common" />
         <module name="authentication-service" />
         <module name="category-service" />
@@ -15,11 +14,7 @@
         <module name="user-service" />
         <module name="eureka-server" />
         <module name="notification-service" />
-        <module name="jwt-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Jwt-service" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>
