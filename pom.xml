@@ -11,6 +11,8 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>category-service</module>
+    <module>user-service</module>
+    <module>article-service</module>
     <module>notification-service</module>
     <module>eureka-server</module>
     <module>clients-common</module>
