@@ -10,8 +10,6 @@
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <modules>
-    <module>User-service</module>
-    <module>Article-service</module>
     <module>category-service</module>
     <module>notification-service</module>
     <module>eureka-server</module>
@@ -24,8 +22,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>19</maven.compiler.source>
+    <maven.compiler.target>19</maven.compiler.target>
     <spring.boot.version>3.0.1</spring.boot.version>
     <spring.boot.plugin.version>3.0.1</spring.boot.plugin.version>
     <spring.cloud.version>2022.0.1</spring.cloud.version>
