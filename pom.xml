@@ -10,8 +10,8 @@
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <modules>
-    <module>User-service</module>
-    <module>Article-service</module>
+    <module>user-service</module>
+    <module>article-service</module>
     <module>category-service</module>
     <module>notification-service</module>
     <module>eureka-server</module>
