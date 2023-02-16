@@ -42,9 +42,9 @@ public class Article {
     @JsonIgnore
     private Integer categoryId;
     @Column
-    private Integer numberOfViews;
+    private Integer numberOfViews = 0;
     @Column
-    private Integer numberOfLikes;
+    private Integer numberOfLikes = 0;
 
     @Transient
     private User author;
