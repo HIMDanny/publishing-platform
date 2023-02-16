@@ -30,15 +30,13 @@ public class ArticleService {
     // TODO: calculate minutes to read
     int minutesToRead = 0;
 
-    User author = userClient.getUser(articleRequest.userId());
-
     Article article = Article.builder()
             .title(articleRequest.title())
             .content(articleRequest.content())
             .mainImagePath(articleRequest.mainImagePath())
             .minutesToRead(minutesToRead)
             .publishingDate(LocalDateTime.now())
-            .author(author)
+            .authorId(articleRequest.userId())
         .build();
 
     return articleRepository.save(article);
