@@ -3,7 +3,7 @@ package com.publishing.user;
 import com.publishing.clients.auth.RegisterRequest;
 import com.publishing.clients.user.Role;
 import com.publishing.clients.user.User;
-import java.util.Objects;
+import com.publishing.exception.CustomUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,14 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  public User getById(Integer id) {
+  public User getUserById(Integer id) {
     // TODO: add custom exception
     return userRepository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("User is not found"));
   }
 
 
-  public User getByEmail(String email) {
+  public User getUserByEmail(String email) {
     return userRepository.findByEmail(email)
         .orElseThrow(() -> new IllegalArgumentException("User is not found"));
   }
@@ -47,6 +47,11 @@ public class UserService {
 
   public boolean deleteUser(Integer id) {
     userRepository.deleteById(id);
-    return getById(id).getId() == 0;
+    return getUserById(id).getId() == 0;
+  }
+
+  public User getUserResponse(Integer id) throws CustomUserException {
+    return userRepository.findById(id)
+            .orElseThrow(() -> new CustomUserException("User is not found"));
   }
 }
