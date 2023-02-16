@@ -47,7 +47,7 @@ public class Article {
     private Integer numberOfLikes;
 
     @Transient
-    private User user;
+    private User author;
     @Transient
     private Category category;
 }
