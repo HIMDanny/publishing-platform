@@ -7,7 +7,12 @@ import com.publishing.clients.category.CategoryResponse;
 import com.publishing.clients.user.UserClient;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +40,19 @@ public class ArticleService {
   }
 
   public List<Article> getAllArticles(){
-    return articleRepository.findAll();
+    List<Article> articles = articleRepository.findAll();
+
+    List<Integer> categoriesIds = new ArrayList<>();
+    Map<Integer, Category> categories = articles.stream()
+            .filter(article -> !categoriesIds.contains(article.getCategoryId()))
+            .peek(article -> categoriesIds.add(article.getCategoryId()))
+            .map(article -> categoryClient.getCategoryResponse(article.getCategoryId()))
+            .map(categoryResponse -> Category.builder().id(categoryResponse.getId()).name(categoryResponse.getName()).build())
+            .collect(Collectors.toMap(Category::getId, Function.identity()));
+
+    return articles.stream()
+            .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
+            .collect(Collectors.toList());
   }
 
   public Article saveArticle(ArticleRequest articleRequest){
