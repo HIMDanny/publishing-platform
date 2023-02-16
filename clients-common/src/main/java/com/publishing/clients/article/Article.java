@@ -3,6 +3,7 @@ package com.publishing.clients.article;
 import com.publishing.clients.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDateTime;
 
@@ -34,11 +35,14 @@ public class Article {
     @Column
     private Integer minutesToRead;
     @Column
+    @JsonIgnore
     private Integer authorId;
-//private Category category;
-
     @Column
     private Integer numberOfViews;
     @Column
     private Integer numberOfLikes;
+
+    @Transient
+    private User author;
+
 }
