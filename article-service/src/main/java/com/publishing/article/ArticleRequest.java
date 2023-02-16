@@ -2,6 +2,7 @@ package com.publishing.article;
 
 public record ArticleRequest(String title,
                              String content,
-                             String mainImagePath) {
+                             String mainImagePath,
+                             Integer userId) {
 
 }
