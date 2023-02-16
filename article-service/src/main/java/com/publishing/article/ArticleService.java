@@ -1,9 +1,11 @@
 package com.publishing.article;
 
 import com.publishing.clients.article.Article;
+import com.publishing.clients.auth.RegisterRequest;
 import com.publishing.clients.category.Category;
 import com.publishing.clients.category.CategoryClient;
 import com.publishing.clients.category.CategoryResponse;
+import com.publishing.clients.user.User;
 import com.publishing.clients.user.UserClient;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
@@ -30,11 +32,12 @@ public class ArticleService {
             .orElseThrow(() -> new ArticleException(String.format("Article with id %d cannot be found", id)));
 
     CategoryResponse categoryResponse = categoryClient.getCategoryResponse(article.getCategoryId());
-
     article.setCategory(Category.builder()
             .id(categoryResponse.getId())
             .name(categoryResponse.getName())
             .build());
+
+    article.setAuthor(userClient.getUser(article.getAuthorId()));
 
     return article;
   }
@@ -50,8 +53,16 @@ public class ArticleService {
             .map(categoryResponse -> Category.builder().id(categoryResponse.getId()).name(categoryResponse.getName()).build())
             .collect(Collectors.toMap(Category::getId, Function.identity()));
 
+    List<Integer> authorIds = new ArrayList<>();
+    Map<Integer, User> authors = articles.stream()
+            .filter(article -> !authorIds.contains(article.getAuthorId()))
+            .peek(article -> authorIds.add(article.getAuthorId()))
+            .map(article -> userClient.getUser(article.getAuthorId()))
+            .collect(Collectors.toMap(User::getId, Function.identity()));
+
     return articles.stream()
             .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
+            .peek(article -> article.setAuthor(authors.get(article.getAuthorId())))
             .collect(Collectors.toList());
   }
 
