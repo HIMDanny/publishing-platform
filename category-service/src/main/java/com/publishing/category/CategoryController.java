@@ -1,5 +1,6 @@
 package com.publishing.category;
 
+import com.publishing.clients.category.Category;
 import com.publishing.exception.CategoryException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class CategoryController {
   }
 
   @DeleteMapping("{id}")
-  public void deleteCategory(@PathVariable("id") Integer id){
+  public void deleteCategory(@PathVariable("id") Integer id) throws CategoryException {
     categoryService.deleteCategoryById(id);
   }
 }
