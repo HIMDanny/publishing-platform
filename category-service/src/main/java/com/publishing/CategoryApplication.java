@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.publishing.clients")
+@EnableFeignClients(basePackages = {"com.publishing.clients"})
 @ImportAutoConfiguration({FeignAutoConfiguration.class})
 public class CategoryApplication {
 
