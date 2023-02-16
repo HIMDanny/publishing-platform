@@ -32,4 +32,7 @@ public class User {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Transient
+    private List<Article> articles = new ArrayList<>();
 }
