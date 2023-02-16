@@ -1,5 +1,8 @@
 package com.publishing.article;
 
+import com.publishing.clients.article.Article;
+import com.publishing.clients.user.User;
+import com.publishing.clients.user.UserClient;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
 
   private final ArticleRepository articleRepository;
+  private final UserClient userClient;
 
   public Article getArticle(Integer id) throws ArticleException{
     // TODO: handle exception
@@ -26,12 +30,15 @@ public class ArticleService {
     // TODO: calculate minutes to read
     int minutesToRead = 0;
 
+    User author = userClient.getUser(articleRequest.userId());
+
     Article article = Article.builder()
-        .title(articleRequest.title())
-        .content(articleRequest.content())
-        .mainImagePath(articleRequest.mainImagePath())
-        .minutesToRead(minutesToRead)
-        .publishingDate(LocalDateTime.now())
+            .title(articleRequest.title())
+            .content(articleRequest.content())
+            .mainImagePath(articleRequest.mainImagePath())
+            .minutesToRead(minutesToRead)
+            .publishingDate(LocalDateTime.now())
+            .author(author)
         .build();
 
     return articleRepository.save(article);
