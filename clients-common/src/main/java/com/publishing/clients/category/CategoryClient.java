@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(
         name = "category-service",
-        path = "localhost:8087"
+        url = "localhost:8087"
 )
 public interface CategoryClient {
 
