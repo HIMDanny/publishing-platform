@@ -51,5 +51,8 @@ public class ArticleController {
     articleService.deleteArticle(id);
   }
 
-
+  @GetMapping("/dev/api/v1/category/{categoryId}/articles")
+  public List<Article> getArticlesByCategory(@PathVariable("categoryId") Integer categoryId){
+    return articleService.getArticlesByCategory(categoryId);
+  }
 }
