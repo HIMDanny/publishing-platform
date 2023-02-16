@@ -1,7 +1,6 @@
 package com.publishing.article;
 
 import com.publishing.clients.article.Article;
-import com.publishing.clients.auth.RegisterRequest;
 import com.publishing.clients.category.Category;
 import com.publishing.clients.category.CategoryClient;
 import com.publishing.clients.category.CategoryResponse;
@@ -76,7 +75,7 @@ public class ArticleService {
             .mainImagePath(articleRequest.mainImagePath())
             .minutesToRead(minutesToRead)
             .publishingDate(LocalDateTime.now())
-            .authorId(articleRequest.userId())
+            .authorId(articleRequest.authorId())
             .categoryId(articleRequest.categoryId())
         .build();
 
