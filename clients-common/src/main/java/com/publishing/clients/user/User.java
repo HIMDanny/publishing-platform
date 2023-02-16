@@ -32,6 +32,4 @@ public class User {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user")
-    private List<Article> articles = new ArrayList<>();
 }
