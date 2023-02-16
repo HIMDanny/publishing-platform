@@ -67,8 +67,8 @@ public class ArticleService {
   }
 
   public Article saveArticle(ArticleRequest articleRequest){
-    // TODO: calculate minutes to read
-    int minutesToRead = 0;
+    long numberOfWords = articleRequest.content().split(" ").length;
+    int minutesToRead = (int) Math.ceil(numberOfWords / 200.0);
 
     Article article = Article.builder()
             .title(articleRequest.title())
