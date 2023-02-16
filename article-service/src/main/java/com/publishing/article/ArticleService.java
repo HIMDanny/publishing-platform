@@ -49,6 +49,7 @@ public class ArticleService {
             .minutesToRead(minutesToRead)
             .publishingDate(LocalDateTime.now())
             .authorId(articleRequest.userId())
+            .categoryId(articleRequest.categoryId())
         .build();
 
     return articleRepository.save(article);
