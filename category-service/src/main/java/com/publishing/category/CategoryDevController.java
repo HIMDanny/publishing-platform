@@ -15,7 +15,7 @@ public class CategoryDevController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/dev/api/v1/categories/{categoryId}")
+    @GetMapping("{categoryId}")
     public CategoryResponse getCategoryResponse(@PathVariable("categoryId") Integer categoryId) throws CategoryException {
         return categoryService.getCategoryResponse(categoryId);
     }
