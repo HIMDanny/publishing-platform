@@ -2,7 +2,6 @@ package com.publishing.user;
 
 import com.publishing.clients.auth.RegisterRequest;
 import com.publishing.clients.user.User;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +22,12 @@ public class UserController {
 
   @GetMapping("{id}")
   public User getUser(@PathVariable("id") Integer id){
-    return userService.getById(id);
+    return userService.getUserById(id);
   }
 
   @GetMapping
   public User getByEmail(@RequestParam("email") String email){
-    return userService.getByEmail(email);
+    return userService.getUserByEmail(email);
   }
 
   @PostMapping
