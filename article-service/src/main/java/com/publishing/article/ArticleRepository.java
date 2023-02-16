@@ -9,4 +9,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findAllByCategoryId(Integer categoryId);
 
+    List<Article> findAllByAuthorId(Integer userId);
 }

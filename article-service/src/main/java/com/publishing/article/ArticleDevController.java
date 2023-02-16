@@ -11,15 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dev/api/v1/category")
+@RequestMapping("/dev/api/v1")
 @RequiredArgsConstructor
 public class ArticleDevController {
 
     private final ArticleService articleService;
 
-    @GetMapping("{categoryId}/articles")
+    @GetMapping("category/{categoryId}/articles")
     public List<Article> getArticlesByCategory(@PathVariable("categoryId") Integer categoryId){
         return articleService.getArticlesByCategory(categoryId);
+    }
+
+    @GetMapping("users/{userId}/articles")
+    public List<Article> getArticlesByUser(@PathVariable("userId") Integer userId){
+        return articleService.getArticlesByAuthor(userId);
     }
 
 }

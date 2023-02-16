@@ -107,4 +107,8 @@ public class ArticleService {
   public List<Article> getArticlesByCategory(Integer categoryId) {
     return articleRepository.findAllByCategoryId(categoryId);
   }
+
+  public List<Article> getArticlesByAuthor(Integer userId) {
+    return articleRepository.findAllByAuthorId(userId);
+  }
 }
