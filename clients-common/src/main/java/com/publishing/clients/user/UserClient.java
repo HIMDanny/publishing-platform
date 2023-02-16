@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
 //        path = "http://localhost:8080",
-        name = "user-common", url = "localhost:8080/api/v1/users"
+        name = "userClient",
+        url = "http://localhost:8080"
 )
 public interface UserClient {
 
-    @PostMapping
+    @PostMapping("api/v1/users")
     boolean saveUser(@RequestBody RegisterRequest user);
 
-    @GetMapping("{email}")
+    @GetMapping("api/v1/users/{email}")
     Optional<RegisterRequest> getByEmail(@PathVariable("email") String email);
 
-
-    @GetMapping("api/v1/users/{id}")
-    public User getUser(@PathVariable("id") Integer id);
+    @GetMapping("dev/api/v1/users/{id}")
+    User getUser(@PathVariable("id") Integer id);
 }
