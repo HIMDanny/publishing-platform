@@ -12,6 +12,9 @@ import java.util.List;
 )
 public interface ArticleClient {
 
-    @GetMapping("/dev/api/v1/category/{categoryId}/articles")
+    @GetMapping("dev/api/v1/category/{categoryId}/articles")
     List<Article> getArticlesByCategory(@PathVariable("categoryId") Integer categoryId);
+
+    @GetMapping("dev/api/v1/users/{userId}/articles")
+    List<Article> getArticlesByUser(@PathVariable("userId") Integer userId);
 }
