@@ -1,7 +1,6 @@
 package com.publishing.article;
 
 import com.publishing.clients.article.Article;
-import com.publishing.clients.user.User;
 import com.publishing.clients.user.UserClient;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
@@ -18,8 +17,9 @@ public class ArticleService {
 
   public Article getArticle(Integer id) throws ArticleException{
     // TODO: handle exception
-    return articleRepository.findById(id)
-        .orElseThrow(() -> new ArticleException(String.format("Article with id %d cannot be found", id)));
+    Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new ArticleException(String.format("Article with id %d cannot be found", id)));
+    return article;
   }
 
   public List<Article> getAllArticles(){
@@ -64,4 +64,7 @@ public class ArticleService {
     articleRepository.delete(foundArticleInDb);
   }
 
+  public List<Article> getArticlesByCategory(Integer categoryId) {
+    return articleRepository.findAllByCategoryId(categoryId);
+  }
 }
