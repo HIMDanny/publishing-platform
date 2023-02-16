@@ -33,8 +33,8 @@ public class Article {
     private LocalDateTime publishingDate;
     @Column
     private Integer minutesToRead;
-    @ManyToOne
-    private User author;
+    @Column
+    private Integer authorId;
 //private Category category;
 
     @Column
