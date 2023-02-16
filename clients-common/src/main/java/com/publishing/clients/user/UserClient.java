@@ -20,4 +20,7 @@ public interface UserClient {
 
     @GetMapping("api/v1/users/{email}")
     Optional<RegisterRequest> getByEmail(@PathVariable("email") String email);
+
+    @GetMapping("api/v1/users/{id}")
+    public User getUser(@PathVariable("id") Integer id);
 }
