@@ -8,6 +8,9 @@ import com.publishing.exception.CustomUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -61,5 +64,14 @@ public class UserService {
   public User getUserResponse(Integer id) throws CustomUserException {
     return userRepository.findById(id)
             .orElseThrow(() -> new CustomUserException("User is not found"));
+  }
+
+  public List<User> getAllUsers() {
+    List<User> users = userRepository.findAll();
+
+    return users.stream()
+            .peek(user -> user.setArticles(articleClient.getArticlesByUser(user.getId())))
+            .collect(Collectors.toList());
+
   }
 }
