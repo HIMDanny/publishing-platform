@@ -1,6 +1,9 @@
 package com.publishing.article;
 
 import com.publishing.clients.article.Article;
+import com.publishing.clients.category.Category;
+import com.publishing.clients.category.CategoryClient;
+import com.publishing.clients.category.CategoryResponse;
 import com.publishing.clients.user.UserClient;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
@@ -14,11 +17,20 @@ public class ArticleService {
 
   private final ArticleRepository articleRepository;
   private final UserClient userClient;
+  private final CategoryClient categoryClient;
 
   public Article getArticle(Integer id) throws ArticleException{
     // TODO: handle exception
     Article article = articleRepository.findById(id)
             .orElseThrow(() -> new ArticleException(String.format("Article with id %d cannot be found", id)));
+
+    CategoryResponse categoryResponse = categoryClient.getCategoryResponse(article.getCategoryId());
+
+    article.setCategory(Category.builder()
+            .id(categoryResponse.getId())
+            .name(categoryResponse.getName())
+            .build());
+
     return article;
   }
 
