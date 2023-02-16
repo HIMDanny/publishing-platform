@@ -15,7 +15,7 @@ public class UserDevController {
 
     private final UserService userService;
 
-    @GetMapping("dev/api/v1/users/{id}")
+    @GetMapping("{id}")
     User getUser(@PathVariable("id") Integer id) throws CustomUserException {
         return userService.getUserResponse(id);
     }
