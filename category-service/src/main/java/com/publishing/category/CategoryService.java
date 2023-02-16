@@ -1,5 +1,8 @@
 package com.publishing.category;
 
+import com.publishing.clients.article.ArticleClient;
+import com.publishing.clients.category.Category;
+import com.publishing.clients.category.CategoryResponse;
 import com.publishing.exception.CategoryException;
 import java.util.List;
 import javax.xml.catalog.CatalogException;
@@ -11,10 +14,13 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
 
   private final CategoryRepository categoryRepository;
+  private final ArticleClient articleClient;
 
   public Category getCategoryById(Integer id) throws CategoryException {
-    return categoryRepository.findById(id)
-        .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));
+    Category category = categoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));
+    category.setArticles(articleClient.getArticlesByCategory(id));
+    return category;
   }
 
   public List<Category> getAllCategories(){
@@ -36,11 +42,19 @@ public class CategoryService {
     return categoryRepository.save(foundCategoryInDb);
   }
 
-  public void deleteCategoryById(Integer id){
+  public void deleteCategoryById(Integer id) throws CategoryException {
     Category foundCategoryInDb = categoryRepository.findById(id)
         .orElseThrow(
-            () -> new CatalogException(String.format("Category with id %d cannot be found", id)));
+            () -> new CategoryException(String.format("Category with id %d cannot be found", id)));
     categoryRepository.delete(foundCategoryInDb);
   }
 
+    public CategoryResponse getCategoryResponse(Integer id) throws CategoryException {
+      Category category = categoryRepository.findById(id)
+              .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));
+      return CategoryResponse.builder()
+              .id(category.getId())
+              .name(category.getName())
+              .build();
+    }
 }
