@@ -1,5 +1,6 @@
 package com.publishing.user;
 
+import com.publishing.clients.article.ArticleClient;
 import com.publishing.clients.auth.RegisterRequest;
 import com.publishing.clients.user.Role;
 import com.publishing.clients.user.User;
@@ -12,17 +13,24 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserRepository userRepository;
+  private final ArticleClient articleClient;
 
   public User getUserById(Integer id) {
     // TODO: add custom exception
-    return userRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+
+    user.setArticles(articleClient.getArticlesByUser(id));
+    return user;
   }
 
 
   public User getUserByEmail(String email) {
-    return userRepository.findByEmail(email)
-        .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+
+    user.setArticles(articleClient.getArticlesByUser(user.getId()));
+    return user;
   }
 
   public boolean saveUser(RegisterRequest userRequest) {
