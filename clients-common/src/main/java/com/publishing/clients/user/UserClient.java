@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
 //        path = "http://localhost:8080",
-        value="localhost:8080",
-        path="api/v1/users"
+        name = "user-common", url = "localhost:8080/api/v1/users"
 )
 public interface UserClient {
 
