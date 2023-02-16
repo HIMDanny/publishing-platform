@@ -8,7 +8,7 @@ import java.util.List;
 
 @FeignClient(
         name = "article-service",
-        path = "localhost:8086"
+        url = "localhost:8086"
 )
 public interface ArticleClient {
 
