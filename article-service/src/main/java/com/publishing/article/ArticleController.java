@@ -1,5 +1,6 @@
 package com.publishing.article;
 
+import com.publishing.clients.article.Article;
 import com.publishing.exception.ArticleException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
