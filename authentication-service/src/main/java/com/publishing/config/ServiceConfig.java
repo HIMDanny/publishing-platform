@@ -1,5 +1,6 @@
 package com.publishing.config;
 
+import com.publishing.clients.user.Role;
 import com.publishing.clients.user.UserClient;
 import com.publishing.user_credentials.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class ServiceConfig {
       return UserDetailsImpl.builder()
           .username(userResponse.getUsername())
           .password(userResponse.getPassword())
-          .role(userResponse.getRole())
+          .role(Role.USER)
           .build();
     };
   }
