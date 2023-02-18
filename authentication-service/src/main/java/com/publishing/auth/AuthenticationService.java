@@ -1,11 +1,10 @@
 package com.publishing.auth;
 
-import com.publishing.clients.auth.RegisterRequest;
-import com.publishing.clients.auth.AuthenticationRequest;
-import com.publishing.clients.auth.UserRequest;
+import com.publishing.clients.user.dto.UserRequestDto;
+import com.publishing.clients.auth.dto.AuthenticationRequestDto;
 import com.publishing.clients.user.UserClient;
 import com.publishing.config.JwtService;
-import com.publishing.clients.user.Role;
+import com.publishing.dto.AuthenticationResponse;
 import com.publishing.user_credentials.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,9 +21,9 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public AuthenticationResponse register(UserRequestDto request) {
     String encodePassword = passwordEncoder.encode(request.getPassword());
-    RegisterRequest userRequest = RegisterRequest.builder()
+    UserRequestDto userRequest = UserRequestDto.builder()
         .firstName(request.getFirstName())
         .lastName(request.getLastName())
         .email(request.getEmail())
@@ -40,16 +39,22 @@ public class AuthenticationService {
         .build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public AuthenticationResponse authenticate(AuthenticationRequestDto request) {
     authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(
           request.getEmail(),
           request.getPassword()
       )
     );
-    var userRequest = userClient.getByEmail(request.getEmail())
+    var userRequest = userClient.getByEmailToAuthenticate(request.getEmail())
         .orElseThrow();
-    var user = getUserDetails(userRequest, passwordEncoder.encode(request.getPassword()));
+
+    UserRequestDto userRequestDto = UserRequestDto.builder()
+            .email(userRequest.getEmail())
+            .password(userRequest.getPassword())
+            .build();
+
+    var user = getUserDetails(userRequestDto, passwordEncoder.encode(request.getPassword()));
 
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
@@ -57,11 +62,11 @@ public class AuthenticationService {
         .build();
   }
 
-  private UserDetailsImpl getUserDetails(UserRequest request, String encodePassword) {
+  private UserDetailsImpl getUserDetails(UserRequestDto request, String encodePassword) {
     return UserDetailsImpl.builder()
-        .username(request.getUsername())
+        .username(request.getEmail())
         .password(encodePassword)
-        .role(Role.USER)
+        .role("ROLE_USER")
         .build();
   }
 }
