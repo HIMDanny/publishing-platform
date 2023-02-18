@@ -31,10 +31,10 @@ public class ServiceConfig {
   @Bean
   public UserDetailsService userDetailsService() {
     return username -> {
-      var userResponse = userClient.getByEmail(username)
+      var userResponse = userClient.getByEmailToAuthenticate(username)
           .orElseThrow(() -> new UsernameNotFoundException("User not found"));
       return UserDetailsImpl.builder()
-          .username(userResponse.getUsername())
+          .username(userResponse.getEmail())
           .password(userResponse.getPassword())
           .role(userResponse.getRole())
           .build();

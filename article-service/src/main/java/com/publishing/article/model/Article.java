@@ -1,7 +1,7 @@
-package com.publishing.clients.article;
+package com.publishing.article.model;
 
-import com.publishing.clients.category.Category;
-import com.publishing.clients.user.User;
+import com.publishing.clients.category.dto.CategoryResponseDto;
+import com.publishing.clients.user.dto.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
@@ -45,9 +45,8 @@ public class Article {
     private Integer numberOfViews = 0;
     @Column
     private Integer numberOfLikes = 0;
-
     @Transient
-    private User author;
+    private UserResponseDto author;
     @Transient
-    private Category category;
+    private CategoryResponseDto category;
 }

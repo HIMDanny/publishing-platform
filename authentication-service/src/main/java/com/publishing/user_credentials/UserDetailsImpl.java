@@ -1,6 +1,5 @@
 package com.publishing.user_credentials;
 
-import com.publishing.clients.user.Role;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -17,11 +16,11 @@ public class UserDetailsImpl implements UserDetails {
 
   private String username;
   private String password;
-  private Role role;
+  private String role;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
+    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
   }
 
   @Override
