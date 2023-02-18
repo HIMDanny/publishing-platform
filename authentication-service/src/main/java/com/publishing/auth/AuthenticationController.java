@@ -1,7 +1,8 @@
 package com.publishing.auth;
 
-import com.publishing.clients.auth.RegisterRequest;
-import com.publishing.clients.auth.AuthenticationRequest;
+import com.publishing.clients.user.dto.UserRequestDto;
+import com.publishing.clients.auth.dto.AuthenticationRequestDto;
+import com.publishing.dto.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +19,14 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   public ResponseEntity<AuthenticationResponse> register(
-      @RequestBody RegisterRequest request
+      @RequestBody UserRequestDto request
   ){
     return ResponseEntity.ok(service.register(request));
   }
 
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
-    @RequestBody AuthenticationRequest request
+    @RequestBody AuthenticationRequestDto request
   ){
     return ResponseEntity.ok(service.authenticate(request));
   }
