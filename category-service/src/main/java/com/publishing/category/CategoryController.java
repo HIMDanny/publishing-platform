@@ -4,14 +4,8 @@ import com.publishing.clients.category.Category;
 import com.publishing.exception.CategoryException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -21,22 +15,26 @@ public class CategoryController {
   private final CategoryService categoryService;
 
   @GetMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
   public Category getCategoryById(@PathVariable("id") Integer id) throws CategoryException {
     // TODO: handle exception
     return categoryService.getCategoryById(id);
   }
 
   @GetMapping
+  @ResponseStatus(HttpStatus.OK)
   public List<Category> getAllCategories(){
     return categoryService.getAllCategories();
   }
 
   @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
   public Category saveCategory(@RequestBody CategoryRequest categoryRequest){
     return categoryService.saveCategory(categoryRequest);
   }
 
   @PutMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
   public Category updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryRequest categoryRequest)
       throws CategoryException {
     // TODO: handle exception
@@ -44,6 +42,7 @@ public class CategoryController {
   }
 
   @DeleteMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
   public void deleteCategory(@PathVariable("id") Integer id) throws CategoryException {
     categoryService.deleteCategoryById(id);
   }
