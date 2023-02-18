@@ -3,10 +3,8 @@ package com.publishing.article;
 import com.publishing.clients.article.Article;
 import com.publishing.clients.category.Category;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,11 +16,13 @@ public class ArticleDevController {
     private final ArticleService articleService;
 
     @GetMapping("category/{categoryId}/articles")
+    @ResponseStatus(HttpStatus.OK)
     public List<Article> getArticlesByCategory(@PathVariable("categoryId") Integer categoryId){
         return articleService.getArticlesByCategory(categoryId);
     }
 
     @GetMapping("users/{userId}/articles")
+    @ResponseStatus(HttpStatus.OK)
     public List<Article> getArticlesByUser(@PathVariable("userId") Integer userId){
         return articleService.getArticlesByAuthor(userId);
     }
