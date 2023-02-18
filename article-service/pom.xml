@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>Article-service</artifactId>
+  <artifactId>article-service</artifactId>
 
   <properties>
     <maven.compiler.source>19</maven.compiler.source>
@@ -30,7 +30,6 @@
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
     </dependency>
-
     <dependency>
       <groupId>com.fullstackapp</groupId>
       <artifactId>clients-common</artifactId>
