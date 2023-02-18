@@ -1,4 +1,4 @@
-package com.publishing.clients.auth;
+package com.publishing.clients.auth.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationRequest extends UserRequest{
+public class AuthenticationRequestDto {
     private String email;
     private String password;
 }
