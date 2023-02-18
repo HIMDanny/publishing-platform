@@ -10,8 +10,12 @@ import com.publishing.user_credentials.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,14 +45,17 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
+
     authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(
           request.getEmail(),
           request.getPassword()
       )
     );
-    var userRequest = userClient.getByEmail(request.getEmail())
+
+    RegisterRequest userRequest = userClient.getByEmail(request.getEmail())
         .orElseThrow();
+
     var user = getUserDetails(userRequest, passwordEncoder.encode(request.getPassword()));
 
     var jwtToken = jwtService.generateToken(user);
@@ -57,9 +64,9 @@ public class AuthenticationService {
         .build();
   }
 
-  private UserDetailsImpl getUserDetails(UserRequest request, String encodePassword) {
+  private UserDetailsImpl getUserDetails(RegisterRequest request, String encodePassword) {
     return UserDetailsImpl.builder()
-        .username(request.getUsername())
+        .username(request.getEmail())
         .password(encodePassword)
         .role(Role.USER)
         .build();

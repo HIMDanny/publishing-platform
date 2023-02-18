@@ -31,11 +31,14 @@ public class ServiceConfig {
 
   @Bean
   public UserDetailsService userDetailsService() {
+    System.out.println("hello");
+
     return username -> {
       var userResponse = userClient.getByEmail(username)
           .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+      System.out.println(userResponse.getUsername() + " " + userResponse.getEmail());
       return UserDetailsImpl.builder()
-          .username(userResponse.getUsername())
+          .username(userResponse.getEmail())
           .password(userResponse.getPassword())
           .role(Role.USER)
           .build();
@@ -50,6 +53,7 @@ public class ServiceConfig {
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
       throws Exception {
+
     return config.getAuthenticationManager();
   }
 
