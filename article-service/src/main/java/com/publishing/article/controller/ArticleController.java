@@ -51,4 +51,9 @@ public class ArticleController {
 
     articleService.deleteArticle(id);
   }
+
+  @GetMapping("{field}")
+  private List<EntityArticleResponseDto> getArticlesWithSort(@PathVariable String field){
+    return articleService.findArticlesWithSorting(field);
+  }
 }

@@ -17,6 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -159,5 +160,11 @@ public class ArticleService {
             .map(article -> categoryClient.getCategoryResponse(article.getCategoryId()))
             .map(categoryResponseDto -> CategoryResponseDto.builder().id(categoryResponseDto.getId()).name(categoryResponseDto.getName()).build())
             .collect(Collectors.toMap(CategoryResponseDto::getId, Function.identity()));
+  }
+
+  public List<EntityArticleResponseDto> findArticlesWithSorting(String field){
+    return articleRepository.findAll(Sort.by(Sort.Direction.ASC, field)).stream()
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
   }
 }
