@@ -1,4 +1,4 @@
-package com.publishing.clients.user;
+package com.publishing.model;
 
 public enum Role {
     USER,
