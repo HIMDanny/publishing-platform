@@ -59,7 +59,15 @@ public class ArticleController {
   }
 
   @GetMapping("pagination/{offset}/{pageSize}")
-  public ArticlePageResponseDto getArticlesWithPaging(@PathVariable int offset, @PathVariable int pageSize){
+  public ArticlePageResponseDto getArticlesWithPagination(@PathVariable int offset, @PathVariable int pageSize){
     return articleService.findArticlesWithPagination(offset, pageSize);
+  }
+
+  @GetMapping(path = "pagination/{offset}/{pageSize}", params = "field")
+  public ArticlePageResponseDto getArticlesWithPaginationAndSort(
+                                                      @PathVariable int offset,
+                                                      @PathVariable int pageSize,
+                                                      @RequestParam("field") String field){
+    return articleService.findArticlesWithPaginationAndSorting(offset, pageSize, field);
   }
 }

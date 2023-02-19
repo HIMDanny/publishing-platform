@@ -72,6 +72,22 @@ public class ArticleService {
             .build();
   }
 
+  public ArticlePageResponseDto findArticlesWithPaginationAndSorting(int offset, int pageSize, String field){
+    Page<Article> pageOfArticles = articleRepository.findAll(PageRequest.of(offset - 1, pageSize).withSort(Sort.by(field)));
+
+    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfArticles.getTotalElements())
+            .totalPages(pageOfArticles.getTotalPages())
+            .page(offset)
+            .pageSize(pageSize)
+            .articles(articleDtos)
+            .build();
+  }
+
   public Integer saveArticle(ArticleRequestDto articleRequestDto){
     long numberOfWords = articleRequestDto.getContent().split(" ").length;
     int minutesToRead = (int) Math.ceil(numberOfWords / 200.0);
