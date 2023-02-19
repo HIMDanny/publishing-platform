@@ -1,12 +1,13 @@
+
 package com.publishing.clients.user;
 
-import com.publishing.clients.auth.RegisterRequest;
+import com.publishing.clients.user.dto.UserRequestDto;
 import java.util.Optional;
+
+import com.publishing.clients.user.dto.UserAuthResponseDto;
+import com.publishing.clients.user.dto.UserResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
 //        path = "http://localhost:8080",
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserClient {
 
     @PostMapping("api/v1/users")
-    boolean saveUser(@RequestBody RegisterRequest user);
+    boolean saveUser(@RequestBody UserRequestDto user);
 
-    @GetMapping("api/v1/users/{email}")
-    Optional<RegisterRequest> getByEmail(@PathVariable("email") String email);
+    @GetMapping("dev/api/v1/users")
+    Optional<UserAuthResponseDto> getByEmailToAuthenticate(@RequestParam("email") String email);
 
     @GetMapping("dev/api/v1/users/{id}")
-    User getUser(@PathVariable("id") Integer id);
+    UserResponseDto getUserResponse(@PathVariable("id") Integer id);
 }

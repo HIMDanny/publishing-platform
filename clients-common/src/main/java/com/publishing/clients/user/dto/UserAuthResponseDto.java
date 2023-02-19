@@ -1,14 +1,14 @@
-package com.publishing.clients.auth;
+package com.publishing.clients.user.dto;
 
-import com.publishing.clients.user.Role;
 import lombok.*;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest extends UserRequest{
+@NoArgsConstructor
+@Builder
+public class UserAuthResponseDto {
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
