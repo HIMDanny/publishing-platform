@@ -1,5 +1,6 @@
 package com.publishing.config;
 
+import com.publishing.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,6 @@ public class SecurityConfiguration {
     http
         .csrf().disable()
         .authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-            .and()
-            .authorizeHttpRequests().requestMatchers("/").permitAll()
             .anyRequest().authenticated()
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
