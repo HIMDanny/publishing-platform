@@ -1,4 +1,4 @@
-package com.publishing.clients.category;
+package com.publishing.clients.category.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CategoryResponse {
+public class CategoryResponseDto {
     private Integer id;
     private String name;
 }
