@@ -1,4 +1,4 @@
-package com.publishing.auth;
+package com.publishing.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

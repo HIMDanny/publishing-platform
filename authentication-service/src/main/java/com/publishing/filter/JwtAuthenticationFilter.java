@@ -1,5 +1,6 @@
-package com.publishing.config;
+package com.publishing.filter;
 
+import com.publishing.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
