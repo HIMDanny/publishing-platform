@@ -1,5 +1,6 @@
 package com.publishing.article.service;
 
+import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.article.dto.ArticleRequestDto;
 import com.publishing.article.model.Article;
@@ -17,6 +18,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -38,21 +41,35 @@ public class ArticleService {
     article.setCategory(categoryResponseDto);
     article.setAuthor(userResponseDto);
 
-    return mapToDto(article);
+    return mapToArticleDTO(article);
   }
 
   public List<EntityArticleResponseDto> getAllArticles(){
     List<Article> articles = articleRepository.findAll();
 
-    Map<Integer, CategoryResponseDto> categories = getCategoryResponseDtoMap(articles);
+    return getListOfArticleDTOS(articles);
+  }
 
-    Map<Integer, UserResponseDto> authors = getUserResponseDtoMap(articles);
+  public List<EntityArticleResponseDto> findArticlesWithSorting(String field){
+    List<Article> articles = articleRepository.findAll(Sort.by(Sort.Direction.ASC, field));
 
-    return articles.stream()
-            .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
-            .peek(article -> article.setAuthor(authors.get(article.getAuthorId())))
-            .map(this::mapToDto)
-            .collect(Collectors.toList());
+    return getListOfArticleDTOS(articles);
+  }
+
+  public ArticlePageResponseDto findArticlesWithPagination(int offset, int pageSize){
+    Page<Article> pageOfArticles = articleRepository.findAll(PageRequest.of(offset - 1, pageSize));
+
+    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfArticles.getTotalElements())
+            .totalPages(pageOfArticles.getTotalPages())
+            .page(offset)
+            .pageSize(pageSize)
+            .articles(articleDtos)
+            .build();
   }
 
   public Integer saveArticle(ArticleRequestDto articleRequestDto){
@@ -92,7 +109,7 @@ public class ArticleService {
     updatedArticle.setCategory(categoryResponseDto);
     updatedArticle.setAuthor(userResponseDto);
 
-    return mapToDto(updatedArticle);
+    return mapToArticleDTO(updatedArticle);
   }
 
   public void deleteArticle(Integer id) throws ArticleException{
@@ -107,28 +124,26 @@ public class ArticleService {
   public List<EntityArticleResponseDto> getArticlesByCategory(Integer categoryId) {
     List<Article> foundArticles = articleRepository.findAllByCategoryId(categoryId);
 
-    Map<Integer, UserResponseDto> authors = getUserResponseDtoMap(foundArticles);
+    Map<Integer, UserResponseDto> authors = getMapWithUserIds(foundArticles);
 
     return foundArticles.stream()
             .peek(article -> article.setAuthor(authors.get(article.getAuthorId())))
-            .map(this::mapToDto)
+            .map(this::mapToArticleDTO)
             .collect(Collectors.toList());
   }
-
-
 
   public List<EntityArticleResponseDto> getArticlesByAuthor(Integer userId) {
     List<Article> foundArticle = articleRepository.findAllByAuthorId(userId);
 
-    Map<Integer, CategoryResponseDto> categories = getCategoryResponseDtoMap(foundArticle);
+    Map<Integer, CategoryResponseDto> categories = getMapWithCategoryIds(foundArticle);
 
     return foundArticle.stream()
             .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
-            .map(this::mapToDto)
+            .map(this::mapToArticleDTO)
             .collect(Collectors.toList());
   }
 
-  private EntityArticleResponseDto mapToDto(Article article) {
+  private EntityArticleResponseDto mapToArticleDTO(Article article) {
     return EntityArticleResponseDto.builder()
             .id(article.getId())
             .title(article.getTitle())
@@ -143,7 +158,20 @@ public class ArticleService {
             .build();
   }
 
-  private Map<Integer, UserResponseDto> getUserResponseDtoMap(List<Article> articles) {
+  private List<EntityArticleResponseDto> getListOfArticleDTOS(List<Article> articles) {
+
+    Map<Integer, CategoryResponseDto> categories = getMapWithCategoryIds(articles);
+
+    Map<Integer, UserResponseDto> authors = getMapWithUserIds(articles);
+
+    return articles.stream()
+            .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
+            .peek(article -> article.setAuthor(authors.get(article.getAuthorId())))
+            .map(this::mapToArticleDTO)
+            .collect(Collectors.toList());
+  }
+
+  private Map<Integer, UserResponseDto> getMapWithUserIds(List<Article> articles) {
     List<Integer> authorIds = new ArrayList<>();
     return articles.stream()
             .filter(article -> !authorIds.contains(article.getAuthorId()))
@@ -152,7 +180,7 @@ public class ArticleService {
             .collect(Collectors.toMap(UserResponseDto::getId, Function.identity()));
   }
 
-  private Map<Integer, CategoryResponseDto> getCategoryResponseDtoMap(List<Article> articles) {
+  private Map<Integer, CategoryResponseDto> getMapWithCategoryIds(List<Article> articles) {
     List<Integer> categoriesIds = new ArrayList<>();
     return articles.stream()
             .filter(article -> !categoriesIds.contains(article.getCategoryId()))
@@ -160,11 +188,5 @@ public class ArticleService {
             .map(article -> categoryClient.getCategoryResponse(article.getCategoryId()))
             .map(categoryResponseDto -> CategoryResponseDto.builder().id(categoryResponseDto.getId()).name(categoryResponseDto.getName()).build())
             .collect(Collectors.toMap(CategoryResponseDto::getId, Function.identity()));
-  }
-
-  public List<EntityArticleResponseDto> findArticlesWithSorting(String field){
-    return articleRepository.findAll(Sort.by(Sort.Direction.ASC, field)).stream()
-            .map(this::mapToDto)
-            .collect(Collectors.toList());
   }
 }

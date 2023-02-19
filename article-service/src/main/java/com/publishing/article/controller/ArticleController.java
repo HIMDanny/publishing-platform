@@ -1,5 +1,6 @@
 package com.publishing.article.controller;
 
+import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
@@ -52,8 +53,13 @@ public class ArticleController {
     articleService.deleteArticle(id);
   }
 
-  @GetMapping("{field}")
-  private List<EntityArticleResponseDto> getArticlesWithSort(@PathVariable String field){
+  @GetMapping(params = "field")
+  private List<EntityArticleResponseDto> getArticlesWithSort(@RequestParam("field") String field){
     return articleService.findArticlesWithSorting(field);
+  }
+
+  @GetMapping("pagination/{offset}/{pageSize}")
+  public ArticlePageResponseDto getArticlesWithPaging(@PathVariable int offset, @PathVariable int pageSize){
+    return articleService.findArticlesWithPagination(offset, pageSize);
   }
 }
