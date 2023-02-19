@@ -33,7 +33,7 @@ public class ArticleService {
             .orElseThrow(() -> new ArticleException(String.format("Article with id %d cannot be found", id)));
 
     CategoryResponseDto categoryResponseDto = categoryClient.getCategoryResponse(article.getCategoryId());
-    UserResponseDto userResponseDto = userClient.getUserResponse(article.getId());
+    UserResponseDto userResponseDto = userClient.getUserResponse(article.getAuthorId());
     article.setCategory(categoryResponseDto);
     article.setAuthor(userResponseDto);
 
