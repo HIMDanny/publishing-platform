@@ -50,8 +50,9 @@ public class ArticleService {
     return getListOfArticleDTOS(articles);
   }
 
-  public List<EntityArticleResponseDto> findArticlesWithSorting(String field){
-    List<Article> articles = articleRepository.findAll(Sort.by(Sort.Direction.ASC, field));
+  public List<EntityArticleResponseDto> findArticlesWithSorting(String field, String dirVal){
+    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    List<Article> articles = articleRepository.findAll(Sort.by(direction, field));
 
     return getListOfArticleDTOS(articles);
   }
@@ -72,8 +73,10 @@ public class ArticleService {
             .build();
   }
 
-  public ArticlePageResponseDto findArticlesWithPaginationAndSorting(int offset, int pageSize, String field){
-    Page<Article> pageOfArticles = articleRepository.findAll(PageRequest.of(offset - 1, pageSize).withSort(Sort.by(field)));
+  public ArticlePageResponseDto findArticlesWithPaginationAndSorting(int offset, int pageSize, String field, String dirVal){
+    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    Page<Article> pageOfArticles = articleRepository.findAll(
+            PageRequest.of(offset - 1, pageSize).withSort(Sort.by(direction, field)));
 
     List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
 

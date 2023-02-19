@@ -53,9 +53,10 @@ public class ArticleController {
     articleService.deleteArticle(id);
   }
 
-  @GetMapping(params = "field")
-  private List<EntityArticleResponseDto> getArticlesWithSort(@RequestParam("field") String field){
-    return articleService.findArticlesWithSorting(field);
+  @GetMapping(params = {"field", "direction"})
+  private List<EntityArticleResponseDto> getArticlesWithSort(@RequestParam("field") String field,
+                                                             @RequestParam("direction") String direction){
+    return articleService.findArticlesWithSorting(field, direction);
   }
 
   @GetMapping("pagination/{offset}/{pageSize}")
@@ -63,11 +64,12 @@ public class ArticleController {
     return articleService.findArticlesWithPagination(offset, pageSize);
   }
 
-  @GetMapping(path = "pagination/{offset}/{pageSize}", params = "field")
+  @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
   public ArticlePageResponseDto getArticlesWithPaginationAndSort(
                                                       @PathVariable int offset,
                                                       @PathVariable int pageSize,
-                                                      @RequestParam("field") String field){
-    return articleService.findArticlesWithPaginationAndSorting(offset, pageSize, field);
+                                                      @RequestParam("field") String field,
+                                                      @RequestParam("direction") String direction){
+    return articleService.findArticlesWithPaginationAndSorting(offset, pageSize, field, direction);
   }
 }
