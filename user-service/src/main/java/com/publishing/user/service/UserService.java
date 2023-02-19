@@ -100,7 +100,7 @@ public class UserService {
 
   public boolean deleteUser(Integer id) {
     userRepository.deleteById(id);
-    return getUserById(id).getId() == 0;
+    return userRepository.findById(id).isEmpty();
   }
 
   public UserResponseDto getUserResponse(Integer id) throws CustomUserException {
