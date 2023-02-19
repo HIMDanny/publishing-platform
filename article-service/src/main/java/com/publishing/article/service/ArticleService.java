@@ -81,12 +81,13 @@ public class ArticleService {
     foundArticleInDb.setTitle(articleRequestDto.getTitle());
     foundArticleInDb.setContent(articleRequestDto.getContent());
     foundArticleInDb.setMainImagePath(articleRequestDto.getMainImagePath());
+    foundArticleInDb.setAuthorId(articleRequestDto.getAuthorId());
     foundArticleInDb.setCategoryId(articleRequestDto.getCategoryId());
 
     Article updatedArticle = articleRepository.save(foundArticleInDb);
 
     CategoryResponseDto categoryResponseDto = categoryClient.getCategoryResponse(updatedArticle.getCategoryId());
-    UserResponseDto userResponseDto = userClient.getUserResponse(updatedArticle.getId());
+    UserResponseDto userResponseDto = userClient.getUserResponse(updatedArticle.getAuthorId());
     updatedArticle.setCategory(categoryResponseDto);
     updatedArticle.setAuthor(userResponseDto);
 
