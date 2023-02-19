@@ -63,6 +63,8 @@ public class UserService {
             .collect(Collectors.toList());
   }
   public Integer saveUser(UserRequestDto userRequest) {
+    // TODO check if there is user with this email
+
     // TODO if password is not easy
     User user = User.builder()
         .firstName(userRequest.getFirstName())
