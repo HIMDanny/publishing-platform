@@ -20,7 +20,7 @@ public interface UserClient {
     boolean saveUser(@RequestBody UserRequestDto user);
 
     @GetMapping("dev/api/v1/users")
-    Optional<UserAuthResponseDto> getByEmailToAuthenticate(@RequestParam("email") String email);
+    UserAuthResponseDto getByEmailToAuthenticate(@RequestParam("email") String email);
 
     @GetMapping("dev/api/v1/users/{id}")
     UserResponseDto getUserResponse(@PathVariable("id") Integer id);

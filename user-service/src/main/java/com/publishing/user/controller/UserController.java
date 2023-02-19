@@ -1,7 +1,8 @@
-package com.publishing.user;
+package com.publishing.user.controller;
 
-import com.publishing.clients.auth.RegisterRequest;
-import com.publishing.clients.user.User;
+import com.publishing.clients.user.dto.UserRequestDto;
+import com.publishing.user.dto.EntityUserResponseDto;
+import com.publishing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,31 +18,31 @@ public class UserController {
 
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public User getUser(@PathVariable("id") Integer id){
+  public EntityUserResponseDto getUser(@PathVariable("id") Integer id){
     return userService.getUserById(id);
   }
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public User getByEmail(@RequestParam("email") String email){
+  public EntityUserResponseDto getByEmail(@RequestParam("email") String email){
     return userService.getUserByEmail(email);
   }
 
   @GetMapping("all")
   @ResponseStatus(HttpStatus.OK)
-  public List<User> getAllUsers(){
+  public List<EntityUserResponseDto> getAllUsers(){
     return userService.getAllUsers();
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public boolean saveUser(@RequestBody RegisterRequest user){
+  public Integer saveUser(@RequestBody UserRequestDto user){
     return userService.saveUser(user);
   }
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public User updateUser(@PathVariable("id") Integer id, @RequestBody User user){
+  public EntityUserResponseDto updateUser(@PathVariable("id") Integer id, @RequestBody UserRequestDto user){
     return userService.updateUser(id, user);
   }
 
