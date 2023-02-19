@@ -18,9 +18,9 @@ public interface UserClient {
     @PostMapping("api/v1/users")
     boolean saveUser(@RequestBody UserRequestDto user);
 
-    @GetMapping("api/v1/users")
+    @GetMapping("dev/api/v1/users")
     Optional<UserAuthResponseDto> getByEmailToAuthenticate(@RequestParam("email") String email);
 
-    @GetMapping("api/v1/users/{id}")
+    @GetMapping("dev/api/v1/users/{id}")
     UserResponseDto getUserResponse(@PathVariable("id") Integer id);
 }
