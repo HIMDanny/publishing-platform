@@ -35,6 +35,7 @@ public class CategoryService {
   }
 
   public Integer saveCategory(CategoryRequestDto categoryRequestDto){
+    // TODO check if there is category with this name
     return categoryRepository.save(Category.builder()
         .name(categoryRequestDto.getName())
         .build()).getId();
