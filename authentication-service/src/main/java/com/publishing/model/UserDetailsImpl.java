@@ -1,6 +1,5 @@
-package com.publishing.user_credentials;
+package com.publishing.model;
 
-import com.publishing.clients.user.Role;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
