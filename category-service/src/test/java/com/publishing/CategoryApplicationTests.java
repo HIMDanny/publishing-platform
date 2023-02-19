@@ -1,17 +1,12 @@
 package com.publishing;
 
-import com.publishing.category.CategoryRepository;
-import com.publishing.category.CategoryRequest;
-import com.publishing.category.CategoryService;
-import org.junit.internal.runners.JUnit4ClassRunner;
+import com.publishing.category.repo.CategoryRepository;
+import com.publishing.category.dto.CategoryRequestDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -21,8 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,8 +45,8 @@ public class CategoryApplicationTests {
 
     @Test
     void shouldCreateCategory() throws Exception {
-        CategoryRequest categoryRequest = getCategoryRequest();
-        String categoryRequestString = mapperBuilder.build().writeValueAsString(categoryRequest);
+        CategoryRequestDto categoryRequestDto = getCategoryRequest();
+        String categoryRequestString = mapperBuilder.build().writeValueAsString(categoryRequestDto);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(categoryRequestString))
@@ -61,8 +54,8 @@ public class CategoryApplicationTests {
         Assertions.assertEquals(1, categoryRepository.findAll().size());
     }
 
-    private CategoryRequest getCategoryRequest() {
-        return CategoryRequest.builder()
+    private CategoryRequestDto getCategoryRequest() {
+        return CategoryRequestDto.builder()
                 .name("Sport")
                 .build();
     }

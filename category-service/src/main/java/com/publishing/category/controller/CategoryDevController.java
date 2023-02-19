@@ -1,6 +1,7 @@
-package com.publishing.category;
+package com.publishing.category.controller;
 
-import com.publishing.clients.category.CategoryResponse;
+import com.publishing.category.service.CategoryService;
+import com.publishing.clients.category.dto.CategoryResponseDto;
 import com.publishing.exception.CategoryException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ public class CategoryDevController {
 
     @GetMapping("{categoryId}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryResponse getCategoryResponse(@PathVariable("categoryId") Integer categoryId) throws CategoryException {
+    public CategoryResponseDto getCategoryResponse(@PathVariable("categoryId") Integer categoryId) throws CategoryException {
         return categoryService.getCategoryResponse(categoryId);
     }
 
