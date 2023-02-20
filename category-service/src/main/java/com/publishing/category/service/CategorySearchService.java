@@ -17,15 +17,15 @@ public class CategorySearchService extends CategoryCommonService{
     private final CategoryRepository categoryRepository;
     private final ArticleClient articleClient;
 
-    public List<EntityCategoryResponseDto> searchCategories(String query){
-        return categoryRepository.searchCategories(query).stream()
+    public List<EntityCategoryResponseDto> searchCategories(String value){
+        return categoryRepository.searchCategories(value).stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    public List<EntityCategoryResponseDto> searchCategoriesWithPagination(String query, Integer offset, Integer pageSize){
-        return categoryRepository.searchCategoriesWithPagination(query, PageRequest.of(offset, pageSize)).stream()
+    public List<EntityCategoryResponseDto> searchCategoriesWithPagination(String value, Integer offset, Integer pageSize){
+        return categoryRepository.searchCategoriesWithPagination(value, PageRequest.of(offset, pageSize)).stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());

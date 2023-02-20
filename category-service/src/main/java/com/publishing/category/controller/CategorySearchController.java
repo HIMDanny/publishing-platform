@@ -15,18 +15,17 @@ public class CategorySearchController {
 
     private final CategorySearchService categorySearchService;
 
-    @GetMapping
+    @GetMapping(params = {"value"})
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query){
-        return categorySearchService.searchCategories(query);
+    public List<EntityCategoryResponseDto> searchCategories(@RequestParam("value") String value){
+        return categorySearchService.searchCategories(value);
     }
 
-    @GetMapping(params = {"query", "offset", "pageSize"})
+    @GetMapping(params = {"value", "offset", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query,
-                                                            @RequestParam("offset") Integer offset,
-                                                            @RequestParam("pageSize") Integer pageSize){
-        return categorySearchService.searchCategoriesWithPagination(query, offset, pageSize);
+    public List<EntityCategoryResponseDto> searchCategories(@RequestParam("value") String value,
+                                                            @RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+        return categorySearchService.searchCategoriesWithPagination(value, offset, pageSize);
     }
-
 }

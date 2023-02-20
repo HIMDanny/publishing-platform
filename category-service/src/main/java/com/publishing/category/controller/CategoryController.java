@@ -53,8 +53,8 @@ public class CategoryController {
   @GetMapping(params = {"field", "direction"})
   @ResponseStatus(HttpStatus.OK)
   public List<EntityCategoryResponseDto> getCategoriesWithSort(
-                              @RequestParam(name = "field", defaultValue = "ASC") String field,
-                              @RequestParam(name = "direction", defaultValue = "ASC") String direction){
+                              @RequestParam(value = "field", defaultValue = "ASC") String field,
+                              @RequestParam(value = "direction", defaultValue = "ASC") String direction){
     return categoryService.findCategoriesWithSorting(field, direction);
   }
 }
