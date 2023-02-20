@@ -1,5 +1,6 @@
 package com.publishing.article.service;
 
+import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.model.Article;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
@@ -22,12 +23,20 @@ public class ArticleSearchService extends ArticleCommonService{
         return getListOfArticleDTOS(articles);
     }
 
-    public List<EntityArticleResponseDto> searchArticlesWithPagination(String value, Integer offset, Integer pageSize) {
-        List<Article> articles = articleRepository.searchArticlesWithPagination(value, PageRequest.of(offset - 1, pageSize))
-                .stream()
-                .collect(Collectors.toList());
+    public ArticlePageResponseDto searchArticlesWithPagination(String value, Integer offset, Integer pageSize) {
+        Page<Article> articlesPage = articleRepository.searchArticlesWithPagination(value, PageRequest.of(offset - 1, pageSize));
 
-        return getListOfArticleDTOS(articles);
+        List<Article> articlesList = articlesPage.stream().collect(Collectors.toList());
+
+        List<EntityArticleResponseDto> articles = getListOfArticleDTOS(articlesList);
+
+        return ArticlePageResponseDto.builder()
+                .totalPages(articlesPage.getTotalPages())
+                .totalElements(articlesPage.getTotalElements())
+                .page(offset)
+                .pageSize(pageSize)
+                .articles(articles)
+                .build();
     }
 
 

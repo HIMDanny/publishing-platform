@@ -1,5 +1,6 @@
 package com.publishing.article.controller;
 
+import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.service.ArticleSearchService;
 import com.publishing.article.service.ArticleService;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
@@ -25,9 +26,9 @@ public class ArticleSearchController {
 
     @GetMapping(params = {"value", "page", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityArticleResponseDto> searchArticlesWithPagination(@RequestParam("value") String value,
-                                                                       @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+    public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value,
+                                                               @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         return articleSearchService.searchArticlesWithPagination(value, page, pageSize);
     }
 }
