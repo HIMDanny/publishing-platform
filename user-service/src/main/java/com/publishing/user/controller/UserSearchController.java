@@ -18,7 +18,7 @@ public class UserSearchController {
 
     private final UserSearchService userSearchService;
 
-    @GetMapping()
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EntityUserResponseDto> searchUser(@RequestParam("value") String value){
         return userSearchService.searchUsers(value);

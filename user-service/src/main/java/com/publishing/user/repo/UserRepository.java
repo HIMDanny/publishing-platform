@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends JpaRepository<User, Integer> {
   Optional<User> findByEmail(String email);
 
-  @Query(value = "SELECT u FROM User WHERE u.firstName " +
+  @Query(value = "SELECT u FROM app_user u WHERE u.firstName " +
                  "LIKE CONCAT('%', :value, '%') " +
                  "OR u.lastName LIKE CONCAT('%', :value, '%')")
   List<User> searchUsers(@Param("value") String value);
