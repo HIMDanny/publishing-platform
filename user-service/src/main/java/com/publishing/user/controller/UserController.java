@@ -17,22 +17,22 @@ public class UserController {
 
   private final UserService userService;
 
+  @GetMapping()
+  @ResponseStatus(HttpStatus.OK)
+  public List<EntityUserResponseDto> getAllUsers(){
+    return userService.getAllUsers();
+  }
+
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getUser(@PathVariable("id") Integer id){
     return userService.getUserById(id);
   }
 
-  @GetMapping
+  @GetMapping(params = "email")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getByEmail(@RequestParam("email") String email){
     return userService.getUserByEmail(email);
-  }
-
-  @GetMapping("all")
-  @ResponseStatus(HttpStatus.OK)
-  public List<EntityUserResponseDto> getAllUsers(){
-    return userService.getAllUsers();
   }
 
   @PostMapping
@@ -53,25 +53,6 @@ public class UserController {
     return userService.deleteUser(id);
   }
 
-  @GetMapping("search")
-  @ResponseStatus(HttpStatus.OK)
-  public List<EntityUserResponseDto> searchUser(@RequestParam("value") String value){
-    return userService.searchUsers(value);
-  }
-
-  @GetMapping("search/{offset}/{pageSize}")
-  public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
-                                                      @PathVariable("offset") Integer offset,
-                                                      @PathVariable("pageSize") Integer pageSize){
-    return userService.searchUserWithPagination(value, offset, pageSize);
-  }
-
-  @GetMapping("pagination/{offset}/{pageSize}")
-  public UserPageResponseDto findUsersWithPagination(@PathVariable("offset") Integer offset,
-                                                     @PathVariable("pageSize") Integer pageSize){
-    return userService.findUserWithPagination(offset, pageSize);
-  }
-
   @GetMapping(params = {"field", "direction"})
   @ResponseStatus(HttpStatus.OK)
   public List<EntityUserResponseDto> findUsersWithSort(@RequestParam("field") String field,
@@ -79,12 +60,4 @@ public class UserController {
     return userService.findUsersWithSort(field, direction);
   }
 
-  @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
-  @ResponseStatus(HttpStatus.OK)
-  public UserPageResponseDto findUsersWithPaginationAndSort(@PathVariable("offset") Integer offset,
-                                                            @PathVariable("pageSize") Integer pageSize,
-                                                            @RequestParam("field") String field,
-                                                            @RequestParam("direction") String direction){
-    return userService.findUserWithPaginationAndSort(field, direction, offset, pageSize);
-  }
 }
