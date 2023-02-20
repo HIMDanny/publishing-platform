@@ -28,7 +28,7 @@ public class CategorySearchService extends CategoryCommonService{
     }
 
     public CategoryPageResponseDto searchCategoriesWithPagination(String value, Integer offset, Integer pageSize){
-        Page<Category> categoriesPage = categoryRepository.searchCategoriesWithPagination(value, PageRequest.of(offset, pageSize));
+        Page<Category> categoriesPage = categoryRepository.searchCategoriesWithPagination(value, PageRequest.of(offset - 1, pageSize));
         List<EntityCategoryResponseDto> categories = categoriesPage.stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
