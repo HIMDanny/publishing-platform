@@ -39,7 +39,8 @@ public class CategoryService {
   }
 
   public CategoryPageResponseDto findCategoriesWithPagination(int offset, int pageSize){
-    Page<Category> categoriesPage = categoryRepository.findAll(PageRequest.of(offset - 1, pageSize));
+    Page<Category> categoriesPage = categoryRepository.findAll(
+            PageRequest.of(offset - 1, pageSize));
 
     List<Category> categories = categoriesPage.stream().collect(Collectors.toList());
 
@@ -48,7 +49,7 @@ public class CategoryService {
     return CategoryPageResponseDto.builder()
             .totalElements(categoriesPage.getTotalElements())
             .totalPages(categoriesPage.getTotalPages())
-            .page(offset + 1)
+            .page(offset)
             .pageSize(pageSize)
             .categories(categoryDtos)
             .build();
@@ -58,7 +59,7 @@ public class CategoryService {
     Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
 
     Page<Category> categoriesPage = categoryRepository.findAll(
-            PageRequest.of(offset, pageSize).withSort(Sort.by(direction, field)));
+            PageRequest.of(offset - 1, pageSize).withSort(Sort.by(direction, field)));
 
     List<Category> categories = categoriesPage.stream().collect(Collectors.toList());
 
@@ -67,7 +68,7 @@ public class CategoryService {
     return CategoryPageResponseDto.builder()
             .totalElements(categoriesPage.getTotalElements())
             .totalPages(categoriesPage.getTotalPages())
-            .page(offset + 1)
+            .page(offset)
             .pageSize(pageSize)
             .categories(categoryDtos)
             .build();
