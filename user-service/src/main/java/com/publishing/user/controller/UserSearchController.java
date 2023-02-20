@@ -24,10 +24,10 @@ public class UserSearchController {
         return userSearchService.searchUsers(value);
     }
 
-    @GetMapping("{offset}/{pageSize}")
+    @GetMapping(params = {"value", "offset", "pageSize"})
     public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
-                                                        @PathVariable("offset") Integer offset,
-                                                        @PathVariable("pageSize") Integer pageSize){
+                                                        @RequestParam("offset") Integer offset,
+                                                        @RequestParam("pageSize") Integer pageSize){
         return userSearchService.searchUserWithPagination(value, offset, pageSize);
     }
 

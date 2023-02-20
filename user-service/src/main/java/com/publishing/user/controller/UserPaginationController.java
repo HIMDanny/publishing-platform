@@ -14,16 +14,16 @@ public class UserPaginationController {
 
     private final UserPaginationService userPaginationService;
 
-    @GetMapping("{offset}/{pageSize}")
-    public UserPageResponseDto findUsersWithPagination(@PathVariable("offset") Integer offset,
-                                                       @PathVariable("pageSize") Integer pageSize){
+    @GetMapping(params = {"offset", "pageSize"})
+    public UserPageResponseDto findUsersWithPagination(@RequestParam("offset") Integer offset,
+                                                       @RequestParam("pageSize") Integer pageSize){
         return userPaginationService.findUserWithPagination(offset, pageSize);
     }
 
-    @GetMapping(path = "{offset}/{pageSize}", params = {"field", "direction"})
+    @GetMapping(params = {"offset", "pageSize", "field", "direction"})
     @ResponseStatus(HttpStatus.OK)
-    public UserPageResponseDto findUsersWithPaginationAndSort(@PathVariable("offset") Integer offset,
-                                                              @PathVariable("pageSize") Integer pageSize,
+    public UserPageResponseDto findUsersWithPaginationAndSort(@RequestParam("offset") Integer offset,
+                                                              @RequestParam("pageSize") Integer pageSize,
                                                               @RequestParam("field") String field,
                                                               @RequestParam("direction") String direction){
         return userPaginationService.findUserWithPaginationAndSort(field, direction, offset, pageSize);
