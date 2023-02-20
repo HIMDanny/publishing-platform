@@ -1,9 +1,12 @@
 package com.publishing.category.service;
 
+import com.publishing.category.dto.CategoryPageResponseDto;
 import com.publishing.category.dto.EntityCategoryResponseDto;
+import com.publishing.category.model.Category;
 import com.publishing.category.repo.CategoryRepository;
 import com.publishing.clients.article.ArticleClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +27,19 @@ public class CategorySearchService extends CategoryCommonService{
                 .collect(Collectors.toList());
     }
 
-    public List<EntityCategoryResponseDto> searchCategoriesWithPagination(String value, Integer offset, Integer pageSize){
-        return categoryRepository.searchCategoriesWithPagination(value, PageRequest.of(offset, pageSize)).stream()
+    public CategoryPageResponseDto searchCategoriesWithPagination(String value, Integer offset, Integer pageSize){
+        Page<Category> categoriesPage = categoryRepository.searchCategoriesWithPagination(value, PageRequest.of(offset, pageSize));
+        List<EntityCategoryResponseDto> categories = categoriesPage.stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
+        return CategoryPageResponseDto.builder()
+                .totalElements(categoriesPage.getTotalElements())
+                .totalPages(categoriesPage.getTotalPages())
+                .page(offset)
+                .pageSize(pageSize)
+                .categories(categories)
+                .build();
     }
 
 }
