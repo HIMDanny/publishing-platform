@@ -4,6 +4,7 @@ import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.repo.CategoryRepository;
 import com.publishing.clients.article.ArticleClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CategorySearchService extends CategoryCommonService{
     }
 
     public List<EntityCategoryResponseDto> searchCategoriesWithPagination(String query, Integer offset, Integer pageSize){
-        return categoryRepository.searchCategoriesWithPagination(query, offset, pageSize).stream()
+        return categoryRepository.searchCategoriesWithPagination(query, PageRequest.of(offset, pageSize)).stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
