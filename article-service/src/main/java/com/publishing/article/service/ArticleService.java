@@ -67,7 +67,7 @@ public class ArticleService {
     return ArticlePageResponseDto.builder()
             .totalElements(pageOfArticles.getTotalElements())
             .totalPages(pageOfArticles.getTotalPages())
-            .page(offset + 1)
+            .page(offset)
             .pageSize(pageSize)
             .articles(articleDtos)
             .build();
@@ -85,7 +85,7 @@ public class ArticleService {
     return ArticlePageResponseDto.builder()
             .totalElements(pageOfArticles.getTotalElements())
             .totalPages(pageOfArticles.getTotalPages())
-            .page(offset + 1)
+            .page(offset)
             .pageSize(pageSize)
             .articles(articleDtos)
             .build();
