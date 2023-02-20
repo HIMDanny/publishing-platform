@@ -17,13 +17,13 @@ public class ArticleSearchService extends ArticleCommonService{
 
     private final ArticleRepository articleRepository;
 
-    public List<EntityArticleResponseDto> searchArticles(String query){
-        List<Article> articles = articleRepository.searchArticles(query);
+    public List<EntityArticleResponseDto> searchArticles(String value){
+        List<Article> articles = articleRepository.searchArticles(value);
         return getListOfArticleDTOS(articles);
     }
 
-    public List<EntityArticleResponseDto> searchArticlesWithPagination(String query, Integer offset, Integer pageSize) {
-        List<Article> articles = articleRepository.searchArticlesWithPagination(query, PageRequest.of(offset - 1, pageSize))
+    public List<EntityArticleResponseDto> searchArticlesWithPagination(String value, Integer offset, Integer pageSize) {
+        List<Article> articles = articleRepository.searchArticlesWithPagination(value, PageRequest.of(offset - 1, pageSize))
                 .stream()
                 .collect(Collectors.toList());
 

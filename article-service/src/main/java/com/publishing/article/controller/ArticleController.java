@@ -56,8 +56,8 @@ public class ArticleController {
   @GetMapping(params = {"field", "direction"})
   @ResponseStatus(HttpStatus.OK)
   private List<EntityArticleResponseDto> getArticlesWithSort(
-                                    @RequestParam(name = "field", defaultValue = "ASC") String field,
-                                    @RequestParam(name = "direction", defaultValue = "ASC") String direction){
+                                    @RequestParam(value = "field", defaultValue = "ASC") String field,
+                                    @RequestParam(value = "direction", defaultValue = "ASC") String direction){
     return articleService.findArticlesWithSorting(field, direction);
   }
 }

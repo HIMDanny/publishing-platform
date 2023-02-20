@@ -15,19 +15,18 @@ public class ArticlePaginationController {
 
     @GetMapping(params = {"offset", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public ArticlePageResponseDto getArticlesWithPagination(@RequestParam("offset") int offset,
-                                                            @RequestParam("pageSize") int pageSize){
+    public ArticlePageResponseDto getArticlesWithPagination(@RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         return articlePaginationService.findArticlesWithPagination(offset, pageSize);
     }
 
     @GetMapping(params = {"offset", "pageSize", "field", "direction"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticlesWithPaginationAndSort(
-            @RequestParam("offset") int offset,
-            @RequestParam("pageSize") int pageSize,
-            @RequestParam("field") String field,
-            @RequestParam("direction") String direction){
+                                    @RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                    @RequestParam(value = "field", defaultValue = "ASC") String field,
+                                    @RequestParam(value = "direction", defaultValue = "ASC") String direction){
         return articlePaginationService.findArticlesWithPaginationAndSorting(offset, pageSize, field, direction);
     }
-
 }

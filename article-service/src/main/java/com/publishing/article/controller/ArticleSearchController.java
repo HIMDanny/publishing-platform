@@ -19,16 +19,15 @@ public class ArticleSearchController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityArticleResponseDto> searchArticles(@RequestParam("query") String query){
-        return articleSearchService.searchArticles(query);
+    public List<EntityArticleResponseDto> searchArticles(@RequestParam("value") String value){
+        return articleSearchService.searchArticles(value);
     }
 
-    @GetMapping(params = {"query", "offset", "pageSize"})
+    @GetMapping(params = {"value", "offset", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityArticleResponseDto> searchArticlesWithPagination(@RequestParam("query") String query,
-                                                                       @RequestParam("offset") Integer offset,
-                                                                       @RequestParam("pageSize") Integer pageSize){
-        return articleSearchService.searchArticlesWithPagination(query, offset, pageSize);
+    public List<EntityArticleResponseDto> searchArticlesWithPagination(@RequestParam("value") String value,
+                                                                       @RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+        return articleSearchService.searchArticlesWithPagination(value, offset, pageSize);
     }
-
 }
