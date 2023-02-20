@@ -2,6 +2,7 @@ package com.publishing.user.controller;
 
 import com.publishing.clients.user.dto.UserRequestDto;
 import com.publishing.user.dto.EntityUserResponseDto;
+import com.publishing.user.dto.UserPageResponseDto;
 import com.publishing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,5 +51,18 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   public boolean deleteUser(@PathVariable("id") Integer id){
     return userService.deleteUser(id);
+  }
+
+  @GetMapping("search")
+  @ResponseStatus(HttpStatus.OK)
+  public List<EntityUserResponseDto> searchUser(@RequestParam("value") String value){
+    return userService.searchUsers(value);
+  }
+
+  @GetMapping("search/{offset}/{pageSize}")
+  public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
+                                                      @PathVariable("offset") Integer offset,
+                                                      @PathVariable("pageSize") Integer pageSize){
+    return userService.searchUserWithPagination(value, offset, pageSize);
   }
 }
