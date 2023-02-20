@@ -48,4 +48,18 @@ public class CategoryController {
   public boolean deleteCategory(@PathVariable("id") Integer id) throws CategoryException {
     return categoryService.deleteCategoryById(id);
   }
+
+  @GetMapping("search")
+  @ResponseStatus(HttpStatus.OK)
+  public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query){
+    return categoryService.searchCategories(query);
+  }
+
+  @GetMapping("search/{offset}/{pageSize}")
+  @ResponseStatus(HttpStatus.OK)
+  public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query,
+                                                          @PathVariable("offset") Integer offset,
+                                                          @PathVariable("pageSize") Integer pageSize){
+    return categoryService.searchCategoriesWithPagination(query, offset, pageSize);
+  }
 }

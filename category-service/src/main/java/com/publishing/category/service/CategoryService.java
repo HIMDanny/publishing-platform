@@ -34,6 +34,18 @@ public class CategoryService {
             .collect(Collectors.toList());
   }
 
+  public List<EntityCategoryResponseDto> searchCategories(String query){
+    return categoryRepository.searchCategories(query).stream()
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
+  }
+
+  public List<EntityCategoryResponseDto> searchCategoriesWithPagination(String query, Integer offset, Integer pageSize){
+    return categoryRepository.searchCategoriesWithPagination(query, offset, pageSize).stream()
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
+  }
+
   public Integer saveCategory(CategoryRequestDto categoryRequestDto){
     // TODO check if there is category with this name
     return categoryRepository.save(Category.builder()
