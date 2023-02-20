@@ -24,11 +24,11 @@ public class UserSearchController {
         return userSearchService.searchUsers(value);
     }
 
-    @GetMapping(params = {"value", "offset", "pageSize"})
+    @GetMapping(params = {"value", "page", "pageSize"})
     public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
-                                                        @RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return userSearchService.searchUserWithPagination(value, offset, pageSize);
+        return userSearchService.searchUserWithPagination(value, page, pageSize);
     }
 
 }

@@ -14,19 +14,19 @@ public class UserPaginationController {
 
     private final UserPaginationService userPaginationService;
 
-    @GetMapping(params = {"offset", "pageSize"})
-    public UserPageResponseDto findUsersWithPagination(@RequestParam(value = "offset", defaultValue = "1") Integer offset,
+    @GetMapping(params = {"page", "pageSize"})
+    public UserPageResponseDto findUsersWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return userPaginationService.findUserWithPagination(offset, pageSize);
+        return userPaginationService.findUserWithPagination(page, pageSize);
     }
 
-    @GetMapping(params = {"offset", "pageSize", "field", "direction"})
+    @GetMapping(params = {"page", "pageSize", "field", "direction"})
     @ResponseStatus(HttpStatus.OK)
-    public UserPageResponseDto findUsersWithPaginationAndSort(@RequestParam(value = "offset", defaultValue = "1") Integer offset,
+    public UserPageResponseDto findUsersWithPaginationAndSort(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                               @RequestParam(value = "field", defaultValue = "ASC") String field,
                                                               @RequestParam(value = "direction", defaultValue = "ASC") String direction){
-        return userPaginationService.findUserWithPaginationAndSort(field, direction, offset, pageSize);
+        return userPaginationService.findUserWithPaginationAndSort(field, direction, page, pageSize);
     }
 
 }
