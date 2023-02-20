@@ -91,6 +91,18 @@ public class ArticleService {
             .build();
   }
 
+  public List<EntityArticleResponseDto> searchArticles(String query){
+    return articleRepository.searchArticles(query).stream()
+            .map(this::mapToArticleDTO)
+            .collect(Collectors.toList());
+  }
+
+  public List<EntityArticleResponseDto> searchArticlesWithPagination(String query, Integer offset, Integer pageSize) {
+    return articleRepository.searchArticlesWithPagination(query, offset, pageSize).stream()
+            .map(this::mapToArticleDTO)
+            .collect(Collectors.toList());
+  }
+
   public Integer saveArticle(ArticleRequestDto articleRequestDto){
     long numberOfWords = articleRequestDto.getContent().split(" ").length;
     int minutesToRead = (int) Math.ceil(numberOfWords / 200.0);
