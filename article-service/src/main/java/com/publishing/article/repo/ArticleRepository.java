@@ -14,12 +14,12 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     @Query("SELECT a FROM Article a WHERE " +
             "a.title LIKE CONCAT('%',:query, '%') " +
-            "OR a.description LIKE CONCAT('%', :query, '%')")
+            "OR a.content LIKE CONCAT('%', :query, '%')")
     List<Article> searchArticles(String query);
 
     @Query("SELECT a FROM Article a WHERE " +
             "a.title LIKE CONCAT('%',:query, '%') " +
-            "OR a.description LIKE CONCAT('%', :query, '%') " +
+            "OR a.content LIKE CONCAT('%', :query, '%') " +
             "LIMIT :pageSize OFFSET (:offset*:pageSize)")
     List<Article> searchArticlesWithPagination(String query, Integer offset, Integer pageSize);
 }
