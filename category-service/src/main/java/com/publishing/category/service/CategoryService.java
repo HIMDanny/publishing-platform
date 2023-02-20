@@ -77,8 +77,6 @@ public class CategoryService extends CategoryCommonService{
               .build();
     }
 
-
-
   private List<EntityCategoryResponseDto> getListOfCategoryDTOS(List<Category> categories){
     return categories.stream()
             .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
