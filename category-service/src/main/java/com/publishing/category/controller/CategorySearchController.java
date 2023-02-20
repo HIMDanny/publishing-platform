@@ -1,5 +1,6 @@
 package com.publishing.category.controller;
 
+import com.publishing.category.dto.CategoryPageResponseDto;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.service.CategorySearchService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,11 @@ public class CategorySearchController {
         return categorySearchService.searchCategories(value);
     }
 
-    @GetMapping(params = {"value", "offset", "pageSize"})
+    @GetMapping(params = {"value", "page", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityCategoryResponseDto> searchCategories(@RequestParam("value") String value,
-                                                            @RequestParam(value = "offset", defaultValue = "1") Integer offset,
-                                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return categorySearchService.searchCategoriesWithPagination(value, offset, pageSize);
+    public CategoryPageResponseDto searchCategories(@RequestParam("value") String value,
+                                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+        return categorySearchService.searchCategoriesWithPagination(value, page, pageSize);
     }
 }
