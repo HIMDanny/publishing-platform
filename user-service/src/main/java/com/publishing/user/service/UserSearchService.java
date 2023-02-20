@@ -22,8 +22,8 @@ public class UserSearchService extends UserServiceCommon{
 
     public List<EntityUserResponseDto> searchUsers(String value){
         return userRepository.searchUsers(value).stream()
-                .map(this::mapToDto)
                 .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
@@ -31,18 +31,7 @@ public class UserSearchService extends UserServiceCommon{
         Page<User> usersPage = userRepository.searchUserWithPagination(
                 value, PageRequest.of(offset - 1, pageSize));
 
-        List<EntityUserResponseDto> userDTOS = usersPage.stream()
-                .map(this::mapToDto)
-                .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
-                .collect(Collectors.toList());
-
-        return UserPageResponseDto.builder()
-                .totalElements(usersPage.getTotalElements())
-                .totalPages(usersPage.getTotalPages())
-                .page(offset)
-                .pageSize(pageSize)
-                .users(userDTOS)
-                .build();
+        return mapToPageDTO(offset, pageSize, usersPage);
     }
 
 }

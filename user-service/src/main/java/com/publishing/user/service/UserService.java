@@ -57,7 +57,6 @@ public class UserService extends UserServiceCommon{
             .build();
   }
 
-
   public List<EntityUserResponseDto> getAllUsers() {
     List<User> users = userRepository.findAll();
 
@@ -74,8 +73,6 @@ public class UserService extends UserServiceCommon{
             .map(this::mapToDto)
             .collect(Collectors.toList());
   }
-
-
 
   public Integer saveUser(UserRequestDto userRequest) {
     // TODO check if there is user with this email
@@ -129,6 +126,4 @@ public class UserService extends UserServiceCommon{
             .lastName(userInDb.getLastName())
             .build();
   }
-
-
 }
