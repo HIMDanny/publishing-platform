@@ -13,9 +13,10 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
             "c.name LIKE CONCAT('%', :query, '%')")
     List<Category> searchCategories(@Param("query") String query);
 
-    @Query("SELECT * FROM category c WHERE " +
+    @Query(value = "SELECT * FROM category c WHERE " +
             "c.name LIKE CONCAT('%', :query, '%') " +
-            "LIMIT :pageSize OFFSET (:offset * :pageSize)")
+            "LIMIT :pageSize OFFSET (:offset * :pageSize)",
+            nativeQuery = true)
     List<Category> searchCategoriesWithPagination(@Param("query") String query,
                                                   @Param("offset") Integer offset,
                                                   @Param("pageSize") Integer pageSize);
