@@ -56,34 +56,4 @@ public class CategoryController {
                                                              @RequestParam("direction") String direction){
     return categoryService.findCategoriesWithSorting(field, direction);
   }
-
-  @GetMapping("pagination/{offset}/{pageSize}")
-  @ResponseStatus(HttpStatus.OK)
-  public CategoryPageResponseDto getCategoriesWithPagination(@PathVariable int offset, @PathVariable int pageSize){
-    return categoryService.findCategoriesWithPagination(offset, pageSize);
-  }
-
-  @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
-  @ResponseStatus(HttpStatus.OK)
-  public CategoryPageResponseDto getCategoriesWithPaginationAndSort(
-                                                          @PathVariable int offset,
-                                                          @PathVariable int pageSize,
-                                                          @RequestParam("field") String field,
-                                                          @RequestParam("direction") String direction){
-    return categoryService.findCategoriesWithPaginationAndSorting(offset, pageSize, field, direction);
-  }
-
-  @GetMapping("search")
-  @ResponseStatus(HttpStatus.OK)
-  public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query){
-    return categoryService.searchCategories(query);
-  }
-
-  @GetMapping("search/{offset}/{pageSize}")
-  @ResponseStatus(HttpStatus.OK)
-  public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query,
-                                                          @PathVariable("offset") Integer offset,
-                                                          @PathVariable("pageSize") Integer pageSize){
-    return categoryService.searchCategoriesWithPagination(query, offset, pageSize);
-  }
 }

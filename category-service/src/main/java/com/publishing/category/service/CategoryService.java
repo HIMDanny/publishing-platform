@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class CategoryService extends CategoryCommonService{
 
   private final CategoryRepository categoryRepository;
   private final ArticleClient articleClient;
@@ -38,56 +38,8 @@ public class CategoryService {
     return getListOfCategoryDTOS(categories);
   }
 
-  public CategoryPageResponseDto findCategoriesWithPagination(int offset, int pageSize){
-    Page<Category> categoriesPage = categoryRepository.findAll(
-            PageRequest.of(offset - 1, pageSize));
-
-    List<Category> categories = categoriesPage.stream().collect(Collectors.toList());
-
-    List<EntityCategoryResponseDto> categoryDtos = getListOfCategoryDTOS(categories);
-
-    return CategoryPageResponseDto.builder()
-            .totalElements(categoriesPage.getTotalElements())
-            .totalPages(categoriesPage.getTotalPages())
-            .page(offset)
-            .pageSize(pageSize)
-            .categories(categoryDtos)
-            .build();
-  }
-
-  public CategoryPageResponseDto findCategoriesWithPaginationAndSorting(int offset, int pageSize, String field, String dirVal){
-    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
-
-    Page<Category> categoriesPage = categoryRepository.findAll(
-            PageRequest.of(offset - 1, pageSize).withSort(Sort.by(direction, field)));
-
-    List<Category> categories = categoriesPage.stream().collect(Collectors.toList());
-
-    List<EntityCategoryResponseDto> categoryDtos = getListOfCategoryDTOS(categories);
-
-    return CategoryPageResponseDto.builder()
-            .totalElements(categoriesPage.getTotalElements())
-            .totalPages(categoriesPage.getTotalPages())
-            .page(offset)
-            .pageSize(pageSize)
-            .categories(categoryDtos)
-            .build();
-  }
-
   public List<EntityCategoryResponseDto> getAllCategories(){
     return getListOfCategoryDTOS(categoryRepository.findAll());
-  }
-
-  public List<EntityCategoryResponseDto> searchCategories(String query){
-    return categoryRepository.searchCategories(query).stream()
-            .map(this::mapToDto)
-            .collect(Collectors.toList());
-  }
-
-  public List<EntityCategoryResponseDto> searchCategoriesWithPagination(String query, Integer offset, Integer pageSize){
-    return categoryRepository.searchCategoriesWithPagination(query, offset, pageSize).stream()
-            .map(this::mapToDto)
-            .collect(Collectors.toList());
   }
 
   public Integer saveCategory(CategoryRequestDto categoryRequestDto){
@@ -125,15 +77,9 @@ public class CategoryService {
               .build();
     }
 
-  private EntityCategoryResponseDto mapToDto(Category category) {
-    return EntityCategoryResponseDto.builder()
-            .id(category.getId())
-            .name(category.getName())
-            .articles(category.getArticles())
-            .build();
-  }
 
-  private List<EntityCategoryResponseDto> getListOfCategoryDTOS(List<Category> categories) {
+
+  private List<EntityCategoryResponseDto> getListOfCategoryDTOS(List<Category> categories){
     return categories.stream()
             .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
             .map(this::mapToDto)
