@@ -65,4 +65,26 @@ public class UserController {
                                                       @PathVariable("pageSize") Integer pageSize){
     return userService.searchUserWithPagination(value, offset, pageSize);
   }
+
+  @GetMapping("pagination/{offset}/{pageSize}")
+  public UserPageResponseDto findUsersWithPagination(@PathVariable("offset") Integer offset,
+                                                     @PathVariable("pageSize") Integer pageSize){
+    return userService.findUserWithPagination(offset, pageSize);
+  }
+
+  @GetMapping(params = {"field", "direction"})
+  @ResponseStatus(HttpStatus.OK)
+  public List<EntityUserResponseDto> findUsersWithSort(@RequestParam("field") String field,
+                                                       @RequestParam("direction") String direction){
+    return userService.findUsersWithSort(field, direction);
+  }
+
+  @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
+  @ResponseStatus(HttpStatus.OK)
+  public UserPageResponseDto findUsersWithPaginationAndSort(@PathVariable("offset") Integer offset,
+                                                            @PathVariable("pageSize") Integer pageSize,
+                                                            @RequestParam("field") String field,
+                                                            @RequestParam("direction") String direction){
+    return userService.findUserWithPaginationAndSort(field, direction, offset, pageSize);
+  }
 }

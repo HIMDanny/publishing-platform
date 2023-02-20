@@ -12,6 +12,7 @@ import com.publishing.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +70,7 @@ public class UserService {
   public List<EntityUserResponseDto> searchUsers(String value){
     return userRepository.searchUsers(value).stream()
             .map(this::mapToDto)
+            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
             .collect(Collectors.toList());
   }
 
@@ -76,10 +78,9 @@ public class UserService {
     Page<User> usersPage = userRepository.searchUserWithPagination(
             value, PageRequest.of(offset - 1, pageSize));
 
-    List<User> users = usersPage.stream().toList();
-
-    List<EntityUserResponseDto> userDTOS = users.stream()
+    List<EntityUserResponseDto> userDTOS = usersPage.stream()
             .map(this::mapToDto)
+            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
             .collect(Collectors.toList());
 
     return UserPageResponseDto.builder()
@@ -88,6 +89,52 @@ public class UserService {
             .page(offset)
             .pageSize(pageSize)
             .users(userDTOS)
+            .build();
+  }
+
+  public UserPageResponseDto findUserWithPagination(Integer offset, Integer pageSize){
+    Page<User> usersPage = userRepository.findAll(PageRequest.of(offset - 1, pageSize));
+    List<EntityUserResponseDto> users = usersPage.stream()
+            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
+
+    return UserPageResponseDto.builder()
+            .totalElements(usersPage.getTotalElements())
+            .totalPages(usersPage.getTotalPages())
+            .page(offset)
+            .pageSize(pageSize)
+            .users(users)
+            .build();
+  }
+
+  public List<EntityUserResponseDto> findUsersWithSort(String field, String dirVal){
+    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    return userRepository.findAll(Sort.by(direction, field)).stream()
+            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
+  }
+
+  public UserPageResponseDto findUserWithPaginationAndSort(String field,
+                                                           String dirVal,
+                                                           Integer offset,
+                                                           Integer pageSize){
+    Sort.Direction direction = Sort.Direction.valueOf(dirVal);
+    Page<User> usersPage = userRepository.findAll(
+            PageRequest.of(offset - 1, pageSize).withSort(direction, field));
+
+    List<EntityUserResponseDto> users = usersPage.stream()
+            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
+
+    return UserPageResponseDto.builder()
+            .totalElements(usersPage.getTotalElements())
+            .totalPages(usersPage.getTotalPages())
+            .page(offset)
+            .pageSize(pageSize)
+            .users(users)
             .build();
   }
 
