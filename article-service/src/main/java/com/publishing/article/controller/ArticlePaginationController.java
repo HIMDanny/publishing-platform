@@ -13,20 +13,20 @@ public class ArticlePaginationController {
 
     private final ArticlePaginationService articlePaginationService;
 
-    @GetMapping(params = {"offset", "pageSize"})
+    @GetMapping(params = {"page", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public ArticlePageResponseDto getArticlesWithPagination(@RequestParam(value = "offset", defaultValue = "1") Integer offset,
+    public ArticlePageResponseDto getArticlesWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return articlePaginationService.findArticlesWithPagination(offset, pageSize);
+        return articlePaginationService.findArticlesWithPagination(page, pageSize);
     }
 
-    @GetMapping(params = {"offset", "pageSize", "field", "direction"})
+    @GetMapping(params = {"page", "pageSize", "field", "direction"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticlesWithPaginationAndSort(
-                                    @RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                     @RequestParam(value = "field", defaultValue = "ASC") String field,
                                     @RequestParam(value = "direction", defaultValue = "ASC") String direction){
-        return articlePaginationService.findArticlesWithPaginationAndSorting(offset, pageSize, field, direction);
+        return articlePaginationService.findArticlesWithPaginationAndSorting(page, pageSize, field, direction);
     }
 }
