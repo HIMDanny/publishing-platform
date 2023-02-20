@@ -54,17 +54,20 @@ public class ArticleController {
   }
 
   @GetMapping(params = {"field", "direction"})
+  @ResponseStatus(HttpStatus.OK)
   private List<EntityArticleResponseDto> getArticlesWithSort(@RequestParam("field") String field,
                                                              @RequestParam("direction") String direction){
     return articleService.findArticlesWithSorting(field, direction);
   }
 
   @GetMapping("pagination/{offset}/{pageSize}")
+  @ResponseStatus(HttpStatus.OK)
   public ArticlePageResponseDto getArticlesWithPagination(@PathVariable int offset, @PathVariable int pageSize){
     return articleService.findArticlesWithPagination(offset, pageSize);
   }
 
   @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
+  @ResponseStatus(HttpStatus.OK)
   public ArticlePageResponseDto getArticlesWithPaginationAndSort(
                                                       @PathVariable int offset,
                                                       @PathVariable int pageSize,
