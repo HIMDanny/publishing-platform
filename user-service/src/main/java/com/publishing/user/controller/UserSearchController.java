@@ -26,8 +26,8 @@ public class UserSearchController {
 
     @GetMapping(params = {"value", "offset", "pageSize"})
     public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
-                                                        @RequestParam("offset") Integer offset,
-                                                        @RequestParam("pageSize") Integer pageSize){
+                                                        @RequestParam(value = "offset", defaultValue = "1") Integer offset,
+                                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         return userSearchService.searchUserWithPagination(value, offset, pageSize);
     }
 

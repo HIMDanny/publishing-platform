@@ -55,8 +55,9 @@ public class UserController {
 
   @GetMapping(params = {"field", "direction"})
   @ResponseStatus(HttpStatus.OK)
-  public List<EntityUserResponseDto> findUsersWithSort(@RequestParam("field") String field,
-                                                       @RequestParam("direction") String direction){
+  public List<EntityUserResponseDto> findUsersWithSort(
+                                @RequestParam(value = "field", defaultValue = "ASC") String field,
+                                @RequestParam(value = "direction", defaultValue = "ASC") String direction){
     return userService.findUsersWithSort(field, direction);
   }
 
