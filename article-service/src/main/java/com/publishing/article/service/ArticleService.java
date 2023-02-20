@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ArticleService {
+public class ArticleService extends ArticleCommonService{
 
   private final ArticleRepository articleRepository;
   private final UserClient userClient;
@@ -55,52 +55,6 @@ public class ArticleService {
     List<Article> articles = articleRepository.findAll(Sort.by(direction, field));
 
     return getListOfArticleDTOS(articles);
-  }
-
-  public ArticlePageResponseDto findArticlesWithPagination(int offset, int pageSize){
-    Page<Article> pageOfArticles = articleRepository.findAll(PageRequest.of(offset - 1, pageSize));
-
-    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
-
-    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
-
-    return ArticlePageResponseDto.builder()
-            .totalElements(pageOfArticles.getTotalElements())
-            .totalPages(pageOfArticles.getTotalPages())
-            .page(offset)
-            .pageSize(pageSize)
-            .articles(articleDtos)
-            .build();
-  }
-
-  public ArticlePageResponseDto findArticlesWithPaginationAndSorting(int offset, int pageSize, String field, String dirVal){
-    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
-    Page<Article> pageOfArticles = articleRepository.findAll(
-            PageRequest.of(offset - 1, pageSize).withSort(Sort.by(direction, field)));
-
-    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
-
-    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
-
-    return ArticlePageResponseDto.builder()
-            .totalElements(pageOfArticles.getTotalElements())
-            .totalPages(pageOfArticles.getTotalPages())
-            .page(offset)
-            .pageSize(pageSize)
-            .articles(articleDtos)
-            .build();
-  }
-
-  public List<EntityArticleResponseDto> searchArticles(String query){
-    return articleRepository.searchArticles(query).stream()
-            .map(this::mapToArticleDTO)
-            .collect(Collectors.toList());
-  }
-
-  public List<EntityArticleResponseDto> searchArticlesWithPagination(String query, Integer offset, Integer pageSize) {
-    return articleRepository.searchArticlesWithPagination(query, offset, pageSize).stream()
-            .map(this::mapToArticleDTO)
-            .collect(Collectors.toList());
   }
 
   public Integer saveArticle(ArticleRequestDto articleRequestDto){
@@ -174,50 +128,8 @@ public class ArticleService {
             .collect(Collectors.toList());
   }
 
-  private EntityArticleResponseDto mapToArticleDTO(Article article) {
-    return EntityArticleResponseDto.builder()
-            .id(article.getId())
-            .title(article.getTitle())
-            .content(article.getContent())
-            .mainImagePath(article.getMainImagePath())
-            .publishingDate(article.getPublishingDate())
-            .minutesToRead(article.getMinutesToRead())
-            .numberOfViews(article.getNumberOfViews())
-            .numberOfLikes(article.getNumberOfLikes())
-            .category(article.getCategory())
-            .author(article.getAuthor())
-            .build();
-  }
 
-  private List<EntityArticleResponseDto> getListOfArticleDTOS(List<Article> articles) {
 
-    Map<Integer, CategoryResponseDto> categories = getMapWithCategoryIds(articles);
 
-    Map<Integer, UserResponseDto> authors = getMapWithUserIds(articles);
 
-    return articles.stream()
-            .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
-            .peek(article -> article.setAuthor(authors.get(article.getAuthorId())))
-            .map(this::mapToArticleDTO)
-            .collect(Collectors.toList());
-  }
-
-  private Map<Integer, UserResponseDto> getMapWithUserIds(List<Article> articles) {
-    List<Integer> authorIds = new ArrayList<>();
-    return articles.stream()
-            .filter(article -> !authorIds.contains(article.getAuthorId()))
-            .peek(article -> authorIds.add(article.getAuthorId()))
-            .map(article -> userClient.getUserResponse(article.getAuthorId()))
-            .collect(Collectors.toMap(UserResponseDto::getId, Function.identity()));
-  }
-
-  private Map<Integer, CategoryResponseDto> getMapWithCategoryIds(List<Article> articles) {
-    List<Integer> categoriesIds = new ArrayList<>();
-    return articles.stream()
-            .filter(article -> !categoriesIds.contains(article.getCategoryId()))
-            .peek(article -> categoriesIds.add(article.getCategoryId()))
-            .map(article -> categoryClient.getCategoryResponse(article.getCategoryId()))
-            .map(categoryResponseDto -> CategoryResponseDto.builder().id(categoryResponseDto.getId()).name(categoryResponseDto.getName()).build())
-            .collect(Collectors.toMap(CategoryResponseDto::getId, Function.identity()));
-  }
 }

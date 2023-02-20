@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
@@ -25,4 +26,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> searchArticlesWithPagination(@Param("query") String query,
                                                @Param("offset") Integer offset,
                                                @Param("pageSize") Integer pageSize);
+
 }

@@ -59,34 +59,4 @@ public class ArticleController {
                                                              @RequestParam("direction") String direction){
     return articleService.findArticlesWithSorting(field, direction);
   }
-
-  @GetMapping("pagination/{offset}/{pageSize}")
-  @ResponseStatus(HttpStatus.OK)
-  public ArticlePageResponseDto getArticlesWithPagination(@PathVariable int offset, @PathVariable int pageSize){
-    return articleService.findArticlesWithPagination(offset, pageSize);
-  }
-
-  @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
-  @ResponseStatus(HttpStatus.OK)
-  public ArticlePageResponseDto getArticlesWithPaginationAndSort(
-                                                      @PathVariable int offset,
-                                                      @PathVariable int pageSize,
-                                                      @RequestParam("field") String field,
-                                                      @RequestParam("direction") String direction){
-    return articleService.findArticlesWithPaginationAndSorting(offset, pageSize, field, direction);
-  }
-
-  @GetMapping("/search")
-  @ResponseStatus(HttpStatus.OK)
-  public List<EntityArticleResponseDto> searchArticles(@RequestParam("query") String query){
-    return articleService.searchArticles(query);
-  }
-
-  @GetMapping("/search/{offset}/{pageSize}")
-  @ResponseStatus(HttpStatus.OK)
-  public List<EntityArticleResponseDto> searchArticlesWithPagination(@RequestParam("query") String query,
-                                                                      @PathVariable("offset") Integer offset,
-                                                                      @PathVariable("pageSize") Integer pageSize){
-    return articleService.searchArticlesWithPagination(query, offset, pageSize);
-  }
 }
