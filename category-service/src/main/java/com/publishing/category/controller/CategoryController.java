@@ -1,5 +1,6 @@
 package com.publishing.category.controller;
 
+import com.publishing.category.dto.CategoryPageResponseDto;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.service.CategoryService;
 import com.publishing.category.dto.CategoryRequestDto;
@@ -47,6 +48,29 @@ public class CategoryController {
   @ResponseStatus(HttpStatus.OK)
   public boolean deleteCategory(@PathVariable("id") Integer id) throws CategoryException {
     return categoryService.deleteCategoryById(id);
+  }
+
+  @GetMapping(params = {"field", "direction"})
+  @ResponseStatus(HttpStatus.OK)
+  public List<EntityCategoryResponseDto> getCategoriesWithSort(@RequestParam("field") String field,
+                                                             @RequestParam("direction") String direction){
+    return categoryService.findCategoriesWithSorting(field, direction);
+  }
+
+  @GetMapping("pagination/{offset}/{pageSize}")
+  @ResponseStatus(HttpStatus.OK)
+  public CategoryPageResponseDto getCategoriesWithPagination(@PathVariable int offset, @PathVariable int pageSize){
+    return categoryService.findCategoriesWithPagination(offset, pageSize);
+  }
+
+  @GetMapping(path = "pagination/{offset}/{pageSize}", params = {"field", "direction"})
+  @ResponseStatus(HttpStatus.OK)
+  public CategoryPageResponseDto getCategoriesWithPaginationAndSort(
+                                                          @PathVariable int offset,
+                                                          @PathVariable int pageSize,
+                                                          @RequestParam("field") String field,
+                                                          @RequestParam("direction") String direction){
+    return categoryService.findCategoriesWithPaginationAndSorting(offset, pageSize, field, direction);
   }
 
   @GetMapping("search")

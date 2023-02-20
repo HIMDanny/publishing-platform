@@ -1,5 +1,6 @@
 package com.publishing.category.service;
 
+import com.publishing.category.dto.CategoryPageResponseDto;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.repo.CategoryRepository;
 import com.publishing.category.dto.CategoryRequestDto;
@@ -11,6 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,11 +31,50 @@ public class CategoryService {
     return mapToDto(category);
   }
 
+  public List<EntityCategoryResponseDto> findCategoriesWithSorting(String field, String dirVal){
+    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    List<Category> categories = categoryRepository.findAll(Sort.by(direction, field));
+
+    return getListOfCategoryDTOS(categories);
+  }
+
+  public CategoryPageResponseDto findCategoriesWithPagination(int offset, int pageSize){
+    Page<Category> categoriesPage = categoryRepository.findAll(PageRequest.of(offset - 1, pageSize));
+
+    List<Category> categories = categoriesPage.stream().collect(Collectors.toList());
+
+    List<EntityCategoryResponseDto> categoryDtos = getListOfCategoryDTOS(categories);
+
+    return CategoryPageResponseDto.builder()
+            .totalElements(categoriesPage.getTotalElements())
+            .totalPages(categoriesPage.getTotalPages())
+            .page(offset + 1)
+            .pageSize(pageSize)
+            .categories(categoryDtos)
+            .build();
+  }
+
+  public CategoryPageResponseDto findCategoriesWithPaginationAndSorting(int offset, int pageSize, String field, String dirVal){
+    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+
+    Page<Category> categoriesPage = categoryRepository.findAll(
+            PageRequest.of(offset, pageSize).withSort(Sort.by(direction, field)));
+
+    List<Category> categories = categoriesPage.stream().collect(Collectors.toList());
+
+    List<EntityCategoryResponseDto> categoryDtos = getListOfCategoryDTOS(categories);
+
+    return CategoryPageResponseDto.builder()
+            .totalElements(categoriesPage.getTotalElements())
+            .totalPages(categoriesPage.getTotalPages())
+            .page(offset + 1)
+            .pageSize(pageSize)
+            .categories(categoryDtos)
+            .build();
+  }
+
   public List<EntityCategoryResponseDto> getAllCategories(){
-    return categoryRepository.findAll().stream()
-            .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
-            .map(this::mapToDto)
-            .collect(Collectors.toList());
+    return getListOfCategoryDTOS(categoryRepository.findAll());
   }
 
   public List<EntityCategoryResponseDto> searchCategories(String query){
@@ -87,5 +130,12 @@ public class CategoryService {
             .name(category.getName())
             .articles(category.getArticles())
             .build();
+  }
+
+  private List<EntityCategoryResponseDto> getListOfCategoryDTOS(List<Category> categories) {
+    return categories.stream()
+            .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
   }
 }
