@@ -16,7 +16,7 @@ public class ArticlePaginationController {
     @GetMapping(params = {"page", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticlesWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+                                                            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         return articlePaginationService.findArticlesWithPagination(page, pageSize);
     }
 
@@ -24,9 +24,9 @@ public class ArticlePaginationController {
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticlesWithPaginationAndSort(
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                    @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                     @RequestParam(value = "field", defaultValue = "ASC") String field,
-                                    @RequestParam(value = "direction", defaultValue = "ASC") String direction){
+                                    @RequestParam(value = "direction", required = false, defaultValue = "ASC") String direction){
         return articlePaginationService.findArticlesWithPaginationAndSorting(page, pageSize, field, direction);
     }
 }

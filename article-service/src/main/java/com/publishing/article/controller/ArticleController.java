@@ -57,7 +57,7 @@ public class ArticleController {
   @ResponseStatus(HttpStatus.OK)
   private List<EntityArticleResponseDto> getArticlesWithSort(
                                     @RequestParam(value = "field", defaultValue = "ASC") String field,
-                                    @RequestParam(value = "direction", defaultValue = "ASC") String direction){
+                                    @RequestParam(value = "direction", required = false, defaultValue = "ASC") String direction){
     return articleService.findArticlesWithSorting(field, direction);
   }
 }

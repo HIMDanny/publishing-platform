@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/search")
+@RequestMapping("/api/v1/articles/search")
 @RequiredArgsConstructor
 public class ArticleSearchController {
 
@@ -28,7 +28,7 @@ public class ArticleSearchController {
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value,
                                                                @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+                                                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize){
         return articleSearchService.searchArticlesWithPagination(value, page, pageSize);
     }
 }
