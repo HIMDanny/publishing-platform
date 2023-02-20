@@ -21,11 +21,11 @@ public class CategorySearchController {
         return categorySearchService.searchCategories(query);
     }
 
-    @GetMapping("{offset}/{pageSize}")
+    @GetMapping(params = {"query", "offset", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
     public List<EntityCategoryResponseDto> searchCategories(@RequestParam("query") String query,
-                                                            @PathVariable("offset") Integer offset,
-                                                            @PathVariable("pageSize") Integer pageSize){
+                                                            @RequestParam("offset") Integer offset,
+                                                            @RequestParam("pageSize") Integer pageSize){
         return categorySearchService.searchCategoriesWithPagination(query, offset, pageSize);
     }
 

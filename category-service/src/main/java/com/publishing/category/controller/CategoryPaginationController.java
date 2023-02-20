@@ -13,17 +13,18 @@ public class CategoryPaginationController {
 
     private final CategoryPaginationService categoryPaginationService;
 
-    @GetMapping("{offset}/{pageSize}")
+    @GetMapping(params = {"offset", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
-    public CategoryPageResponseDto getCategoriesWithPagination(@PathVariable int offset, @PathVariable int pageSize){
+    public CategoryPageResponseDto getCategoriesWithPagination(@PathVariable("offset") int offset,
+                                                               @PathVariable("pageSize") int pageSize){
         return categoryPaginationService.findCategoriesWithPagination(offset, pageSize);
     }
 
-    @GetMapping(path = "{offset}/{pageSize}", params = {"field", "direction"})
+    @GetMapping(params = {"field", "direction", "offset", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
     public CategoryPageResponseDto getCategoriesWithPaginationAndSort(
-            @PathVariable int offset,
-            @PathVariable int pageSize,
+            @RequestParam("offset") int offset,
+            @RequestParam("pageSize") int pageSize,
             @RequestParam("field") String field,
             @RequestParam("direction") String direction){
         return categoryPaginationService.findCategoriesWithPaginationAndSorting(offset, pageSize, field, direction);
