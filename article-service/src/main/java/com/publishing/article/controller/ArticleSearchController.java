@@ -2,10 +2,8 @@ package com.publishing.article.controller;
 
 import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.service.ArticleSearchService;
-import com.publishing.article.service.ArticleService;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class ArticleSearchController {
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value,
                                                                @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize){
+                                                               @RequestParam(value = "pageSize", required = true, defaultValue = "10") Integer pageSize){
         return articleSearchService.searchArticlesWithPagination(value, page, pageSize);
     }
 }

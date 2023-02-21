@@ -1,6 +1,7 @@
 package com.publishing.article.service;
 
 import com.publishing.article.dto.ArticlePageResponseDto;
+import com.publishing.article.dto.ArticlePaginationParameters;
 import com.publishing.article.model.Article;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
@@ -19,26 +20,11 @@ public class ArticlePaginationService extends ArticleCommonService{
 
     private final ArticleRepository articleRepository;
 
-    public ArticlePageResponseDto findArticlesWithPagination(int offset, int pageSize){
-        Page<Article> pageOfArticles = articleRepository.findAll(PageRequest.of(offset - 1, pageSize));
+    public ArticlePageResponseDto findArticlesWithPaginationAndSorting(ArticlePaginationParameters params){
+        Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
-        List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
-
-        List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
-
-        return ArticlePageResponseDto.builder()
-                .totalElements(pageOfArticles.getTotalElements())
-                .totalPages(pageOfArticles.getTotalPages())
-                .page(offset)
-                .pageSize(pageSize)
-                .articles(articleDtos)
-                .build();
-    }
-
-    public ArticlePageResponseDto findArticlesWithPaginationAndSorting(int offset, int pageSize, String field, String dirVal){
-        Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
         Page<Article> pageOfArticles = articleRepository.findAll(
-                PageRequest.of(offset - 1, pageSize).withSort(Sort.by(direction, field)));
+                PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(direction, params.getField())));
 
         List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
 
@@ -47,8 +33,8 @@ public class ArticlePaginationService extends ArticleCommonService{
         return ArticlePageResponseDto.builder()
                 .totalElements(pageOfArticles.getTotalElements())
                 .totalPages(pageOfArticles.getTotalPages())
-                .page(offset)
-                .pageSize(pageSize)
+                .page(params.getPage())
+                .pageSize(params.getPageSize())
                 .articles(articleDtos)
                 .build();
     }
