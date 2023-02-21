@@ -2,6 +2,7 @@ package com.publishing.user.controller;
 
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
+import com.publishing.user.dto.UserPaginationParameters;
 import com.publishing.user.service.UserPaginationService;
 import com.publishing.user.service.UserSearchService;
 import com.publishing.user.service.UserService;
@@ -18,17 +19,18 @@ public class UserSearchController {
 
     private final UserSearchService userSearchService;
 
-    @GetMapping
+    @GetMapping("all")
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityUserResponseDto> searchUser(@RequestParam("value") String value){
-        return userSearchService.searchUsers(value);
+    public List<EntityUserResponseDto> searchUser(@RequestParam("value") String value,
+                                                  @RequestParam(value = "field", required = false) String field,
+                                                  @RequestParam(value = "direction", required = false) String direction){
+        return userSearchService.searchUsers(value, field, direction);
     }
 
-    @GetMapping(params = {"value", "page", "pageSize"})
+    @GetMapping
     public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
-                                                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return userSearchService.searchUserWithPagination(value, page, pageSize);
+                                                        UserPaginationParameters params){
+        return userSearchService.searchUserWithPagination(value, params);
     }
 
 }

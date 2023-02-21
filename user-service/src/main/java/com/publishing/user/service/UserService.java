@@ -67,7 +67,9 @@ public class UserService extends UserServiceCommon{
   }
 
   public List<EntityUserResponseDto> findUsersWithSort(String field, String dirVal){
-    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
+            ? Sort.Direction.DESC : Sort.Direction.ASC;
+
     return userRepository.findAll(Sort.by(direction, field)).stream()
             .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
             .map(this::mapToDto)

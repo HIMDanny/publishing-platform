@@ -1,6 +1,7 @@
 package com.publishing.user.controller;
 
 import com.publishing.user.dto.UserPageResponseDto;
+import com.publishing.user.dto.UserPaginationParameters;
 import com.publishing.user.service.UserPaginationService;
 import com.publishing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +15,10 @@ public class UserPaginationController {
 
     private final UserPaginationService userPaginationService;
 
-    @GetMapping(params = {"page", "pageSize"})
-    public UserPageResponseDto findUsersWithPagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return userPaginationService.findUserWithPagination(page, pageSize);
-    }
-
-    @GetMapping(params = {"page", "pageSize", "field", "direction"})
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserPageResponseDto findUsersWithPaginationAndSort(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                                              @RequestParam(value = "field", defaultValue = "ASC") String field,
-                                                              @RequestParam(value = "direction", defaultValue = "ASC") String direction){
-        return userPaginationService.findUserWithPaginationAndSort(field, direction, page, pageSize);
+    public UserPageResponseDto findUsersWithPaginationAndSort(UserPaginationParameters params){
+        return userPaginationService.findUserWithPaginationAndSort(params);
     }
 
 }
