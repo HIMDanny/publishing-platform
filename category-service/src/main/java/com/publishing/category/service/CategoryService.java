@@ -1,6 +1,5 @@
 package com.publishing.category.service;
 
-import com.publishing.category.dto.CategoryPageResponseDto;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.repo.CategoryRepository;
 import com.publishing.category.dto.CategoryRequestDto;
@@ -12,8 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +29,9 @@ public class CategoryService extends CategoryCommonService{
   }
 
   public List<EntityCategoryResponseDto> findCategoriesWithSorting(String field, String dirVal){
-    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
+            ? Sort.Direction.DESC : Sort.Direction.ASC;
+
     List<Category> categories = categoryRepository.findAll(Sort.by(direction, field));
 
     return getListOfCategoryDTOS(categories);

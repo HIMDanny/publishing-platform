@@ -1,6 +1,7 @@
 package com.publishing.category.service;
 
 import com.publishing.category.dto.CategoryPageResponseDto;
+import com.publishing.category.dto.CategoryPaginationParameters;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.model.Category;
 import com.publishing.category.repo.CategoryRepository;
@@ -8,6 +9,7 @@ import com.publishing.clients.article.ArticleClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +22,24 @@ public class CategorySearchService extends CategoryCommonService{
     private final CategoryRepository categoryRepository;
     private final ArticleClient articleClient;
 
-    public List<EntityCategoryResponseDto> searchCategories(String value){
-        return categoryRepository.searchCategories(value).stream()
+    public List<EntityCategoryResponseDto> searchCategories(String value, String fieldVal, String dirVal){
+        Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
+                ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        String field = (fieldVal == null) ? "id" : fieldVal;
+
+        return categoryRepository.searchCategories(value, Sort.by(direction, field)).stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    public CategoryPageResponseDto searchCategoriesWithPagination(String value, Integer offset, Integer pageSize){
-        Page<Category> categoriesPage = categoryRepository.searchCategoriesWithPagination(value, PageRequest.of(offset - 1, pageSize));
+    public CategoryPageResponseDto searchCategoriesWithPagination(String value, CategoryPaginationParameters params){
+        Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
+
+        Page<Category> categoriesPage = categoryRepository.searchCategoriesWithPagination(
+                value, PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(direction, params.getField()));
+
         List<EntityCategoryResponseDto> categories = categoriesPage.stream()
                 .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
                 .map(this::mapToDto)
@@ -36,8 +47,8 @@ public class CategorySearchService extends CategoryCommonService{
         return CategoryPageResponseDto.builder()
                 .totalElements(categoriesPage.getTotalElements())
                 .totalPages(categoriesPage.getTotalPages())
-                .page(offset)
-                .pageSize(pageSize)
+                .page(params.getPage())
+                .pageSize(params.getPageSize())
                 .categories(categories)
                 .build();
     }

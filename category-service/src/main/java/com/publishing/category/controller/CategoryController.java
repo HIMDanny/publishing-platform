@@ -50,11 +50,11 @@ public class CategoryController {
     return categoryService.deleteCategoryById(id);
   }
 
-  @GetMapping(params = {"field", "direction"})
+  @GetMapping(params = "field")
   @ResponseStatus(HttpStatus.OK)
   public List<EntityCategoryResponseDto> getCategoriesWithSort(
-                              @RequestParam(value = "field", defaultValue = "ASC") String field,
-                              @RequestParam(value = "direction", defaultValue = "ASC") String direction){
+                              @RequestParam(value = "field") String field,
+                              @RequestParam(value = "direction", required = false) String direction){
     return categoryService.findCategoriesWithSorting(field, direction);
   }
 }
