@@ -53,11 +53,11 @@ public class ArticleController {
     articleService.deleteArticle(id);
   }
 
-  @GetMapping(params = {"field", "direction"})
+  @GetMapping(params = {"field"})
   @ResponseStatus(HttpStatus.OK)
   private List<EntityArticleResponseDto> getArticlesWithSort(
-                                    @RequestParam(value = "field", defaultValue = "ASC") String field,
-                                    @RequestParam(value = "direction", required = true, defaultValue = "ASC") String direction){
+                                    @RequestParam(value = "field") String field,
+                                    @RequestParam(value = "direction", required = false) String direction){
     return articleService.findArticlesWithSorting(field, direction);
   }
 }

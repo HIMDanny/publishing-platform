@@ -1,6 +1,7 @@
 package com.publishing.article.controller;
 
 import com.publishing.article.dto.ArticlePageResponseDto;
+import com.publishing.article.dto.ArticlePaginationParameters;
 import com.publishing.article.service.ArticleSearchService;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +17,17 @@ public class ArticleSearchController {
 
     private final ArticleSearchService articleSearchService;
 
-    @GetMapping
+    @GetMapping(path = "all")
     @ResponseStatus(HttpStatus.OK)
-    public List<EntityArticleResponseDto> searchArticles(@RequestParam("value") String value){
-        return articleSearchService.searchArticles(value);
+    public List<EntityArticleResponseDto> searchArticles(@RequestParam("value") String value,
+                                                         @RequestParam(value = "field", required = false) String field,
+                                                         @RequestParam(value = "direction", required = false) String direction){
+        return articleSearchService.searchArticles(value, field, direction);
     }
 
-    @GetMapping(params = {"value", "page", "pageSize"})
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value,
-                                                               @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                               @RequestParam(value = "pageSize", required = true, defaultValue = "10") Integer pageSize){
-        return articleSearchService.searchArticlesWithPagination(value, page, pageSize);
+    public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value, ArticlePaginationParameters params){
+        return articleSearchService.searchArticlesWithPagination(value, params);
     }
 }

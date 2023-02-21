@@ -51,7 +51,9 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public List<EntityArticleResponseDto> findArticlesWithSorting(String field, String dirVal){
-    Sort.Direction direction = Sort.Direction.valueOf(dirVal.toUpperCase());
+    Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
+            ? Sort.Direction.DESC : Sort.Direction.ASC;
+
     List<Article> articles = articleRepository.findAll(Sort.by(direction, field));
 
     return getListOfArticleDTOS(articles);

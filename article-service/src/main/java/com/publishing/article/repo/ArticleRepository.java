@@ -3,6 +3,7 @@ package com.publishing.article.repo;
 import com.publishing.article.model.Article;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("SELECT a FROM Article a WHERE " +
             "a.title LIKE CONCAT('%',:query, '%') " +
             "OR a.content LIKE CONCAT('%', :query, '%')")
-    List<Article> searchArticles(@Param("query") String query);
+    List<Article> searchArticles(@Param("query") String query, Sort sort);
 
     @Query(value = "SELECT * FROM Article a WHERE " +
                 "a.title LIKE CONCAT('%',:query, '%') " +

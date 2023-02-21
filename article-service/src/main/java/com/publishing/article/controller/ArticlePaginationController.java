@@ -18,7 +18,7 @@ public class ArticlePaginationController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ArticlePageResponseDto getArticlesWithPagination(@RequestParam ArticlePaginationParameters params){
+    public ArticlePageResponseDto getArticlesWithPagination(ArticlePaginationParameters params){
         return articlePaginationService.findArticlesWithPaginationAndSorting(params);
     }
 }

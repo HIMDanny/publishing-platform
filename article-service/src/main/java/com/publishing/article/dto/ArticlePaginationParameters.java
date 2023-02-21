@@ -2,9 +2,11 @@ package com.publishing.article.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class ArticlePaginationParameters {
     private Integer page;
     private Integer pageSize;
@@ -12,11 +14,11 @@ public class ArticlePaginationParameters {
     private String direction;
 
     public Integer getPage(){
-        return page <= 0 ? 1 : page;
+        return (page == null || page <= 0) ? 1 : page;
     }
 
     public Integer getPageSize(){
-        return pageSize <= 0 ? 10 : pageSize;
+        return (pageSize == null || pageSize <= 0) ? 10 : pageSize;
     }
 
     public String getField(){
@@ -24,6 +26,6 @@ public class ArticlePaginationParameters {
     }
 
     public String getDirection(){
-        return direction.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+        return (direction != null && direction.equalsIgnoreCase("desc")) ? "DESC" : "ASC";
     }
 }
