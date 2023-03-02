@@ -1,9 +1,10 @@
 package com.publishing.article.service;
 
-import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.article.dto.ArticleRequestDto;
 import com.publishing.article.model.Article;
+import com.publishing.clients.PaginationParameters;
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import com.publishing.clients.category.CategoryClient;
 import com.publishing.clients.category.dto.CategoryResponseDto;
@@ -11,10 +12,8 @@ import com.publishing.clients.user.UserClient;
 import com.publishing.clients.user.dto.UserResponseDto;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -108,17 +107,6 @@ public class ArticleService extends ArticleCommonService{
     articleRepository.delete(foundArticleInDb);
   }
 
-  public List<EntityArticleResponseDto> getArticlesByCategory(Integer categoryId) {
-    List<Article> foundArticles = articleRepository.findAllByCategoryId(categoryId);
-
-    Map<Integer, UserResponseDto> authors = getMapWithUserIds(foundArticles);
-
-    return foundArticles.stream()
-            .peek(article -> article.setAuthor(authors.get(article.getAuthorId())))
-            .map(this::mapToArticleDTO)
-            .collect(Collectors.toList());
-  }
-
   public List<EntityArticleResponseDto> getArticlesByAuthor(Integer userId) {
     List<Article> foundArticle = articleRepository.findAllByAuthorId(userId);
 
@@ -131,7 +119,23 @@ public class ArticleService extends ArticleCommonService{
   }
 
 
+  public ArticlePageResponseDto getArticlesPageByCategory(Integer categoryId, PaginationParameters params) {
+    Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
+    Page<Article> pageOfArticles = articleRepository.findAllByCategoryId(
+            categoryId,
+            PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(direction, params.getField())));
 
+    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
 
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfArticles.getTotalElements())
+            .totalPages(pageOfArticles.getTotalPages())
+            .page(params.getPage())
+            .pageSize(params.getPageSize())
+            .articles(articleDtos)
+            .build();
+  }
 }

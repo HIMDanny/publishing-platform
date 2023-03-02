@@ -1,13 +1,11 @@
 package com.publishing.article.controller;
 
-import com.publishing.article.dto.ArticlePageResponseDto;
-import com.publishing.article.dto.ArticlePaginationParameters;
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.article.service.ArticlePaginationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/articles/pagination")
@@ -18,7 +16,7 @@ public class ArticlePaginationController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ArticlePageResponseDto getArticlesWithPagination(ArticlePaginationParameters params){
+    public ArticlePageResponseDto getArticlesWithPagination(PaginationParameters params){
         return articlePaginationService.findArticlesWithPaginationAndSorting(params);
     }
 }

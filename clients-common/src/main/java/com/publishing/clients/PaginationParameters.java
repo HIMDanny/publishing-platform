@@ -1,4 +1,4 @@
-package com.publishing.article.dto;
+package com.publishing.clients;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-public class ArticlePaginationParameters {
+public class PaginationParameters {
     private Integer page;
     private Integer pageSize;
     private String field;

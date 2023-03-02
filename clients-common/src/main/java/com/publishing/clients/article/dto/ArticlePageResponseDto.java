@@ -1,8 +1,6 @@
-package com.publishing.article.dto;
+package com.publishing.clients.article.dto;
 
-import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

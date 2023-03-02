@@ -1,6 +1,5 @@
 package com.publishing.article.controller;
 
-import com.publishing.article.dto.ArticlePageResponseDto;
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;

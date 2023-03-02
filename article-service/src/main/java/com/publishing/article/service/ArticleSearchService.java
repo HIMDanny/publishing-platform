@@ -1,7 +1,7 @@
 package com.publishing.article.service;
 
-import com.publishing.article.dto.ArticlePageResponseDto;
-import com.publishing.article.dto.ArticlePaginationParameters;
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.article.model.Article;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
@@ -30,7 +30,7 @@ public class ArticleSearchService extends ArticleCommonService{
         return getListOfArticleDTOS(articles);
     }
 
-    public ArticlePageResponseDto searchArticlesWithPagination(String value, ArticlePaginationParameters params) {
+    public ArticlePageResponseDto searchArticlesWithPagination(String value, PaginationParameters params) {
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
         Page<Article> articlesPage = articleRepository.searchArticlesWithPagination(

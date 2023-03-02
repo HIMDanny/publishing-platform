@@ -1,7 +1,7 @@
 package com.publishing.article.controller;
 
-import com.publishing.article.dto.ArticlePageResponseDto;
-import com.publishing.article.dto.ArticlePaginationParameters;
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.article.service.ArticleSearchService;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class ArticleSearchController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value, ArticlePaginationParameters params){
+    public ArticlePageResponseDto searchArticlesWithPagination(@RequestParam("value") String value, PaginationParameters params){
         return articleSearchService.searchArticlesWithPagination(value, params);
     }
 }

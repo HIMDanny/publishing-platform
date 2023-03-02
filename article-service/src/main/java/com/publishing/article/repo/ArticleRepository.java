@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
-    List<Article> findAllByCategoryId(Integer categoryId);
+    Page<Article> findAllByCategoryId(Integer categoryId, Pageable pageable);
 
     List<Article> findAllByAuthorId(Integer userId);
 
