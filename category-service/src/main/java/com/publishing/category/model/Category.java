@@ -1,5 +1,6 @@
 package com.publishing.category.model;
 
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,5 +27,5 @@ public class Category {
     private Integer id;
     private String name;
     @Transient
-    private List<EntityArticleResponseDto> articles = new ArrayList<>();
+    private ArticlePageResponseDto page;
 }

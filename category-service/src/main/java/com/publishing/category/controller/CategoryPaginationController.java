@@ -1,7 +1,7 @@
 package com.publishing.category.controller;
 
 import com.publishing.category.dto.CategoryPageResponseDto;
-import com.publishing.category.dto.CategoryPaginationParameters;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.category.service.CategoryPaginationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class CategoryPaginationController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CategoryPageResponseDto getCategoriesWithPaginationAndSort(CategoryPaginationParameters params){
+    public CategoryPageResponseDto getCategoriesWithPaginationAndSort(PaginationParameters params){
         return categoryPaginationService.findCategoriesWithPaginationAndSorting(params);
     }
 }

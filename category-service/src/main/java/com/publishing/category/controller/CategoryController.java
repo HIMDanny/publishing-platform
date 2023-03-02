@@ -1,7 +1,7 @@
 package com.publishing.category.controller;
 
-import com.publishing.category.dto.CategoryPageResponseDto;
 import com.publishing.category.dto.EntityCategoryResponseDto;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.category.service.CategoryService;
 import com.publishing.category.dto.CategoryRequestDto;
 import com.publishing.exception.CategoryException;
@@ -21,7 +21,7 @@ public class CategoryController {
   @ResponseStatus(HttpStatus.OK)
   public EntityCategoryResponseDto getCategoryById(@PathVariable("id") Integer id) throws CategoryException {
     // TODO: handle exception
-    return categoryService.getCategoryById(id);
+    return categoryService.getCategory(id, PaginationParameters.builder().field("numberOfViews").build());
   }
 
   @GetMapping
@@ -56,5 +56,12 @@ public class CategoryController {
                               @RequestParam(value = "field") String field,
                               @RequestParam(value = "direction", required = false) String direction){
     return categoryService.findCategoriesWithSorting(field, direction);
+  }
+
+  @GetMapping("{id}/articles")
+  @ResponseStatus(HttpStatus.OK)
+  public EntityCategoryResponseDto getCategoryArticles(@PathVariable("id") Integer id,
+                                                       PaginationParameters paginationParameters) throws CategoryException {
+    return categoryService.getCategory(id, paginationParameters);
   }
 }

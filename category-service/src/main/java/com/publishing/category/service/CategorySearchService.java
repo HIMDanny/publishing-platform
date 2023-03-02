@@ -1,7 +1,7 @@
 package com.publishing.category.service;
 
 import com.publishing.category.dto.CategoryPageResponseDto;
-import com.publishing.category.dto.CategoryPaginationParameters;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.model.Category;
 import com.publishing.category.repo.CategoryRepository;
@@ -29,19 +29,27 @@ public class CategorySearchService extends CategoryCommonService{
         String field = (fieldVal == null) ? "id" : fieldVal;
 
         return categoryRepository.searchCategories(value, Sort.by(direction, field)).stream()
-                .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
+                .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
+                        category.getId(),
+                        PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    public CategoryPageResponseDto searchCategoriesWithPagination(String value, CategoryPaginationParameters params){
+    public CategoryPageResponseDto searchCategoriesWithPagination(String value, PaginationParameters params){
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
         Page<Category> categoriesPage = categoryRepository.searchCategoriesWithPagination(
                 value, PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(direction, params.getField()));
 
         List<EntityCategoryResponseDto> categories = categoriesPage.stream()
-                .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
+                .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
+                        category.getId(),
+                        PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
         return CategoryPageResponseDto.builder()

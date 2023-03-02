@@ -1,7 +1,7 @@
 package com.publishing.category.service;
 
 import com.publishing.category.dto.CategoryPageResponseDto;
-import com.publishing.category.dto.CategoryPaginationParameters;
+import com.publishing.clients.PaginationParameters;
 import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.model.Category;
 import com.publishing.category.repo.CategoryRepository;
@@ -22,7 +22,7 @@ public class CategoryPaginationService extends CategoryCommonService{
     private final CategoryRepository categoryRepository;
     private final ArticleClient articleClient;
 
-    public CategoryPageResponseDto findCategoriesWithPaginationAndSorting(CategoryPaginationParameters params){
+    public CategoryPageResponseDto findCategoriesWithPaginationAndSorting(PaginationParameters params){
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
         Page<Category> categoriesPage = categoryRepository.findAll(
@@ -43,7 +43,11 @@ public class CategoryPaginationService extends CategoryCommonService{
 
     private List<EntityCategoryResponseDto> getListOfCategoryDTOS(List<Category> categories){
         return categories.stream()
-                .peek(category -> category.setArticles(articleClient.getArticleResponsesByCategory(category.getId())))
+                .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
+                        category.getId(),
+                        PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }

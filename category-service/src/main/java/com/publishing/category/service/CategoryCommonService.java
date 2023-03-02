@@ -8,7 +8,7 @@ public abstract class CategoryCommonService {
         return EntityCategoryResponseDto.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .articles(category.getArticles())
+                .page(category.getPage())
                 .build();
     }
 }
