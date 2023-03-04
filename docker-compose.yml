@@ -6,6 +6,8 @@ services:
       POSTGRES_USER: mike
       POSTGRES_PASSWORD: password
       PGDATA: /var/lib/postgresql/data
+      TZ: 'GMT+2'
+      PGTZ: 'GMT+2'
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
