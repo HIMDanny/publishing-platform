@@ -7,24 +7,26 @@ type ButtonOriginalProps = React.DetailedHTMLProps<
 
 export type ButtonProps = {
   size?: 'sm' | 'lg';
-  variant?: 'contained' | 'outlined';
+  variant?: 'primary' | 'secondary';
 } & ButtonOriginalProps;
 
-const Button = (props: ButtonProps) => {
-  const size = props.size ?? 'sm';
-
+const Button = ({
+  size = 'sm',
+  variant = 'primary',
+  ...props
+}: ButtonProps) => {
   return (
     <button
       type={props.type || 'button'}
       className={classNames(
-        'font-medium',
+        'rounded-full font-medium transition-colors hover:bg-green-600 hover:text-gray-50 active:bg-green-500 disabled:border disabled:border-solid disabled:border-gray-400 disabled:bg-transparent disabled:text-gray-400',
         {
           'py-4 px-[1.875rem] text-sm': size === 'sm',
           'py-[1.25rem] px-[3.375rem] text-base': size === 'lg',
         },
         {
-          'bg-white text-black': props.variant === 'contained',
-          'bg-green-700 text-white': props.variant === 'outlined',
+          'bg-white text-black': variant === 'primary',
+          'bg-green-700 text-gray-50': variant === 'secondary',
         },
       )}
       {...props}
