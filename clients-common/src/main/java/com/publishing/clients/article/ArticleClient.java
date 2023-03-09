@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient(
         name = "article-service",
@@ -28,7 +29,7 @@ public interface ArticleClient {
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticleResponsesByCategoryWithPagination(
             @RequestParam("categoryId") Integer categoryId,
-            PaginationParameters paginationParameters
+            @RequestParam Map<String, String> paginationParameters
     );
 
 }
