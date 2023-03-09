@@ -1,11 +1,9 @@
 package com.publishing.user.controller;
 
+import com.publishing.clients.PaginationParameters;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
-import com.publishing.user.dto.UserPaginationParameters;
-import com.publishing.user.service.UserPaginationService;
 import com.publishing.user.service.UserSearchService;
-import com.publishing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +27,7 @@ public class UserSearchController {
 
     @GetMapping
     public UserPageResponseDto searchUserWithPagination(@RequestParam("value") String value,
-                                                        UserPaginationParameters params){
+                                                        PaginationParameters params){
         return userSearchService.searchUserWithPagination(value, params);
     }
 

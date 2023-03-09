@@ -1,5 +1,6 @@
 package com.publishing.user.dto;
 
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,5 +20,5 @@ public class EntityUserResponseDto {
     private String lastName;
     private String email;
     private String role;
-    private List<EntityArticleResponseDto> articles = new ArrayList<>();
+    private ArticlePageResponseDto page;
 }

@@ -1,7 +1,7 @@
 package com.publishing.user.service;
 
+import com.publishing.clients.PaginationParameters;
 import com.publishing.user.dto.UserPageResponseDto;
-import com.publishing.user.dto.UserPaginationParameters;
 import com.publishing.user.model.User;
 import com.publishing.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class UserPaginationService extends UserServiceCommon{
 
     private final UserRepository userRepository;
 
-    public UserPageResponseDto findUserWithPaginationAndSort(UserPaginationParameters params) {
+    public UserPageResponseDto findUserWithPaginationAndSort(PaginationParameters params) {
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 

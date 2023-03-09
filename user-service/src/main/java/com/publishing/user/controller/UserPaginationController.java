@@ -1,9 +1,8 @@
 package com.publishing.user.controller;
 
+import com.publishing.clients.PaginationParameters;
 import com.publishing.user.dto.UserPageResponseDto;
-import com.publishing.user.dto.UserPaginationParameters;
 import com.publishing.user.service.UserPaginationService;
-import com.publishing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ public class UserPaginationController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserPageResponseDto findUsersWithPaginationAndSort(UserPaginationParameters params){
+    public UserPageResponseDto findUsersWithPaginationAndSort(PaginationParameters params){
         return userPaginationService.findUserWithPaginationAndSort(params);
     }
 

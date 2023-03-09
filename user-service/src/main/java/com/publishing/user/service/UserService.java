@@ -1,5 +1,6 @@
 package com.publishing.user.service;
 
+import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.article.ArticleClient;
 import com.publishing.clients.user.dto.UserAuthResponseDto;
 import com.publishing.clients.user.dto.UserRequestDto;
@@ -30,7 +31,10 @@ public class UserService extends UserServiceCommon{
     User user = userRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("User is not found"));
 
-    user.setArticles(articleClient.getArticleResponsesByUser(id));
+    user.setPage(articleClient.getArticleResponsesByUserWithPagination(
+            id,
+            toMap(PaginationParameters.builder()
+                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build())));
     return mapToDto(user);
   }
 
@@ -38,7 +42,11 @@ public class UserService extends UserServiceCommon{
     User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new IllegalArgumentException("User is not found"));
 
-    user.setArticles(articleClient.getArticleResponsesByUser(user.getId()));
+    user.setPage(articleClient.getArticleResponsesByUserWithPagination(
+            user.getId(),
+            toMap(PaginationParameters.builder()
+                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
+    ));
     return mapToDto(user);
   }
 
@@ -46,7 +54,11 @@ public class UserService extends UserServiceCommon{
     User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new IllegalArgumentException("User is not found"));
 
-    user.setArticles(articleClient.getArticleResponsesByUser(user.getId()));
+    user.setPage(articleClient.getArticleResponsesByUserWithPagination(
+            user.getId(),
+            toMap(PaginationParameters.builder()
+                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
+    ));
     return UserAuthResponseDto.builder()
             .id(user.getId())
             .email(user.getEmail())
@@ -61,7 +73,11 @@ public class UserService extends UserServiceCommon{
     List<User> users = userRepository.findAll();
 
     return users.stream()
-            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+            .peek(user -> user.setPage(articleClient.getArticleResponsesByUserWithPagination(
+                    user.getId(),
+                    toMap(PaginationParameters.builder()
+                            .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
+            )))
             .map(this::mapToDto)
             .collect(Collectors.toList());
   }
@@ -71,7 +87,11 @@ public class UserService extends UserServiceCommon{
             ? Sort.Direction.DESC : Sort.Direction.ASC;
 
     return userRepository.findAll(Sort.by(direction, field)).stream()
-            .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+            .peek(user -> user.setPage(articleClient.getArticleResponsesByUserWithPagination(
+                    user.getId(),
+                    toMap(PaginationParameters.builder()
+                            .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
+            )))
             .map(this::mapToDto)
             .collect(Collectors.toList());
   }
@@ -109,7 +129,11 @@ public class UserService extends UserServiceCommon{
 
     userRepository.saveAndFlush(fetchedUser);
 
-    fetchedUser.setArticles(articleClient.getArticleResponsesByUser(fetchedUser.getId()));
+    fetchedUser.setPage(articleClient.getArticleResponsesByUserWithPagination(
+            fetchedUser.getId(),
+            toMap(PaginationParameters.builder()
+                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
+    ));
 
     return mapToDto(fetchedUser);
   }

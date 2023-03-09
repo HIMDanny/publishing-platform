@@ -1,5 +1,6 @@
 package com.publishing.user.service;
 
+import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.article.ArticleClient;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
@@ -7,13 +8,26 @@ import com.publishing.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class UserServiceCommon {
 
     @Autowired
     private ArticleClient articleClient;
+
+    protected Map<String, String> toMap(PaginationParameters params){
+        return new HashMap<>(){
+            {
+                this.put("page", String.valueOf(params.getPage()));
+                this.put("pageSize", String.valueOf(params.getPageSize()));
+                this.put("field", params.getField());
+                this.put("direction", params.getDirection());
+            }
+        };
+    }
 
     protected EntityUserResponseDto mapToDto(User user) {
         return EntityUserResponseDto.builder()
@@ -22,13 +36,17 @@ public abstract class UserServiceCommon {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(user.getRole())
-                .articles(user.getArticles())
+                .page(user.getPage())
                 .build();
     }
 
     protected UserPageResponseDto mapToPageDTO(Integer offset, Integer pageSize, Page<User> usersPage) {
         List<EntityUserResponseDto> users = usersPage.stream()
-                .peek(user -> user.setArticles(articleClient.getArticleResponsesByUser(user.getId())))
+                .peek(user -> user.setPage(articleClient.getArticleResponsesByUserWithPagination(
+                        user.getId(),
+                        toMap(PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
+                )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
 

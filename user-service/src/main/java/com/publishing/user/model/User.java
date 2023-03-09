@@ -1,5 +1,6 @@
 package com.publishing.user.model;
 
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,5 +31,6 @@ public class User {
     private String password;
     private String role;
     @Transient
-    private List<EntityArticleResponseDto> articles = new ArrayList<>();
+//    private List<EntityArticleResponseDto> articles = new ArrayList<>();
+    private ArticlePageResponseDto page;
 }
