@@ -31,4 +31,12 @@ public interface ArticleClient {
             @RequestParam("categoryId") Integer categoryId,
             @RequestParam Map<String, String> paginationParameters
     );
+
+    @GetMapping(value = "/dev/api/v1/articles/pagination")
+    @ResponseStatus(HttpStatus.OK)
+    public ArticlePageResponseDto getArticleResponsesByUserWithPagination(
+            @RequestParam("userId") Integer userId,
+            @RequestParam Map<String, String> paginationParameters
+    );
+
 }
