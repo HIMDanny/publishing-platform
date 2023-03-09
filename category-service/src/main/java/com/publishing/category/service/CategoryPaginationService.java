@@ -45,8 +45,8 @@ public class CategoryPaginationService extends CategoryCommonService{
         return categories.stream()
                 .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
                         category.getId(),
-                        PaginationParameters.builder()
-                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                        toMap(PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
                 )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());

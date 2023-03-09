@@ -52,8 +52,8 @@ public class CategoryService extends CategoryCommonService{
     Category updatedCategory = categoryRepository.save(foundCategoryInDb);
     updatedCategory.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
             id,
-            PaginationParameters.builder()
-                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+            toMap(PaginationParameters.builder()
+                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
     ));
     return mapToDto(updatedCategory);
   }
@@ -79,8 +79,8 @@ public class CategoryService extends CategoryCommonService{
     return categories.stream()
             .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
                     category.getId(),
-                    PaginationParameters.builder()
-                            .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                    toMap(PaginationParameters.builder()
+                            .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
             )))
             .map(this::mapToDto)
             .collect(Collectors.toList());
@@ -90,7 +90,7 @@ public class CategoryService extends CategoryCommonService{
       Category category = categoryRepository.findById(id)
               .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));
 
-      ArticlePageResponseDto articlesOfCategory = articleClient.getArticleResponsesByCategoryWithPagination(id, params);
+      ArticlePageResponseDto articlesOfCategory = articleClient.getArticleResponsesByCategoryWithPagination(id, toMap(params));
 
       category.setPage(articlesOfCategory);
       return mapToDto(category);

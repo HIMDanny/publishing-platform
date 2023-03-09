@@ -31,8 +31,8 @@ public class CategorySearchService extends CategoryCommonService{
         return categoryRepository.searchCategories(value, Sort.by(direction, field)).stream()
                 .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
                         category.getId(),
-                        PaginationParameters.builder()
-                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                        toMap(PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
                 )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
@@ -47,8 +47,8 @@ public class CategorySearchService extends CategoryCommonService{
         List<EntityCategoryResponseDto> categories = categoriesPage.stream()
                 .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
                         category.getId(),
-                        PaginationParameters.builder()
-                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build()
+                        toMap(PaginationParameters.builder()
+                                .page(1).pageSize(10).field("numberOfViews").direction("asc").build())
                 )))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
