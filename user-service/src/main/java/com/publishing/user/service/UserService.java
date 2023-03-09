@@ -26,15 +26,16 @@ public class UserService extends UserServiceCommon{
   private final UserRepository userRepository;
   private final ArticleClient articleClient;
 
-  public EntityUserResponseDto getUserById(Integer id) {
+  public EntityUserResponseDto getUserById(Integer id, PaginationParameters paginationParameters) {
     // TODO: add custom exception
     User user = userRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("User is not found"));
 
     user.setPage(articleClient.getArticleResponsesByUserWithPagination(
             id,
-            toMap(PaginationParameters.builder()
-                    .page(1).pageSize(10).field("numberOfViews").direction("asc").build())));
+            toMap(paginationParameters)
+    ));
+
     return mapToDto(user);
   }
 

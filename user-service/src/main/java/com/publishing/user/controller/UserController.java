@@ -1,5 +1,6 @@
 package com.publishing.user.controller;
 
+import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.user.dto.UserRequestDto;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
@@ -26,7 +27,7 @@ public class UserController {
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getUser(@PathVariable("id") Integer id){
-    return userService.getUserById(id);
+    return userService.getUserById(id, PaginationParameters.builder().field("numberOfViews").build());
   }
 
   @GetMapping(params = "email")
@@ -59,6 +60,13 @@ public class UserController {
                                 @RequestParam(value = "field") String field,
                                 @RequestParam(value = "direction", required = false) String direction){
     return userService.findUsersWithSort(field, direction);
+  }
+
+  @GetMapping("{id}/articles")
+  @ResponseStatus(HttpStatus.OK)
+  public EntityUserResponseDto getUserArticles(@PathVariable("id") Integer id,
+                                                       PaginationParameters paginationParameters) {
+    return userService.getUserById(id, paginationParameters);
   }
 
 }
