@@ -26,6 +26,6 @@ public interface ArticleClient {
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticleResponsesByCategoryWithPagination(
             @RequestParam("categoryId") Integer categoryId,
-            @RequestParam Map<String, Object> paginationParameters
+            @RequestParam Map<String, String> paginationParameters
     );
 }
