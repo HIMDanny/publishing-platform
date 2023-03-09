@@ -14,7 +14,8 @@ public class ArticleDevController {
 
     private final ArticleService articleService;
 
-    @GetMapping(value = "articles/pagination")
+    @GetMapping(value = "articles/pagination",
+            params = {"categoryId", "field", "page", "pageSize", "direction"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticleResponsesByCategoryWithPagination(
             @RequestParam("categoryId") Integer categoryId,
@@ -23,7 +24,8 @@ public class ArticleDevController {
         return articleService.getArticlesPageByCategory(categoryId, paginationParameters);
     }
 
-    @GetMapping(value = "articles/pagination")
+    @GetMapping(value = "articles/pagination",
+            params = {"userId", "field", "page", "pageSize", "direction"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticleResponsesByUserWithPagination(
             @RequestParam("userId") Integer userId,
