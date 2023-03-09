@@ -25,14 +25,16 @@ public interface ArticleClient {
     @ResponseStatus(HttpStatus.OK)
     public List<EntityArticleResponseDto> getArticleResponsesByUser(@RequestParam("userId") Integer userId);
 
-    @GetMapping(value = "/dev/api/v1/articles/pagination")
+    @GetMapping(value = "/dev/api/v1/articles/pagination",
+            params = {"categoryId", "field", "page", "pageSize", "direction"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticleResponsesByCategoryWithPagination(
             @RequestParam("categoryId") Integer categoryId,
             @RequestParam Map<String, String> paginationParameters
     );
 
-    @GetMapping(value = "/dev/api/v1/articles/pagination")
+    @GetMapping(value = "/dev/api/v1/articles/pagination",
+            params = {"userId", "field", "page", "pageSize", "direction"})
     @ResponseStatus(HttpStatus.OK)
     public ArticlePageResponseDto getArticleResponsesByUserWithPagination(
             @RequestParam("userId") Integer userId,
