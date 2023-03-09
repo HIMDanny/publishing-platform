@@ -1,5 +1,7 @@
 package com.publishing.clients.article;
 
+import com.publishing.clients.PaginationParameters;
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
@@ -21,4 +23,12 @@ public interface ArticleClient {
     @GetMapping(value = "/dev/api/v1/articles", params = "userId")
     @ResponseStatus(HttpStatus.OK)
     public List<EntityArticleResponseDto> getArticleResponsesByUser(@RequestParam("userId") Integer userId);
+
+    @GetMapping(value = "/dev/api/v1/articles/pagination")
+    @ResponseStatus(HttpStatus.OK)
+    public ArticlePageResponseDto getArticleResponsesByCategoryWithPagination(
+            @RequestParam("categoryId") Integer categoryId,
+            PaginationParameters paginationParameters
+    );
+
 }
