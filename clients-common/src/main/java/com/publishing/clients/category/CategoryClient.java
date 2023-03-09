@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 )
 public interface CategoryClient {
 
-    @GetMapping("dev/api/v1/categories/{categoryId}")
+    @GetMapping(value = "dev/api/v1/categories/{categoryId}", params = "categoryId")
     CategoryResponseDto getCategoryResponse(@PathVariable("categoryId") Integer categoryId);
 
 }
