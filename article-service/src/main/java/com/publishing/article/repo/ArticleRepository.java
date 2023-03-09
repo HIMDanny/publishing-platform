@@ -1,10 +1,12 @@
 package com.publishing.article.repo;
 
 import com.publishing.article.model.Article;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,6 +18,12 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     Page<Article> findAllByCategoryId(Integer categoryId, Pageable pageable);
 
     Page<Article> findAllByAuthorId(Integer userId, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE article SET number_of_views=number_of_views+1 WHERE id=:id",
+    nativeQuery = true)
+    int increaseViewsById(@Param("id") Integer id);
 
     @Query("SELECT a FROM Article a WHERE " +
             "a.title LIKE CONCAT('%',:query, '%') " +

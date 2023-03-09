@@ -39,6 +39,8 @@ public class ArticleService extends ArticleCommonService{
     article.setCategory(categoryResponseDto);
     article.setAuthor(userResponseDto);
 
+    articleRepository.increaseViewsById(id);
+
     return mapToArticleDTO(article);
   }
 
