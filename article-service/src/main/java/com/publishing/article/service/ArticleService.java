@@ -13,7 +13,6 @@ import com.publishing.clients.user.dto.UserResponseDto;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -107,23 +106,31 @@ public class ArticleService extends ArticleCommonService{
     articleRepository.delete(foundArticleInDb);
   }
 
-  public List<EntityArticleResponseDto> getArticlesByAuthor(Integer userId) {
-    List<Article> foundArticle = articleRepository.findAllByAuthorId(userId);
-
-    Map<Integer, CategoryResponseDto> categories = getMapWithCategoryIds(foundArticle);
-
-    return foundArticle.stream()
-            .peek(article -> article.setCategory(categories.get(article.getCategoryId())))
-            .map(this::mapToArticleDTO)
-            .collect(Collectors.toList());
-  }
-
-
   public ArticlePageResponseDto getArticlesPageByCategory(Integer categoryId, PaginationParameters params) {
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
     Page<Article> pageOfArticles = articleRepository.findAllByCategoryId(
             categoryId,
+            PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(direction, params.getField())));
+
+    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfArticles.getTotalElements())
+            .totalPages(pageOfArticles.getTotalPages())
+            .page(params.getPage())
+            .pageSize(params.getPageSize())
+            .articles(articleDtos)
+            .build();
+  }
+
+  public ArticlePageResponseDto getArticlesPageByAuthor(Integer userId, PaginationParameters params) {
+    Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
+
+    Page<Article> pageOfArticles = articleRepository.findAllByAuthorId(
+            userId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(direction, params.getField())));
 
     List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());

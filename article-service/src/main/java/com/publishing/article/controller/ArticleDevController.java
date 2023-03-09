@@ -1,15 +1,11 @@
 package com.publishing.article.controller;
 
 import com.publishing.article.service.ArticleService;
-import com.publishing.article.model.Article;
 import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.article.dto.ArticlePageResponseDto;
-import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/dev/api/v1")
@@ -17,12 +13,6 @@ import java.util.List;
 public class ArticleDevController {
 
     private final ArticleService articleService;
-
-    @GetMapping(value = "articles", params = "userId")
-    @ResponseStatus(HttpStatus.OK)
-    public List<EntityArticleResponseDto> getArticleResponsesByUser(@RequestParam("userId") Integer userId){
-        return articleService.getArticlesByAuthor(userId);
-    }
 
     @GetMapping(value = "articles/pagination")
     @ResponseStatus(HttpStatus.OK)
@@ -32,4 +22,14 @@ public class ArticleDevController {
     ){
         return articleService.getArticlesPageByCategory(categoryId, paginationParameters);
     }
+
+    @GetMapping(value = "articles/pagination")
+    @ResponseStatus(HttpStatus.OK)
+    public ArticlePageResponseDto getArticleResponsesByUserWithPagination(
+            @RequestParam("userId") Integer userId,
+            PaginationParameters paginationParameters
+    ){
+        return articleService.getArticlesPageByAuthor(userId, paginationParameters);
+    }
+
 }

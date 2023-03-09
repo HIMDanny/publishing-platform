@@ -15,7 +15,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     Page<Article> findAllByCategoryId(Integer categoryId, Pageable pageable);
 
-    List<Article> findAllByAuthorId(Integer userId);
+    Page<Article> findAllByAuthorId(Integer userId, Pageable pageable);
 
     @Query("SELECT a FROM Article a WHERE " +
             "a.title LIKE CONCAT('%',:query, '%') " +
