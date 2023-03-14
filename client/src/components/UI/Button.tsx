@@ -8,7 +8,9 @@ type ButtonOriginalProps = React.DetailedHTMLProps<
 export type ButtonProps = {
   size?: 'sm' | 'lg';
   variant?: 'primary' | 'secondary';
-} & ButtonOriginalProps;
+  type?: ButtonOriginalProps['type'];
+  children: React.ReactNode;
+};
 
 const Button = ({
   size = 'sm',
