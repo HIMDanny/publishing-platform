@@ -27,8 +27,7 @@ public class Article {
     private Integer id;
     @Column(length = 500)
     private String title;
-    @Column
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
     @Column
     private String mainImagePath;
