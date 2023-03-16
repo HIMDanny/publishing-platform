@@ -25,9 +25,10 @@ public class Article {
             generator = "article_sequence"
     )
     private Integer id;
-    @Column
+    @Column(length = 500)
     private String title;
     @Column
+    @Lob
     private String content;
     @Column
     private String mainImagePath;
