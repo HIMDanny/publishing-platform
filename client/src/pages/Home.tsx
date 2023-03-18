@@ -1,4 +1,10 @@
+import { HomeUnauthorized } from '@features/home';
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <>
+      <HomeUnauthorized />
+    </>
+  );
 };
 export default HomePage;
