@@ -12,6 +12,12 @@ module.exports = {
         sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
         archivo: ['Archivo', ...defaultTheme.fontFamily.sans],
       },
+      container: {
+        padding: '2rem',
+        screens: {
+          '3xl': '1720px',
+        },
+      },
     },
   },
   plugins: [require('prettier-plugin-tailwindcss')],
