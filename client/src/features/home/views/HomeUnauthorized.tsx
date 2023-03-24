@@ -1,4 +1,5 @@
 import HighlightedPost from '@features/posts/components/HighlightedPost';
+import PostCardSection from '@features/posts/components/PostCardSection/PostCardSection';
 import Hero from '../components/Hero/HeroUnauthorized';
 
 const HomeUnauthorized = () => {
@@ -7,6 +8,7 @@ const HomeUnauthorized = () => {
       <Hero />
       <section className="container mx-auto mt-40 ">
         <HighlightedPost />
+        <PostCardSection title="Trending" />
       </section>
     </>
   );

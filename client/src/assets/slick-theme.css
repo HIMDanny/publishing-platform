@@ -1,0 +1,139 @@
+@charset 'UTF-8';
+
+.slick-dots,
+.slick-next,
+.slick-prev {
+	position: absolute;
+	display: block;
+	padding: 0
+}
+
+.slick-dots li button:before,
+.slick-next:before,
+.slick-prev:before {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale
+}
+
+/* .slick-loading .slick-list {
+	background: url(ajax-loader.gif) center center no-repeat #fff
+} */
+
+.slick-next,
+.slick-prev {
+	font-size: 0;
+	line-height: 0;
+	top: 50%;
+	width: 44px;
+	height: 44px;
+	-webkit-transform: translate(0, -50%);
+	-ms-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+	cursor: pointer;
+	color: transparent;
+	border: none;
+	outline: 0;
+	background: 0 0
+}
+
+.slick-next:focus,
+.slick-next:hover,
+.slick-prev:focus,
+.slick-prev:hover {
+	color: transparent;
+	outline: 0;
+}
+
+.slick-next:where(:focus, :hover) path,
+.slick-prev:where(:focus, :hover) path {
+	@apply fill-gray-600
+}
+
+.slick-next:focus:before,
+.slick-next:hover:before,
+.slick-prev:focus:before,
+.slick-prev:hover:before {
+	opacity: 1
+}
+
+:is(.slick-next, .slick-prev).slick-disabled {
+	@apply cursor-default
+}
+
+:is(.slick-next, .slick-prev).slick-disabled path {
+	@apply fill-gray-200
+}
+
+.slick-next.slick-disabled:before,
+.slick-prev.slick-disabled:before {
+	opacity: .25
+}
+
+.slick-next:before,
+.slick-prev:before {
+	font-size: 20px;
+	line-height: 1;
+	opacity: .75;
+	color: #fff
+}
+
+.slick-prev {
+	left: -64px
+}
+
+.slick-next {
+	right: -64px
+}
+
+.slick-dotted.slick-slider {
+	margin-bottom: 30px
+}
+
+.slick-dots {
+	@apply flex justify-center w-full py-2 gap-3 items-center
+}
+
+.slick-dots li {
+	position: relative;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.slick-dots li button {
+	font-size: 0;
+	line-height: 0;
+	display: block;
+	border: 0;
+	outline: 0;
+
+	@apply bg-gray-300 rounded-full text-transparent cursor-pointer w-full h-full
+}
+
+.slick-dots li button:focus,
+.slick-dots li button:hover {
+	outline: 0;
+	@apply bg-gray-400
+}
+
+.slick-dots li.slick-active button {
+	@apply bg-gray-400;
+}
+
+.slick-dots li.slick-active {
+	@apply w-5 h-5
+}
+
+.slick-dots li.dot-lg {
+	@apply w-5 h-5
+}
+
+.slick-dots li.dot-md {
+	@apply w-4 h-4
+}
+
+.slick-dots li.dot-sm {
+	@apply w-[14px] h-[14px]
+}
