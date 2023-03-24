@@ -5,10 +5,6 @@
 	display: block
 }
 
-.slick-track {
-	@apply flex gap-4
-}
-
 .slick-loading .slick-slide,
 .slick-loading .slick-track {
 	visibility: hidden
@@ -30,7 +26,9 @@
 .slick-list {
 	overflow: hidden;
 	margin: 0;
-	padding: 0
+	padding: 0;
+
+	@apply rounded-t-[40px] rounded-b-2xl
 }
 
 .slick-list:focus {
@@ -53,14 +51,16 @@
 
 .slick-track {
 	top: 0;
-	left: 0
+	left: 0;
+
+	@apply flex gap-7
 }
 
-.slick-track:after,
+/* .slick-track:after,
 .slick-track:before {
 	display: table;
 	content: ''
-}
+} */
 
 .slick-track:after {
 	clear: both
