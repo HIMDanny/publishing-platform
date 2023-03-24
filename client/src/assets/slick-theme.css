@@ -24,8 +24,8 @@
 	font-size: 0;
 	line-height: 0;
 	top: 50%;
-	width: 20px;
-	height: 20px;
+	width: 44px;
+	height: 44px;
 	-webkit-transform: translate(0, -50%);
 	-ms-transform: translate(0, -50%);
 	transform: translate(0, -50%);
@@ -42,7 +42,11 @@
 .slick-prev:hover {
 	color: transparent;
 	outline: 0;
-	background: 0 0
+}
+
+.slick-next:where(:focus, :hover) path,
+.slick-prev:where(:focus, :hover) path {
+	@apply fill-gray-600
 }
 
 .slick-next:focus:before,
@@ -50,6 +54,14 @@
 .slick-prev:focus:before,
 .slick-prev:hover:before {
 	opacity: 1
+}
+
+:is(.slick-next, .slick-prev).slick-disabled {
+	@apply cursor-default
+}
+
+:is(.slick-next, .slick-prev).slick-disabled path {
+	@apply fill-gray-200
 }
 
 .slick-next.slick-disabled:before,
@@ -66,34 +78,11 @@
 }
 
 .slick-prev {
-	left: -25px
-}
-
-[dir=rtl] .slick-prev {
-	right: -25px;
-	left: auto
-}
-
-.slick-prev:before {
-	content: '←'
-}
-
-.slick-next:before,
-[dir=rtl] .slick-prev:before {
-	content: '→'
+	left: -64px
 }
 
 .slick-next {
-	right: -25px
-}
-
-[dir=rtl] .slick-next {
-	right: auto;
-	left: -25px
-}
-
-[dir=rtl] .slick-next:before {
-	content: '←'
+	right: -64px
 }
 
 .slick-dotted.slick-slider {
@@ -101,62 +90,50 @@
 }
 
 .slick-dots {
-	bottom: -25px;
-	width: 100%;
-	margin: 0;
-	list-style: none;
-	text-align: center
+	@apply flex justify-center w-full py-2 gap-3 items-center
 }
 
 .slick-dots li {
 	position: relative;
 	display: inline-block;
-	width: 20px;
-	height: 20px;
-	margin: 0 5px;
+	width: 10px;
+	height: 10px;
 	padding: 0;
-	cursor: pointer
+	cursor: pointer;
 }
 
 .slick-dots li button {
 	font-size: 0;
 	line-height: 0;
 	display: block;
-	width: 20px;
-	height: 20px;
-	padding: 5px;
-	cursor: pointer;
-	color: transparent;
 	border: 0;
 	outline: 0;
-	background: 0 0
+
+	@apply bg-gray-300 rounded-full text-transparent cursor-pointer w-full h-full
 }
 
 .slick-dots li button:focus,
 .slick-dots li button:hover {
-	outline: 0
+	outline: 0;
+	@apply bg-gray-400
 }
 
-.slick-dots li button:focus:before,
-.slick-dots li button:hover:before {
-	opacity: 1
+.slick-dots li.slick-active button {
+	@apply bg-gray-400;
 }
 
-.slick-dots li button:before {
-	font-size: 6px;
-	line-height: 20px;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 20px;
-	height: 20px;
-	content: '•';
-	text-align: center;
-	opacity: .25;
-	color: #000
+.slick-dots li.slick-active {
+	@apply w-5 h-5
 }
 
-.slick-dots li.slick-active button:before {
-	opacity: .75;
-	color: #000
+.slick-dots li.dot-lg {
+	@apply w-5 h-5
+}
+
+.slick-dots li.dot-md {
+	@apply w-4 h-4
+}
+
+.slick-dots li.dot-sm {
+	@apply w-[14px] h-[14px]
 }
