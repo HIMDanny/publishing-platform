@@ -1,4 +1,4 @@
-import CardsCarousel from './CardsCarousel';
+import CardsCarousel from './CardsCarousel/CardsCarousel';
 
 export type PostCardSectionProps = {
   title: string;
