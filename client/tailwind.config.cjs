@@ -13,7 +13,7 @@ module.exports = {
         archivo: ['Archivo', ...defaultTheme.fontFamily.sans],
       },
       container: {
-        padding: '2rem',
+        padding: '6.25rem',
         screens: {
           '3xl': '1720px',
         },
