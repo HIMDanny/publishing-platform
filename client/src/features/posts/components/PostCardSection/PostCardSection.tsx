@@ -1,10 +1,10 @@
-import PostCard from '../PostCard/PostCard';
+import CardsCarousel from './CardsCarousel';
 
 const PostCardSection = () => {
   return (
     <section>
       <h4>Trending</h4>
-      <PostCard />
+      <CardsCarousel />
     </section>
   );
 };
