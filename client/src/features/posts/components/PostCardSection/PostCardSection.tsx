@@ -6,7 +6,7 @@ export type PostCardSectionProps = {
 
 const PostCardSection = ({ title }: PostCardSectionProps) => {
   return (
-    <section>
+    <section className="mb-9">
       <h4 className="mb-2">{title}</h4>
       <CardsCarousel />
     </section>
