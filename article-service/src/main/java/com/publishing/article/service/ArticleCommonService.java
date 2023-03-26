@@ -22,6 +22,7 @@ public abstract class ArticleCommonService {
     private UserClient userClient;
 
     protected EntityArticleResponseDto mapToArticleDTO(Article article) {
+        article.constructImagePath();
         return EntityArticleResponseDto.builder()
                 .id(article.getId())
                 .title(article.getTitle())

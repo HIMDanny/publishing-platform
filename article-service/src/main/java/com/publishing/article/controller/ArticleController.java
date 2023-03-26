@@ -2,12 +2,15 @@ package com.publishing.article.controller;
 
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
+import com.publishing.util.FileUploadUtil;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import com.publishing.exception.ArticleException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -31,8 +34,14 @@ public class ArticleController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Integer saveArticle(@RequestBody ArticleRequestDto articleRequestDto){
-    return articleService.saveArticle(articleRequestDto);
+  public Integer saveArticle(@RequestBody ArticleRequestDto articleRequestDto,
+                             @RequestParam("image")MultipartFile multipartFile){
+    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+    articleRequestDto.setMainImagePath(fileName);
+    Integer articleId = articleService.saveArticle(articleRequestDto);
+    String uploadDir = "article-images/" + articleId;
+    FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+    return articleId;
   }
 
   @PutMapping("{id}")

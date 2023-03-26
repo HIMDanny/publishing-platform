@@ -47,6 +47,12 @@ public class ArticleService extends ArticleCommonService{
   public List<EntityArticleResponseDto> getAllArticles(){
     List<Article> articles = articleRepository.findAll();
 
+    for(Article article : articles){
+      if(article.getMainImagePath() != null){
+        article.setMainImagePath("article-images/" + article.getId() + "/" + article.getMainImagePath());
+      }
+    }
+
     return getListOfArticleDTOS(articles);
   }
 
