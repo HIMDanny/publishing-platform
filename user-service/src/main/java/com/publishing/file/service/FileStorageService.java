@@ -18,7 +18,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageService {
-    private FileStorageProperties fileStorageProperties;
+    private final FileStorageProperties fileStorageProperties;
     private Path fileStorageLocation;
 
     @Autowired

@@ -20,5 +20,6 @@ public class EntityUserResponseDto {
     private String lastName;
     private String email;
     private String role;
+    private String image;
     private ArticlePageResponseDto page;
 }

@@ -45,7 +45,7 @@ public class UserController {
   @ResponseStatus(HttpStatus.CREATED)
   public Integer saveUser(UserRequestDto user,
                           @RequestParam("image")MultipartFile image){
-    Integer userId = userService.saveUser(user);
+    Integer userId = userService.saveUser(user, image.getOriginalFilename());
     String fileName = fileStorageService.storeFile(userId, image);
     return userId;
   }
@@ -57,7 +57,7 @@ public class UserController {
     if(image != null) {
       String fileName = fileStorageService.storeFile(id, image);
     }
-    return userService.updateUser(id, user);
+    return userService.updateUser(id, user, image);
   }
 
   @DeleteMapping("{id}")
