@@ -2,12 +2,15 @@ package com.publishing.user.controller;
 
 import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.user.dto.UserRequestDto;
+import com.publishing.file.service.FileStorageService;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
 import com.publishing.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
+
+  private final FileStorageService fileStorageService;
 
   private final UserService userService;
 
@@ -38,13 +43,20 @@ public class UserController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Integer saveUser(@RequestBody UserRequestDto user){
-    return userService.saveUser(user);
+  public Integer saveUser(UserRequestDto user,
+                          @RequestParam("image")MultipartFile image){
+    Integer userId = userService.saveUser(user);
+    String fileName = fileStorageService.storeFile(userId, image);
+    return userId;
   }
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public EntityUserResponseDto updateUser(@PathVariable("id") Integer id, @RequestBody UserRequestDto user){
+  public EntityUserResponseDto updateUser(@PathVariable("id") Integer id, UserRequestDto user,
+                                          @RequestParam(value = "image", required = false)MultipartFile image){
+    if(image != null) {
+      String fileName = fileStorageService.storeFile(id, image);
+    }
     return userService.updateUser(id, user);
   }
 
