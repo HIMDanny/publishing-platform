@@ -93,7 +93,7 @@ public class ArticleService extends ArticleCommonService{
     foundArticleInDb.setTitle(articleRequestDto.getTitle());
     foundArticleInDb.setContent(articleRequestDto.getContent());
     if(mainImage != null)
-      foundArticleInDb.setMainImagePath(mainImage.getName());
+      foundArticleInDb.setMainImagePath(mainImage.getOriginalFilename());
     foundArticleInDb.setAuthorId(articleRequestDto.getAuthorId());
     foundArticleInDb.setCategoryId(articleRequestDto.getCategoryId());
 

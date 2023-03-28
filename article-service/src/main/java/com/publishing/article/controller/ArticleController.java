@@ -45,7 +45,7 @@ public class ArticleController {
                              @RequestParam("mainImage")MultipartFile mainImage,
                              @RequestParam(value = "images", required = false)MultipartFile[] images){
 
-    Integer articleId = articleService.saveArticle(articleRequestDto, mainImage.getName());
+    Integer articleId = articleService.saveArticle(articleRequestDto, mainImage.getOriginalFilename());
     String fileName = fileStorageService.storeFile(articleId, mainImage);
 
     if(images != null) {
