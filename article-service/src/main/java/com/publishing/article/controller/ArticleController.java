@@ -2,15 +2,22 @@ package com.publishing.article.controller;
 
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
-import com.publishing.util.FileUploadUtil;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import com.publishing.exception.ArticleException;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.publishing.file.dto.UploadFileResponse;
+import com.publishing.file.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -18,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticleController {
 
   private final ArticleService articleService;
+  private final FileStorageService fileStorageService;
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
@@ -34,23 +42,44 @@ public class ArticleController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Integer saveArticle(@RequestBody ArticleRequestDto articleRequestDto,
-                             @RequestParam("image")MultipartFile multipartFile){
-    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-    articleRequestDto.setMainImagePath(fileName);
-    Integer articleId = articleService.saveArticle(articleRequestDto);
-    String uploadDir = "article-images/" + articleId;
-    FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+  public Integer saveArticle(ArticleRequestDto articleRequestDto,
+                             @RequestParam("mainImage")MultipartFile mainImage,
+                             @RequestParam(value = "images", required = false)MultipartFile[] images){
+
+    Integer articleId = articleService.saveArticle(articleRequestDto, mainImage.getName());
+    String fileName = fileStorageService.storeFile(articleId, mainImage);
+
+    if(images != null) {
+      Arrays.stream(images)
+              .forEach(image -> fileStorageService.storeFile(articleId, image));
+    }
+
+    /*String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+    articleRequestDto.setMainImagePath(fileName);*/
+
+//    String uploadDir = "article-images/" + articleId;
+//    FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
     return articleId;
   }
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public EntityArticleResponseDto updateArticle(@PathVariable("id") Integer id, @RequestBody ArticleRequestDto articleRequestDto)
+  public EntityArticleResponseDto updateArticle(@PathVariable("id") Integer id, ArticleRequestDto articleRequestDto,
+                                                @RequestParam(value = "mainImage", required = false)MultipartFile file,
+                                                @RequestParam(value = "images", required = false)MultipartFile[] images)
       throws ArticleException {
     // TODO: handle exception
 
-    return articleService.updateArticle(id, articleRequestDto);
+    if(file != null){
+      String fileName = fileStorageService.storeFile(id, file);
+    }
+
+    if(images != null) {
+      Arrays.stream(images)
+              .forEach(image -> fileStorageService.storeFile(id, image));
+    }
+
+    return articleService.updateArticle(id, articleRequestDto, file);
   }
 
   @DeleteMapping("{id}")

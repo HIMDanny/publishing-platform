@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -65,14 +66,14 @@ public class ArticleService extends ArticleCommonService{
     return getListOfArticleDTOS(articles);
   }
 
-  public Integer saveArticle(ArticleRequestDto articleRequestDto){
+  public Integer saveArticle(ArticleRequestDto articleRequestDto, String fileName){
     long numberOfWords = articleRequestDto.getContent().split(" ").length;
     int minutesToRead = (int) Math.ceil(numberOfWords / 200.0);
 
     Article article = Article.builder()
             .title(articleRequestDto.getTitle())
             .content(articleRequestDto.getContent())
-            .mainImagePath(articleRequestDto.getMainImagePath())
+            .mainImagePath(fileName)
             .minutesToRead(minutesToRead)
             .publishingDate(LocalDateTime.now())
             .authorId(articleRequestDto.getAuthorId())
@@ -83,7 +84,7 @@ public class ArticleService extends ArticleCommonService{
     return savedArticle.getId();
   }
 
-  public EntityArticleResponseDto updateArticle(Integer id, ArticleRequestDto articleRequestDto) throws ArticleException{
+  public EntityArticleResponseDto updateArticle(Integer id, ArticleRequestDto articleRequestDto, MultipartFile mainImage) throws ArticleException{
     // TODO: handle exception
 
     Article foundArticleInDb = articleRepository.findById(id)
@@ -91,7 +92,8 @@ public class ArticleService extends ArticleCommonService{
 
     foundArticleInDb.setTitle(articleRequestDto.getTitle());
     foundArticleInDb.setContent(articleRequestDto.getContent());
-    foundArticleInDb.setMainImagePath(articleRequestDto.getMainImagePath());
+    if(mainImage != null)
+      foundArticleInDb.setMainImagePath(mainImage.getName());
     foundArticleInDb.setAuthorId(articleRequestDto.getAuthorId());
     foundArticleInDb.setCategoryId(articleRequestDto.getCategoryId());
 

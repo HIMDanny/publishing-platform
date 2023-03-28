@@ -1,5 +1,7 @@
 package com.publishing.config;
 
+import com.publishing.util.FileStorageProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Configuration
+@EnableConfigurationProperties({
+        FileStorageProperties.class
+})
 public class ArticleApplicationConfig implements WebMvcConfigurer {
 
     @Override

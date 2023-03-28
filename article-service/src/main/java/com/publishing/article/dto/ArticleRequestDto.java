@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class ArticleRequestDto{
     private String title;
     private String content;
-    private String mainImagePath;
     private Integer authorId;
     private Integer categoryId;
 

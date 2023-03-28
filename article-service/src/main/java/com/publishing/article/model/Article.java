@@ -49,10 +49,10 @@ public class Article {
     private UserResponseDto author;
     @Transient
     private CategoryResponseDto category;
+    @Transient
+    private String imagesDir;
 
-    public void constructImagePath() {
-        if(getMainImagePath() != null){
-            this.setMainImagePath("article-images/" + this.getId() + "/" + this.getMainImagePath());
-        }
+    public String getImagesDir(){
+        return "article-images/" + getId();
     }
 }
