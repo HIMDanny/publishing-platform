@@ -158,4 +158,17 @@ public class UserService extends UserServiceCommon {
                 .lastName(userInDb.getLastName())
                 .build();
     }
+
+    public EntityUserResponseDto getUserWithLikedArticles(Integer id, PaginationParameters paginationParameters) {
+        // TODO: add custom exception
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+
+        user.setPage(articleClient.getLikedArticlesByUserWithPagination(
+                id,
+                toMap(paginationParameters)
+        ));
+
+        return mapToDto(user);
+    }
 }

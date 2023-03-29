@@ -81,4 +81,11 @@ public class UserController {
     return userService.getUserById(id, paginationParameters);
   }
 
+  @GetMapping("{id}/articles/like")
+  @ResponseStatus(HttpStatus.OK)
+  public EntityUserResponseDto getUserArticlesLike(@PathVariable("id") Integer id,
+                                                   PaginationParameters paginationParameters){
+    return userService.getUserWithLikedArticles(id, paginationParameters);
+  }
+
 }

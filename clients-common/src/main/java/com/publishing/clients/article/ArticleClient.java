@@ -42,4 +42,10 @@ public interface ArticleClient {
     );
 
 
+    @GetMapping(value = "/dev/api/v1/articles/likes",
+            params = {"userId", "field", "page", "pageSize", "direction"})
+    @ResponseStatus(HttpStatus.OK)
+    ArticlePageResponseDto getLikedArticlesByUserWithPagination(
+            @RequestParam("userId") Integer userId,
+            @RequestParam Map<String, String> paginationParameters);
 }
