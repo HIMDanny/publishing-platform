@@ -56,12 +56,6 @@ public class ArticleService extends ArticleCommonService{
   public List<EntityArticleResponseDto> getAllArticles(){
     List<Article> articles = articleRepository.findAll();
 
-    for(Article article : articles){
-      if(article.getMainImagePath() != null){
-        article.setMainImagePath("article-images/" + article.getId() + "/" + article.getMainImagePath());
-      }
-    }
-
     return getListOfArticleDTOS(articles);
   }
 
@@ -84,6 +78,8 @@ public class ArticleService extends ArticleCommonService{
             .mainImagePath(fileName)
             .minutesToRead(minutesToRead)
             .publishingDate(LocalDateTime.now())
+            .numberOfLikes(0)
+            .numberOfViews(0)
             .authorId(articleRequestDto.getAuthorId())
             .categoryId(articleRequestDto.getCategoryId())
         .build();
@@ -176,6 +172,7 @@ public class ArticleService extends ArticleCommonService{
 
   public void likeArticle(Integer articleId, Integer userId) {
       likeRepository.save(Like.builder().articleId(articleId).userId(userId).build());
+      articleRepository.increaseLikesById(articleId);
   }
 
   public void bookmarkArticle(Integer articleId, Integer userId) {
@@ -184,6 +181,7 @@ public class ArticleService extends ArticleCommonService{
 
   public void deleteLikeArticle(Integer articleId, Integer userId) {
     likeRepository.deleteByArticleIdAndUserId(userId, articleId);
+    articleRepository.decreaseLikesById(articleId);
   }
 
   public void deleteBookmarkArticle(Integer articleId, Integer userId) {

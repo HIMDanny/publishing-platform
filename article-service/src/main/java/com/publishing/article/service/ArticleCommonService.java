@@ -39,6 +39,12 @@ public abstract class ArticleCommonService {
 
     protected List<EntityArticleResponseDto> getListOfArticleDTOS(List<Article> articles) {
 
+        for(Article article : articles){
+            if(article.getMainImagePath() != null){
+                article.setMainImagePath("article-images/" + article.getId() + "/" + article.getMainImagePath());
+            }
+        }
+
         Map<Integer, CategoryResponseDto> categories = getMapWithCategoryIds(articles);
 
         Map<Integer, UserResponseDto> authors = getMapWithUserIds(articles);

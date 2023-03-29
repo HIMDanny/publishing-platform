@@ -25,6 +25,18 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     nativeQuery = true)
     int increaseViewsById(@Param("id") Integer id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE article SET number_of_likes=number_of_likes+1 WHERE id=:id",
+            nativeQuery = true)
+    int increaseLikesById(@Param("id") Integer id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE article SET number_of_likes=number_of_likes-1 WHERE id=:id",
+            nativeQuery = true)
+    int decreaseLikesById(@Param("id") Integer id);
+
     @Query("SELECT a FROM Article a WHERE " +
             "a.title LIKE CONCAT('%',:query, '%') " +
             "OR a.content LIKE CONCAT('%', :query, '%')")
@@ -38,4 +50,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
                     "OR a.content LIKE CONCAT('%', :query, '%')",
             nativeQuery = true)
     Page<Article> searchArticlesWithPagination(@Param("query") String query, Pageable pageable);
+
 }

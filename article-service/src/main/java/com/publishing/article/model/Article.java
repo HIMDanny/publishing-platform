@@ -41,9 +41,9 @@ public class Article {
     @Column
     @JsonIgnore
     private Integer categoryId;
-    @Column
+    @Column(columnDefinition = "integer not null default 0")
     private Integer numberOfViews = 0;
-    @Column
+    @Column(columnDefinition = "integer not null default 0")
     private Integer numberOfLikes = 0;
     @Transient
     private UserResponseDto author;
