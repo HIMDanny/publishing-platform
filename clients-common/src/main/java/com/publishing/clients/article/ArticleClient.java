@@ -49,7 +49,7 @@ public interface ArticleClient {
             @RequestParam("userId") Integer userId,
             @RequestParam Map<String, String> paginationParameters);
 
-    @GetMapping(value = "/dev/api/v1/articles/bookmarked",
+    @GetMapping(value = "/dev/api/v1/articles/bookmarks",
             params = {"userId", "field", "page", "pageSize", "direction"})
     @ResponseStatus(HttpStatus.OK)
     ArticlePageResponseDto getBookmarkedArticlesByUserWithPagination(

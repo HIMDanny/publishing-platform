@@ -81,7 +81,7 @@ public class UserController {
     return userService.getUserById(id, paginationParameters);
   }
 
-  @GetMapping("{id}/articles/like")
+  @GetMapping("{id}/articles/likes")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getUserArticlesLike(@PathVariable("id") Integer id,
                                                    PaginationParameters paginationParameters){
