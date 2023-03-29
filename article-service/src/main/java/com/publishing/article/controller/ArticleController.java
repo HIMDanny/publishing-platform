@@ -106,4 +106,18 @@ public class ArticleController {
                           @RequestParam("userId") Integer userId){
     articleService.bookmarkArticle(articleId, userId);
   }
+
+  @DeleteMapping("{articleId}/like")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteLikeArticle(@PathVariable("articleId") Integer articleId,
+                          @RequestParam("userId") Integer userId){
+    articleService.deleteLikeArticle(articleId, userId);
+  }
+
+  @DeleteMapping("{articleId}/bookmark")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteBookmarkArticle(@PathVariable("articleId") Integer articleId,
+                              @RequestParam("userId") Integer userId) {
+    articleService.deleteBookmarkArticle(articleId, userId);
+  }
 }

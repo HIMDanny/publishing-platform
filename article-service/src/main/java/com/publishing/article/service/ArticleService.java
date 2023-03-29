@@ -182,6 +182,14 @@ public class ArticleService extends ArticleCommonService{
     bookmarkRepository.save(Bookmark.builder().articleId(articleId).userId(userId).build());
   }
 
+  public void deleteLikeArticle(Integer articleId, Integer userId) {
+    likeRepository.deleteByArticleIdAndUserId(userId, articleId);
+  }
+
+  public void deleteBookmarkArticle(Integer articleId, Integer userId) {
+    bookmarkRepository.deleteByArticleIdAndUserId(userId, articleId);
+  }
+
   public ArticlePageResponseDto getLikedArticlesPageByUser(Integer userId, PaginationParameters params) {
 
     Page<Like> pageOfLikes = likeRepository.findAllByUserId(userId,
@@ -241,4 +249,6 @@ public class ArticleService extends ArticleCommonService{
             .articles(articleDtos)
             .build();
   }
+
+
 }
