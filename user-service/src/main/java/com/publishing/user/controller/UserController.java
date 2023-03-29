@@ -88,4 +88,11 @@ public class UserController {
     return userService.getUserWithLikedArticles(id, paginationParameters);
   }
 
+  @GetMapping("{id}/articles/bookmarks")
+  @ResponseStatus(HttpStatus.OK)
+  public EntityUserResponseDto getUserArticlesBookmarks(@PathVariable("id") Integer id,
+                                                   PaginationParameters paginationParameters){
+    return userService.getUserWithBookmarkedArticles(id, paginationParameters);
+  }
+
 }

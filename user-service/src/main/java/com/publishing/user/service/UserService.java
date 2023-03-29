@@ -171,4 +171,17 @@ public class UserService extends UserServiceCommon {
 
         return mapToDto(user);
     }
+
+    public EntityUserResponseDto getUserWithBookmarkedArticles(Integer id, PaginationParameters paginationParameters) {
+        // TODO: add custom exception
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+
+        user.setPage(articleClient.getBookmarkedArticlesByUserWithPagination(
+                id,
+                toMap(paginationParameters)
+        ));
+
+        return mapToDto(user);
+    }
 }
