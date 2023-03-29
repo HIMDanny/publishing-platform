@@ -25,7 +25,7 @@ public class FileStorageService {
     public FileStorageService(FileStorageProperties fileStorageProperties){
         this.fileStorageProperties = fileStorageProperties;
 
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
+        this.fileStorageLocation = Paths.get(fileStorageProperties.getAbsoluteUploadDir())
                 .toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -36,7 +36,7 @@ public class FileStorageService {
 
     private void createDirectory(Integer userId){
         this.fileStorageLocation = Paths.get(
-                        fileStorageProperties.getUploadDir() + "/" + userId)
+                        fileStorageProperties.getAbsoluteUploadDir() + "/" + userId)
                 .toAbsolutePath().normalize();
 
         try {

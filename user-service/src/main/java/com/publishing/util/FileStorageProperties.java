@@ -19,6 +19,10 @@ public class FileStorageProperties {
     private String uploadDir;
 
     public String getUploadDir() {
+        return uploadDir.replace("static", "");
+    }
+
+    public String getAbsoluteUploadDir(){
         try {
             String classpath = ResourceUtils.getFile("classpath:").getAbsolutePath();
             return classpath + File.separator + uploadDir;
