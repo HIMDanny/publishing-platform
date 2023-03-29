@@ -38,4 +38,18 @@ public interface ArticleClient {
             @RequestParam Map<String, String> paginationParameters
     );
 
+    @GetMapping(value = "/dev/api/v1/articles/likes",
+            params = {"userId", "field", "page", "pageSize", "direction"})
+    @ResponseStatus(HttpStatus.OK)
+    ArticlePageResponseDto getLikedArticlesByUserWithPagination(
+            @RequestParam("userId") Integer userId,
+            @RequestParam Map<String, String> paginationParameters);
+
+    @GetMapping(value = "/dev/api/v1/articles/bookmarked",
+            params = {"userId", "field", "page", "pageSize", "direction"})
+    @ResponseStatus(HttpStatus.OK)
+    ArticlePageResponseDto getBookmarkedArticlesByUserWithPagination(
+            @RequestParam("userId") Integer userId,
+            @RequestParam Map<String, String> paginationParameters);
+
 }

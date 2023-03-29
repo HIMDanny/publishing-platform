@@ -16,6 +16,7 @@ import com.publishing.clients.user.UserClient;
 import com.publishing.clients.user.dto.UserResponseDto;
 import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -179,5 +180,65 @@ public class ArticleService extends ArticleCommonService{
 
   public void bookmarkArticle(Integer articleId, Integer userId) {
     bookmarkRepository.save(Bookmark.builder().articleId(articleId).userId(userId).build());
+  }
+
+  public ArticlePageResponseDto getLikedArticlesPageByUser(Integer userId, PaginationParameters params) {
+
+    Page<Like> pageOfLikes = likeRepository.findAllByUserId(userId,
+            PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by("id")));
+
+    int[] articleIds = pageOfLikes.stream()
+            .mapToInt(Like::getArticleId)
+            .toArray();
+
+    List<Article> articles = new ArrayList<>();
+
+    for(Integer articleId : articleIds) {
+      Article foundArticle = articleRepository.findById(articleId)
+              .orElseThrow(() -> new IllegalStateException("Cannot find article"));
+      if(foundArticle.getContent().length() > 255)
+        foundArticle.setContent(foundArticle.getContent().substring(0, 255)  + "...");
+      articles.add(foundArticle);
+    }
+
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfLikes.getTotalElements())
+            .totalPages(pageOfLikes.getTotalPages())
+            .page(params.getPage())
+            .pageSize(params.getPageSize())
+            .articles(articleDtos)
+            .build();
+  }
+
+  public ArticlePageResponseDto getBookmarkedArticlesPageByUser(Integer userId, PaginationParameters params) {
+
+    Page<Bookmark> pageOfBookmarks = bookmarkRepository.findAllByUserId(userId,
+            PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by("id")));
+
+    int[] articleIds = pageOfBookmarks.stream()
+            .mapToInt(Bookmark::getArticleId)
+            .toArray();
+
+    List<Article> articles = new ArrayList<>();
+
+    for(Integer articleId : articleIds) {
+      Article foundArticle = articleRepository.findById(articleId)
+              .orElseThrow(() -> new IllegalStateException("Cannot find article"));
+      if(foundArticle.getContent().length() > 255)
+        foundArticle.setContent(foundArticle.getContent().substring(0, 255)  + "...");
+      articles.add(foundArticle);
+    }
+
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfBookmarks.getTotalElements())
+            .totalPages(pageOfBookmarks.getTotalPages())
+            .page(params.getPage())
+            .pageSize(params.getPageSize())
+            .articles(articleDtos)
+            .build();
   }
 }
