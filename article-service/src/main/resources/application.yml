@@ -24,7 +24,7 @@ spring:
       max-request-size: 215MB
 
 file:
-  upload-dir: images/article-images
+  upload-dir: static/images/user-images
 
 eureka:
   client:

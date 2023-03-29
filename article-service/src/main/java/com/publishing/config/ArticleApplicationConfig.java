@@ -10,14 +10,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Configuration
-@EnableConfigurationProperties({
-        FileStorageProperties.class
-})
 public class ArticleApplicationConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        exposeDirectory("article-images", registry);
+        exposeDirectory("images/article-images", registry);
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry){
