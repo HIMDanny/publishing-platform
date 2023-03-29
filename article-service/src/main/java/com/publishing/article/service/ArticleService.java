@@ -123,7 +123,12 @@ public class ArticleService extends ArticleCommonService{
             categoryId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(direction, params.getField())));
 
-    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+    List<Article> articles = pageOfArticles.stream()
+            .peek(article -> {
+              if(article.getContent().length() > 255)
+                article.setContent(article.getContent().substring(0, 255) + "...");
+            })
+            .collect(Collectors.toList());
 
     List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
 
@@ -143,7 +148,12 @@ public class ArticleService extends ArticleCommonService{
             userId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(direction, params.getField())));
 
-    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+    List<Article> articles = pageOfArticles.stream()
+            .peek(article -> {
+              if(article.getContent().length() > 255)
+                article.setContent(article.getContent().substring(0, 255)  + "...");
+            })
+            .collect(Collectors.toList());
 
     List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
 
