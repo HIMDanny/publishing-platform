@@ -53,6 +53,6 @@ public class Article {
     private String imagesDir;
 
     public String getImagesDir(){
-        return "article-images/" + getId();
+        return "images/article-images/" + getId();
     }
 }
