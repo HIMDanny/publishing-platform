@@ -4,13 +4,13 @@ import Hero from '../components/Hero/HeroUnauthorized';
 
 const HomeUnauthorized = () => {
   return (
-    <>
+    <main>
       <Hero />
       <section className="container mx-auto mt-40 ">
         <HighlightedPost />
         <PostCardSection title="Trending" />
       </section>
-    </>
+    </main>
   );
 };
 export default HomeUnauthorized;
