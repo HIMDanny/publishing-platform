@@ -38,5 +38,4 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
                     "OR a.content LIKE CONCAT('%', :query, '%')",
             nativeQuery = true)
     Page<Article> searchArticlesWithPagination(@Param("query") String query, Pageable pageable);
-
 }

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.publishing.file.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,11 +54,6 @@ public class ArticleController {
               .forEach(image -> fileStorageService.storeFile(articleId, image));
     }
 
-    /*String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-    articleRequestDto.setMainImagePath(fileName);*/
-
-//    String uploadDir = "article-images/" + articleId;
-//    FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
     return articleId;
   }
 
@@ -91,9 +87,23 @@ public class ArticleController {
 
   @GetMapping(params = {"field"})
   @ResponseStatus(HttpStatus.OK)
-  private List<EntityArticleResponseDto> getArticlesWithSort(
+  public List<EntityArticleResponseDto> getArticlesWithSort(
                                     @RequestParam(value = "field") String field,
                                     @RequestParam(value = "direction", required = false) String direction){
     return articleService.findArticlesWithSorting(field, direction);
+  }
+
+  @PostMapping("{articleId}/like")
+  @ResponseStatus(HttpStatus.OK)
+  public void likeArticle(@PathVariable("articleId") Integer articleId,
+                          @RequestParam("userId") Integer userId){
+    articleService.likeArticle(articleId, userId);
+  }
+
+  @PostMapping("{articleId}/bookmark")
+  @ResponseStatus(HttpStatus.OK)
+  public void bookmarkArticle(@PathVariable("articleId") Integer articleId,
+                          @RequestParam("userId") Integer userId){
+    articleService.bookmarkArticle(articleId, userId);
   }
 }

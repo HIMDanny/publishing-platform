@@ -1,8 +1,12 @@
 package com.publishing.article.service;
 
+import com.publishing.article.model.Bookmark;
+import com.publishing.article.model.Like;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.article.dto.ArticleRequestDto;
 import com.publishing.article.model.Article;
+import com.publishing.article.repo.BookmarkRepository;
+import com.publishing.article.repo.LikeRepository;
 import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.security.SecurityConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArticleService extends ArticleCommonService{
 
   private final ArticleRepository articleRepository;
+  private final LikeRepository likeRepository;
+  private final BookmarkRepository bookmarkRepository;
   private final UserClient userClient;
   private final CategoryClient categoryClient;
 
@@ -164,5 +171,13 @@ public class ArticleService extends ArticleCommonService{
             .pageSize(params.getPageSize())
             .articles(articleDtos)
             .build();
+  }
+
+  public void likeArticle(Integer articleId, Integer userId) {
+      likeRepository.save(Like.builder().articleId(articleId).userId(userId).build());
+  }
+
+  public void bookmarkArticle(Integer articleId, Integer userId) {
+    bookmarkRepository.save(Bookmark.builder().articleId(articleId).userId(userId).build());
   }
 }
