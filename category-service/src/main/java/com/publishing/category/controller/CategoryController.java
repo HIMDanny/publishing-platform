@@ -1,11 +1,15 @@
 package com.publishing.category.controller;
 
 import com.publishing.category.dto.EntityCategoryResponseDto;
+import com.publishing.category.dto.LetterSortingCategoriesDto;
 import com.publishing.clients.PaginationParameters;
 import com.publishing.category.service.CategoryService;
 import com.publishing.category.dto.CategoryRequestDto;
+import com.publishing.clients.category.dto.CategoryResponseDto;
 import com.publishing.exception.CategoryException;
 import java.util.List;
+import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +67,11 @@ public class CategoryController {
   public EntityCategoryResponseDto getCategoryArticles(@PathVariable("id") Integer id,
                                                        PaginationParameters paginationParameters) throws CategoryException {
     return categoryService.getCategory(id, paginationParameters);
+  }
+
+  @GetMapping("letters")
+  @ResponseStatus(HttpStatus.OK)
+  public List<LetterSortingCategoriesDto> getCategoriesDividedByLetters(){
+    return categoryService.getCategoriesDividedByLetters();
   }
 }

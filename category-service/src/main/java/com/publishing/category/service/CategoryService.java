@@ -1,6 +1,7 @@
 package com.publishing.category.service;
 
 import com.publishing.category.dto.EntityCategoryResponseDto;
+import com.publishing.category.dto.LetterSortingCategoriesDto;
 import com.publishing.clients.PaginationParameters;
 import com.publishing.category.repo.CategoryRepository;
 import com.publishing.category.dto.CategoryRequestDto;
@@ -9,10 +10,17 @@ import com.publishing.clients.article.ArticleClient;
 import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.category.dto.CategoryResponseDto;
 import com.publishing.exception.CategoryException;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -95,4 +103,28 @@ public class CategoryService extends CategoryCommonService{
       category.setPage(articlesOfCategory);
       return mapToDto(category);
     }
+
+  public List<LetterSortingCategoriesDto> getCategoriesDividedByLetters() {
+
+    List<LetterSortingCategoriesDto> mapWithCategoriesByLetter = new ArrayList<>();
+
+    List<Category> sourceList = categoryRepository.findAll(Sort.by("name"));
+
+
+    for(int i = 0; i < sourceList.size(); i++) {
+      List<CategoryResponseDto> categoryResponseDtoList = new ArrayList<>();
+      char letter = sourceList.get(i).getName().charAt(0);
+      for(int j = i; j < sourceList.size(); j++){
+        Category currentCategory = sourceList.get(j);
+        if(currentCategory.getName().charAt(0) == letter){
+          categoryResponseDtoList.add(new CategoryResponseDto(currentCategory.getId(), currentCategory.getName()));
+        } else {
+          i = j - 1;
+          break;
+        }
+      }
+      mapWithCategoriesByLetter.add(new LetterSortingCategoriesDto(letter, categoryResponseDtoList));
+    }
+    return mapWithCategoriesByLetter;
+  }
 }
