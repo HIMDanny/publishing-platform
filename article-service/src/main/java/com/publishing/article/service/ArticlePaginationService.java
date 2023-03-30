@@ -5,6 +5,7 @@ import com.publishing.clients.PaginationParameters;
 import com.publishing.article.model.Article;
 import com.publishing.article.repo.ArticleRepository;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
+import com.publishing.util.ArticlePaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +20,12 @@ import java.util.stream.Collectors;
 public class ArticlePaginationService extends ArticleCommonService{
 
     private final ArticleRepository articleRepository;
+    private final ArticlePaginationParametersValidator paramsValidator;
 
     public ArticlePageResponseDto findArticlesWithPaginationAndSorting(PaginationParameters params){
+        if(!paramsValidator.isCorrect(params.getField()))
+            params.setField("id");
+
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
         Page<Article> pageOfArticles = articleRepository.findAll(

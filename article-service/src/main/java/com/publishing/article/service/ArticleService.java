@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.publishing.util.ArticlePaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.security.SecurityConfig;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,7 @@ public class ArticleService extends ArticleCommonService{
   private final ArticleRepository articleRepository;
   private final LikeRepository likeRepository;
   private final BookmarkRepository bookmarkRepository;
+  private final ArticlePaginationParametersValidator paramsValidator;
   private final UserClient userClient;
   private final CategoryClient categoryClient;
 
@@ -121,6 +123,10 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public ArticlePageResponseDto getArticlesPageByCategory(Integer categoryId, PaginationParameters params) {
+
+    if(!paramsValidator.isCorrect(params.getField()))
+      params.setField("id");
+
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
     Page<Article> pageOfArticles = articleRepository.findAllByCategoryId(
@@ -146,6 +152,10 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public ArticlePageResponseDto getArticlesPageByAuthor(Integer userId, PaginationParameters params) {
+
+    if(!paramsValidator.isCorrect(params.getField()))
+      params.setField("id");
+
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
     Page<Article> pageOfArticles = articleRepository.findAllByAuthorId(
@@ -190,6 +200,9 @@ public class ArticleService extends ArticleCommonService{
 
   public ArticlePageResponseDto getLikedArticlesPageByUser(Integer userId, PaginationParameters params) {
 
+    if(!paramsValidator.isCorrect(params.getField()))
+      params.setField("id");
+
     Page<Like> pageOfLikes = likeRepository.findAllByUserId(userId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by("id")));
 
@@ -219,6 +232,9 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public ArticlePageResponseDto getBookmarkedArticlesPageByUser(Integer userId, PaginationParameters params) {
+
+    if(!paramsValidator.isCorrect(params.getField()))
+      params.setField("id");
 
     Page<Bookmark> pageOfBookmarks = bookmarkRepository.findAllByUserId(userId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by("id")));
@@ -250,12 +266,21 @@ public class ArticleService extends ArticleCommonService{
 
 
   public ArticlePageResponseDto findHotArticles(PaginationParameters params) {
+
+    if(!paramsValidator.isCorrect(params.getField()))
+      params.setField("id");
+
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
     Page<Article> pageOfArticles = articleRepository.searchHotArticles("number_of_views",
-            PageRequest.of(params.getPage() - 1, params.getPageSize()));
+            PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by(Sort.Direction.DESC, "number_of_views")));
 
-    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+    List<Article> articles = pageOfArticles.stream()
+            .peek(article -> {
+              if(article.getContent().length() > 255)
+                article.setContent(article.getContent().substring(0, 255)  + "...");
+            })
+            .collect(Collectors.toList());
 
     List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
 

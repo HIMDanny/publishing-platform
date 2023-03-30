@@ -51,7 +51,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
             nativeQuery = true)
     Page<Article> searchArticlesWithPagination(@Param("query") String query, Pageable pageable);
 
-    @Query(value = "SELECT * from Article ORDER BY id DESC, :field ASC",
+    @Query(value = "SELECT * FROM (SELECT a.* FROM article a ORDER BY a.id DESC) AS sub_article " +
+            "ORDER BY :field DESC",
             nativeQuery = true)
     Page<Article> searchHotArticles(@Param("field") String field, Pageable pageable);
 }
