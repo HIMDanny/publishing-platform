@@ -5,6 +5,7 @@ import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
 import com.publishing.user.model.User;
 import com.publishing.user.repo.UserRepository;
+import com.publishing.util.UserPaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ public class UserSearchService extends UserServiceCommon{
 
     private final UserRepository userRepository;
     private final ArticleClient articleClient;
+    private final UserPaginationParametersValidator paramsValidator;
 
     public List<EntityUserResponseDto> searchUsers(String value, String fieldVal, String dirVal){
         Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
@@ -38,6 +40,10 @@ public class UserSearchService extends UserServiceCommon{
     }
 
     public UserPageResponseDto searchUserWithPagination(String value, PaginationParameters params){
+
+        if(paramsValidator.isCorrect(params.getField()))
+            params.setField("id");
+
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
         Page<User> usersPage = userRepository.searchUserWithPagination(

@@ -11,6 +11,7 @@ import com.publishing.user.dto.UserPageResponseDto;
 import com.publishing.user.model.User;
 import com.publishing.user.repo.UserRepository;
 import com.publishing.util.FileStorageProperties;
+import com.publishing.util.UserPaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,8 +28,13 @@ public class UserService extends UserServiceCommon {
 
     private final UserRepository userRepository;
     private final ArticleClient articleClient;
+    private final UserPaginationParametersValidator paramsValidator;
 
     public EntityUserResponseDto getUserById(Integer id, PaginationParameters paginationParameters) {
+
+        if(paramsValidator.isCorrect(paginationParameters.getField()))
+            paginationParameters.setField("id");
+
         // TODO: add custom exception
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User is not found"));
@@ -86,6 +92,10 @@ public class UserService extends UserServiceCommon {
     }
 
     public List<EntityUserResponseDto> findUsersWithSort(String field, String dirVal) {
+
+        if(paramsValidator.isCorrect(field))
+            field = "id";
+
         Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -160,6 +170,10 @@ public class UserService extends UserServiceCommon {
     }
 
     public EntityUserResponseDto getUserWithLikedArticles(Integer id, PaginationParameters paginationParameters) {
+
+        if(paramsValidator.isCorrect(paginationParameters.getField()))
+            paginationParameters.setField("id");
+
         // TODO: add custom exception
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User is not found"));
@@ -173,6 +187,10 @@ public class UserService extends UserServiceCommon {
     }
 
     public EntityUserResponseDto getUserWithBookmarkedArticles(Integer id, PaginationParameters paginationParameters) {
+
+        if(paramsValidator.isCorrect(paginationParameters.getField()))
+            paginationParameters.setField("id");
+
         // TODO: add custom exception
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User is not found"));
