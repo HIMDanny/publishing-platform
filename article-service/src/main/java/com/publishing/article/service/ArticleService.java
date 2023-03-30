@@ -249,4 +249,22 @@ public class ArticleService extends ArticleCommonService{
   }
 
 
+  public ArticlePageResponseDto findHotArticles(PaginationParameters params) {
+    Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
+
+    Page<Article> pageOfArticles = articleRepository.searchHotArticles("number_of_views",
+            PageRequest.of(params.getPage() - 1, params.getPageSize()));
+
+    List<Article> articles = pageOfArticles.stream().collect(Collectors.toList());
+
+    List<EntityArticleResponseDto> articleDtos = getListOfArticleDTOS(articles);
+
+    return ArticlePageResponseDto.builder()
+            .totalElements(pageOfArticles.getTotalElements())
+            .totalPages(pageOfArticles.getTotalPages())
+            .page(params.getPage())
+            .pageSize(params.getPageSize())
+            .articles(articleDtos)
+            .build();
+  }
 }

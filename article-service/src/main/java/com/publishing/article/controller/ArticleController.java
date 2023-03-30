@@ -2,6 +2,8 @@ package com.publishing.article.controller;
 
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
+import com.publishing.clients.PaginationParameters;
+import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import com.publishing.exception.ArticleException;
 
@@ -119,5 +121,11 @@ public class ArticleController {
   public void deleteBookmarkArticle(@PathVariable("articleId") Integer articleId,
                               @RequestParam("userId") Integer userId) {
     articleService.deleteBookmarkArticle(articleId, userId);
+  }
+
+  @GetMapping("hot")
+  @ResponseStatus(HttpStatus.OK)
+  public ArticlePageResponseDto getHotArticlesWithPagination(PaginationParameters params){
+    return articleService.findHotArticles(params);
   }
 }
