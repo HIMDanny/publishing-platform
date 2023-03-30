@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.publishing.util.CategoryPaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +30,14 @@ import org.springframework.stereotype.Service;
 public class CategoryService extends CategoryCommonService{
 
   private final CategoryRepository categoryRepository;
+  private final CategoryPaginationParametersValidator paramsValidator;
   private final ArticleClient articleClient;
 
   public List<EntityCategoryResponseDto> findCategoriesWithSorting(String field, String dirVal){
+
+    if(!paramsValidator.isCorrect(field))
+      field = "id";
+
     Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
             ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -95,6 +101,10 @@ public class CategoryService extends CategoryCommonService{
   }
 
     public EntityCategoryResponseDto getCategory(Integer id, PaginationParameters params) throws CategoryException {
+
+      if(!paramsValidator.isCorrect(params.getField()))
+        params.setField("id");
+
       Category category = categoryRepository.findById(id)
               .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));
 

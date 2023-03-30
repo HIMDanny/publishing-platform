@@ -6,6 +6,7 @@ import com.publishing.category.dto.EntityCategoryResponseDto;
 import com.publishing.category.model.Category;
 import com.publishing.category.repo.CategoryRepository;
 import com.publishing.clients.article.ArticleClient;
+import com.publishing.util.CategoryPaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +21,14 @@ import java.util.stream.Collectors;
 public class CategoryPaginationService extends CategoryCommonService{
 
     private final CategoryRepository categoryRepository;
+    private final CategoryPaginationParametersValidator paramsValidator;
     private final ArticleClient articleClient;
 
     public CategoryPageResponseDto findCategoriesWithPaginationAndSorting(PaginationParameters params){
+
+        if(!paramsValidator.isCorrect(params.getField()))
+            params.setField("id");
+
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
         Page<Category> categoriesPage = categoryRepository.findAll(
