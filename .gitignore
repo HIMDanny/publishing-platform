@@ -7,3 +7,4 @@
 /notification-service/target/
 /authentication-service/
 /images/
+/article-service/src/main/resources/application.yml
