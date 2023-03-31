@@ -1,14 +1,13 @@
 package com.publishing.util;
 
 import com.google.common.collect.Lists;
-import com.publishing.clients.ICheckPaginationParameters;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumSet;
 import java.util.List;
 
 @Component
-public class UserPaginationParametersValidator implements ICheckPaginationParameters {
+public class UserPaginationParametersValidator {
 
     public enum UserFields {
         ID(Lists.newArrayList("id", "ID"), "id"),
@@ -36,7 +35,6 @@ public class UserPaginationParametersValidator implements ICheckPaginationParame
         }
     }
 
-    @Override
     public UserFields getCorrectValue(String field) {
         EnumSet<UserFields> userFieldsSet = EnumSet.allOf(UserFields.class);
         for (UserFields userFields : userFieldsSet) {
