@@ -26,13 +26,13 @@ public class CategorySearchService extends CategoryCommonService{
 
     public List<EntityCategoryResponseDto> searchCategories(String value, String fieldVal, String dirVal){
 
-        if(!paramsValidator.isCorrect(fieldVal))
-            fieldVal = "id";
+        fieldVal = (fieldVal == null) ? "id" : fieldVal;
+        String field = paramsValidator.getCorrectValue(fieldVal);
+
 
         Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        String field = (fieldVal == null) ? "id" : fieldVal;
 
         return categoryRepository.searchCategories(value, Sort.by(direction, field)).stream()
                 .peek(category -> category.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
@@ -46,8 +46,7 @@ public class CategorySearchService extends CategoryCommonService{
 
     public CategoryPageResponseDto searchCategoriesWithPagination(String value, PaginationParameters params){
 
-        if(!paramsValidator.isCorrect(params.getField()))
-            params.setField("id");
+        params.setField(paramsValidator.getCorrectValue(params.getField()));
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 

@@ -26,8 +26,7 @@ public class CategoryPaginationService extends CategoryCommonService{
 
     public CategoryPageResponseDto findCategoriesWithPaginationAndSorting(PaginationParameters params){
 
-        if(!paramsValidator.isCorrect(params.getField()))
-            params.setField("id");
+        params.setField(paramsValidator.getCorrectValue(params.getField()));
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 

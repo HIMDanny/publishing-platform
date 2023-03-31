@@ -35,8 +35,7 @@ public class CategoryService extends CategoryCommonService{
 
   public List<EntityCategoryResponseDto> findCategoriesWithSorting(String field, String dirVal){
 
-    if(!paramsValidator.isCorrect(field))
-      field = "id";
+    field = paramsValidator.getCorrectValue(field);
 
     Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
             ? Sort.Direction.DESC : Sort.Direction.ASC;
@@ -102,8 +101,7 @@ public class CategoryService extends CategoryCommonService{
 
     public EntityCategoryResponseDto getCategory(Integer id, PaginationParameters params) throws CategoryException {
 
-      if(!paramsValidator.isCorrect(params.getField()))
-        params.setField("id");
+      params.setField(paramsValidator.getCorrectValue(params.getField()));
 
       Category category = categoryRepository.findById(id)
               .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));

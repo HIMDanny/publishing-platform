@@ -28,15 +28,16 @@ public class CategoryPaginationParametersValidator implements ICheckPaginationPa
     }
 
     @Override
-    public boolean isCorrect(String field) {
+    public String getCorrectValue(String field) {
         EnumSet<CategoryFields> categoryFieldsSet = EnumSet.allOf(CategoryFields.class);
-        boolean isCorrect = categoryFieldsSet.contains(CategoryFields.valueOf(field.toUpperCase()));
-        if(!isCorrect){
-            for (CategoryFields categoryFields : categoryFieldsSet) {
-                boolean isContains = categoryFields.getFieldValues().contains(field);
-                if (isContains) return true;
+        for (CategoryFields categoryFields : categoryFieldsSet) {
+            List<String> fieldValues = categoryFields.getFieldValues();
+            for (String value : fieldValues) {
+                if (value.equals(field.toUpperCase())) {
+                    return categoryFields.name().toLowerCase();
+                }
             }
         }
-        return isCorrect;
+        return "id";
     }
 }
