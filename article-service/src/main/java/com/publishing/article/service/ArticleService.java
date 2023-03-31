@@ -18,11 +18,12 @@ import com.publishing.exception.ArticleException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.publishing.util.ArticlePaginationParametersValidator;
+import com.publishing.validators.ObjectsValidator;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.security.SecurityConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -39,6 +40,7 @@ public class ArticleService extends ArticleCommonService{
   private final ArticlePaginationParametersValidator paramsValidator;
   private final UserClient userClient;
   private final CategoryClient categoryClient;
+  private final ObjectsValidator<ArticleRequestDto> articleValidator;
 
   public EntityArticleResponseDto getArticle(Integer id) throws ArticleException{
     // TODO: handle exception
@@ -74,6 +76,8 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public Integer saveArticle(ArticleRequestDto articleRequestDto, String fileName){
+    Set<String> violations = articleValidator.validate(articleRequestDto);
+
     long numberOfWords = articleRequestDto.getContent().split(" ").length;
     int minutesToRead = (int) Math.ceil(numberOfWords / 200.0);
 
