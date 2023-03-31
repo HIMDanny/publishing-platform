@@ -1,25 +1,26 @@
 import classNames from 'classnames';
 
-type ButtonOriginalProps = React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
->;
-
-export type ButtonProps = {
+export type ButtonProps<C extends React.ElementType> = {
   size?: 'sm' | 'lg';
   variant?: 'primary' | 'secondary';
-  type?: ButtonOriginalProps['type'];
-  children: React.ReactNode;
-};
+  type?: 'submit' | 'reset' | 'button';
+  text: string;
+  component?: C;
+} & React.ComponentPropsWithRef<C>;
 
-const Button = ({
+const Button = <C extends React.ElementType = 'button'>({
   size = 'sm',
   variant = 'primary',
+  text,
+  type,
+  component,
   ...props
-}: ButtonProps) => {
+}: ButtonProps<C>) => {
+  const ButtonTag = component ?? 'button';
+
   return (
-    <button
-      type={props.type || 'button'}
+    <ButtonTag
+      type={type ?? 'button'}
       className={classNames(
         'rounded-full font-medium transition-colors hover:bg-green-600 hover:text-gray-50 active:bg-green-500 disabled:border disabled:border-solid disabled:border-gray-400 disabled:bg-transparent disabled:text-gray-400',
         {
@@ -33,8 +34,8 @@ const Button = ({
       )}
       {...props}
     >
-      {props.children}
-    </button>
+      {text}
+    </ButtonTag>
   );
 };
 export default Button;
