@@ -1,4 +1,5 @@
 import Button from '@components/UI/Button';
+import { Link } from 'react-router-dom';
 
 const HighlightedPost = () => {
   return (
@@ -17,9 +18,10 @@ const HighlightedPost = () => {
         <Button
           variant="secondary"
           size="lg"
-        >
-          Read more
-        </Button>
+          text="Read more"
+          component={Link}
+          to="/"
+        />
       </div>
       <img
         className="block max-h-[27.5rem] w-full max-w-xl overflow-hidden rounded-lg bg-gray-200 object-cover"

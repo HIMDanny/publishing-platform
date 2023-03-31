@@ -15,7 +15,10 @@ const Hero = () => {
           Praesent id volutpat sapien, vitae sollicitudin lorem. Integer non
           augue at eros condimentum tincidunt!
         </p>
-        <Button size="lg">Start reading</Button>
+        <Button
+          size="lg"
+          text="Start reading"
+        />
       </div>
     </section>
   );
