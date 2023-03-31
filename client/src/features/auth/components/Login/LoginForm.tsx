@@ -26,9 +26,8 @@ const LoginForm = () => {
         <Button
           size="lg"
           variant="secondary"
-        >
-          Sign In
-        </Button>
+          text="Sign In"
+        />
       </form>
     </div>
   );

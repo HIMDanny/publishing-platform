@@ -16,6 +16,7 @@ const LoginContent = () => {
         body="In case you are not signed up, click on the button below to start your
           journey with us"
         buttonText="Sign Up"
+        navigateTo="?mode=signup"
       />
     </>
   );
