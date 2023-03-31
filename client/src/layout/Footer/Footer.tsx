@@ -5,7 +5,7 @@ const Footer = () => {
   const copyrightYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-10 bg-gray-800 pb-9 pt-16 text-white">
+    <footer className="bg-gray-800 pb-9 pt-16 text-white">
       <div className="container">
         <div className="flex items-center justify-between">
           <NavigationList />
