@@ -29,11 +29,11 @@ public class Article {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String content;
-    @Column
+    @Column(name = "main_image_path")
     private String mainImagePath;
-    @Column
+    @Column(name = "publishing_date")
     private LocalDateTime publishingDate;
-    @Column
+    @Column(name = "minutes_to_read")
     private Integer minutesToRead;
     @Column
     @JsonIgnore
@@ -41,9 +41,9 @@ public class Article {
     @Column
     @JsonIgnore
     private Integer categoryId;
-    @Column(columnDefinition = "integer not null default 0")
+    @Column(name = "number_of_views", columnDefinition = "integer not null default 0")
     private Integer numberOfViews = 0;
-    @Column(columnDefinition = "integer not null default 0")
+    @Column(name = "number_of_likes", columnDefinition = "integer not null default 0")
     private Integer numberOfLikes = 0;
     @Transient
     private UserResponseDto author;
