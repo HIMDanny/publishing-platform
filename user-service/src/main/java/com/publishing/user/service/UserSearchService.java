@@ -29,6 +29,7 @@ public class UserSearchService extends UserServiceCommon{
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         String field = fieldVal == null ? "id" : fieldVal;
+        field = paramsValidator.getCorrectValue(field).getHqlField();
 
         return userRepository.searchUsers(value, Sort.by(direction, field)).stream()
                 .peek(user -> user.setPage(articleClient.getArticleResponsesByUserWithPagination(
@@ -41,8 +42,7 @@ public class UserSearchService extends UserServiceCommon{
 
     public UserPageResponseDto searchUserWithPagination(String value, PaginationParameters params){
 
-        if(paramsValidator.isCorrect(params.getField()))
-            params.setField("id");
+        params.setField(paramsValidator.getCorrectValue(params.getField()).name());
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 

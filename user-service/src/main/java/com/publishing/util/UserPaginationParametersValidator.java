@@ -2,8 +2,6 @@ package com.publishing.util;
 
 import com.google.common.collect.Lists;
 import com.publishing.clients.ICheckPaginationParameters;
-import com.publishing.clients.article.dto.ArticlePageResponseDto;
-import jakarta.persistence.Transient;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumSet;
@@ -12,36 +10,43 @@ import java.util.List;
 @Component
 public class UserPaginationParametersValidator implements ICheckPaginationParameters {
 
-    enum UserFields {
-        ID(Lists.newArrayList("id", "ID")),
+    public enum UserFields {
+        ID(Lists.newArrayList("id", "ID"), "id"),
         FIRST_NAME(Lists.newArrayList("first_name", "FIRST_NAME", "firstname", "FIRSTNAME",
-                "NAME")),
-        LAST_NAME(Lists.newArrayList("last_name", "LAST_NAME", "lastname", "LASTNAME")),
+                "NAME"), "firstName"),
+        LAST_NAME(Lists.newArrayList("last_name", "LAST_NAME", "lastname", "LASTNAME"), "lastName"),
 
-        EMAIL(Lists.newArrayList("email", "EMAIL", "e-mail", "E-MAIL", "main", "MAIN"));
+        EMAIL(Lists.newArrayList("email", "EMAIL", "e-mail", "E-MAIL", "main", "MAIN"), "email");
 
         private final List<String> fieldValues;
+        private final String hqlField;
 
 
-        UserFields(List<String> fieldValues) {
+        UserFields(List<String> fieldValues, String hqlField) {
             this.fieldValues = fieldValues;
+            this.hqlField = hqlField;
         }
 
         public List<String> getFieldValues() {
             return fieldValues;
         }
+
+        public String getHqlField() {
+            return hqlField;
+        }
     }
 
     @Override
-    public boolean isCorrect(String field) {
+    public UserFields getCorrectValue(String field) {
         EnumSet<UserFields> userFieldsSet = EnumSet.allOf(UserFields.class);
-        boolean isCorrect = userFieldsSet.contains(UserFields.valueOf(field.toUpperCase()));
-        if(!isCorrect){
-            for (UserFields userFields : userFieldsSet) {
-                boolean isContains = userFields.getFieldValues().contains(field);
-                if (isContains) return true;
+        for (UserFields userFields : userFieldsSet) {
+            List<String> fieldValues = userFields.getFieldValues();
+            for (String value : fieldValues) {
+                if (value.equals(field.toUpperCase())) {
+                    return userFields;
+                }
             }
         }
-        return isCorrect;
+        return UserFields.ID;
     }
 }

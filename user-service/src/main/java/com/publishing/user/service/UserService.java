@@ -32,8 +32,7 @@ public class UserService extends UserServiceCommon {
 
     public EntityUserResponseDto getUserById(Integer id, PaginationParameters paginationParameters) {
 
-        if(paramsValidator.isCorrect(paginationParameters.getField()))
-            paginationParameters.setField("id");
+        paginationParameters.setField(paramsValidator.getCorrectValue(paginationParameters.getField()).getHqlField());
 
         // TODO: add custom exception
         User user = userRepository.findById(id)
@@ -93,8 +92,8 @@ public class UserService extends UserServiceCommon {
 
     public List<EntityUserResponseDto> findUsersWithSort(String field, String dirVal) {
 
-        if(paramsValidator.isCorrect(field))
-            field = "id";
+        field = field == null ? "id" : field;
+        field = paramsValidator.getCorrectValue(field).getHqlField();
 
         Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
@@ -171,8 +170,7 @@ public class UserService extends UserServiceCommon {
 
     public EntityUserResponseDto getUserWithLikedArticles(Integer id, PaginationParameters paginationParameters) {
 
-        if(paramsValidator.isCorrect(paginationParameters.getField()))
-            paginationParameters.setField("id");
+        paginationParameters.setField(paramsValidator.getCorrectValue(paginationParameters.getField()).getHqlField());
 
         // TODO: add custom exception
         User user = userRepository.findById(id)
@@ -188,8 +186,7 @@ public class UserService extends UserServiceCommon {
 
     public EntityUserResponseDto getUserWithBookmarkedArticles(Integer id, PaginationParameters paginationParameters) {
 
-        if(paramsValidator.isCorrect(paginationParameters.getField()))
-            paginationParameters.setField("id");
+        paginationParameters.setField(paramsValidator.getCorrectValue(paginationParameters.getField()).getHqlField());
 
         // TODO: add custom exception
         User user = userRepository.findById(id)

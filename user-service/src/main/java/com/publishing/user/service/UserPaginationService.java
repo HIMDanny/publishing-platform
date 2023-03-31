@@ -20,8 +20,7 @@ public class UserPaginationService extends UserServiceCommon{
 
     public UserPageResponseDto findUserWithPaginationAndSort(PaginationParameters params) {
 
-        if(paramsValidator.isCorrect(params.getField()))
-            params.setField("id");
+        params.setField(paramsValidator.getCorrectValue(params.getField()).getHqlField());
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 

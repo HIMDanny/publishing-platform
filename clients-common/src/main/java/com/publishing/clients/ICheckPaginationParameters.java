@@ -1,5 +1,5 @@
 package com.publishing.clients;
 
-public interface ICheckPaginationParameters {
-    boolean isCorrect(String field);
+public interface ICheckPaginationParameters<E extends Enum<?>> {
+    E getCorrectValue(String field);
 }
