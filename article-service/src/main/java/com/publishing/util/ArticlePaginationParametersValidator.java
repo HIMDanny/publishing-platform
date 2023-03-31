@@ -1,7 +1,6 @@
 package com.publishing.util;
 
 import com.google.common.collect.Lists;
-import com.publishing.clients.ICheckPaginationParameters;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumSet;
