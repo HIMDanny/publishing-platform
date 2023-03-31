@@ -62,6 +62,9 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public List<EntityArticleResponseDto> findArticlesWithSorting(String field, String dirVal){
+
+    field = paramsValidator.getCorrectValue(field);
+
     Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
             ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -124,8 +127,7 @@ public class ArticleService extends ArticleCommonService{
 
   public ArticlePageResponseDto getArticlesPageByCategory(Integer categoryId, PaginationParameters params) {
 
-    if(!paramsValidator.isCorrect(params.getField()))
-      params.setField("id");
+    params.setField(paramsValidator.getCorrectValue(params.getField()));
 
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
@@ -153,8 +155,7 @@ public class ArticleService extends ArticleCommonService{
 
   public ArticlePageResponseDto getArticlesPageByAuthor(Integer userId, PaginationParameters params) {
 
-    if(!paramsValidator.isCorrect(params.getField()))
-      params.setField("id");
+    params.setField(paramsValidator.getCorrectValue(params.getField()));
 
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
@@ -200,8 +201,7 @@ public class ArticleService extends ArticleCommonService{
 
   public ArticlePageResponseDto getLikedArticlesPageByUser(Integer userId, PaginationParameters params) {
 
-    if(!paramsValidator.isCorrect(params.getField()))
-      params.setField("id");
+    params.setField(paramsValidator.getCorrectValue(params.getField()));
 
     Page<Like> pageOfLikes = likeRepository.findAllByUserId(userId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by("id")));
@@ -233,8 +233,7 @@ public class ArticleService extends ArticleCommonService{
 
   public ArticlePageResponseDto getBookmarkedArticlesPageByUser(Integer userId, PaginationParameters params) {
 
-    if(!paramsValidator.isCorrect(params.getField()))
-      params.setField("id");
+    params.setField(paramsValidator.getCorrectValue(params.getField()));
 
     Page<Bookmark> pageOfBookmarks = bookmarkRepository.findAllByUserId(userId,
             PageRequest.of(params.getPage() - 1, params.getPageSize()).withSort(Sort.by("id")));
@@ -267,8 +266,7 @@ public class ArticleService extends ArticleCommonService{
 
   public ArticlePageResponseDto findHotArticles(PaginationParameters params) {
 
-    if(!paramsValidator.isCorrect(params.getField()))
-      params.setField("id");
+    params.setField(paramsValidator.getCorrectValue(params.getField()));
 
     Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 

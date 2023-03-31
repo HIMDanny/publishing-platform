@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class ArticlePaginationParametersValidator implements ICheckPaginationParameters {
 
-    enum ArticleFields{
+    enum ArticleFields {
 
         ID(Lists.newArrayList("id", "ID")),
         TITLE(Lists.newArrayList("title", "TITLE", "name")),
@@ -34,15 +34,18 @@ public class ArticlePaginationParametersValidator implements ICheckPaginationPar
     }
 
     @Override
-    public boolean isCorrect(String field) {
+    public String getCorrectValue(String field) {
         EnumSet<ArticleFields> articleFieldsSet = EnumSet.allOf(ArticleFields.class);
-        boolean isCorrect = articleFieldsSet.contains(ArticleFields.valueOf(field.toUpperCase()));
-        if(!isCorrect){
-            for (ArticleFields articleFields : articleFieldsSet) {
-                boolean isContains = articleFields.getFieldValues().contains(field);
-                if (isContains) return true;
+        for (ArticleFields articleFields : articleFieldsSet) {
+            List<String> fieldValues = articleFields.getFieldValues();
+            for (String value : fieldValues) {
+                if (value.equals(field.toUpperCase())) {
+                    String s = articleFields.name().toLowerCase();
+                    System.out.println(s);
+                    return s;
+                }
             }
         }
-        return isCorrect;
+        return "id";
     }
 }

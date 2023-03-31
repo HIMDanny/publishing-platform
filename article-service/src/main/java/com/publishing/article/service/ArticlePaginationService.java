@@ -23,8 +23,8 @@ public class ArticlePaginationService extends ArticleCommonService{
     private final ArticlePaginationParametersValidator paramsValidator;
 
     public ArticlePageResponseDto findArticlesWithPaginationAndSorting(PaginationParameters params){
-        if(!paramsValidator.isCorrect(params.getField()))
-            params.setField("id");
+
+        params.setField(paramsValidator.getCorrectValue(params.getField()));
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
