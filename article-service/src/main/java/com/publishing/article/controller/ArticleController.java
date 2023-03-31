@@ -125,7 +125,8 @@ public class ArticleController {
 
   @GetMapping("hot")
   @ResponseStatus(HttpStatus.OK)
-  public ArticlePageResponseDto getHotArticlesWithPagination(PaginationParameters params){
-    return articleService.findHotArticles(params);
+  public List<EntityArticleResponseDto> getHotArticlesWithPagination(PaginationParameters params,
+                                                             @RequestParam("size") Integer size){
+    return articleService.findHotArticles(params, size);
   }
 }

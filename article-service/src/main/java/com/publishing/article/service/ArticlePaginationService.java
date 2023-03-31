@@ -24,7 +24,7 @@ public class ArticlePaginationService extends ArticleCommonService{
 
     public ArticlePageResponseDto findArticlesWithPaginationAndSorting(PaginationParameters params){
 
-        params.setField(paramsValidator.getCorrectValue(params.getField()));
+        params.setField(paramsValidator.getCorrectValue(params.getField()).getHqlField());
 
         Sort.Direction direction = Sort.Direction.valueOf(params.getDirection());
 
