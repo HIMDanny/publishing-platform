@@ -2,6 +2,7 @@ package com.publishing.exception.handler;
 
 import com.publishing.exception.ArticleException;
 import com.publishing.exception.dto.ApiException;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,21 +32,27 @@ public class ApplicationExceptionHandler {
         return errorMap;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ArticleException.class)
     public ResponseEntity<ApiException> handleArticleException(ArticleException ex){
 
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(
                 ex.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                badRequest
         );
 
 
         return new ResponseEntity<>(apiException, badRequest);
-//        Map<String, String> errorMap = new HashMap<>(); // create error object (dto)
-//        errorMap.put("errorMessage", ex.getMessage());
-//        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<ApiException> handleNotFoundException(Exception ex){
+        ApiException apiException = new ApiException(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
+        return new ResponseEntity<>(apiException, HttpStatus.NOT_FOUND);
     }
 }

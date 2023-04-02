@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,10 @@ public class ArticleSearchService extends ArticleCommonService{
     private final ArticlePaginationParametersValidator paramsValidator;
 
     public List<EntityArticleResponseDto> searchArticles(String value, String fieldVal, String dirVal){
+
+        if(value == null)
+            return new ArrayList<>();
+
         Sort.Direction direction = (dirVal != null && dirVal.equalsIgnoreCase("desc"))
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -33,6 +38,9 @@ public class ArticleSearchService extends ArticleCommonService{
     }
 
     public ArticlePageResponseDto searchArticlesWithPagination(String value, PaginationParameters params) {
+
+        if(value == null)
+            return new ArticlePageResponseDto();
 
         params.setField(paramsValidator.getCorrectValue(params.getField()).name());
 

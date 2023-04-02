@@ -64,7 +64,7 @@ public class ArticleController {
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public EntityArticleResponseDto updateArticle(@PathVariable("id") Integer id, ArticleRequestDto articleRequestDto,
+  public EntityArticleResponseDto updateArticle(@PathVariable("id") Integer id, @RequestParam(required = false) ArticleRequestDto articleRequestDto,
                                                 @RequestParam(value = "mainImage", required = false)MultipartFile file,
                                                 @RequestParam(value = "images", required = false)MultipartFile[] images)
       throws ArticleException {

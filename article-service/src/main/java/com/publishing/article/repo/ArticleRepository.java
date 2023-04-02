@@ -38,16 +38,16 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     int decreaseLikesById(@Param("id") Integer id);
 
     @Query("SELECT a FROM Article a WHERE " +
-            "a.title LIKE CONCAT('%',:query, '%') " +
-            "OR a.content LIKE CONCAT('%', :query, '%')")
+            "a.title iLIKE CONCAT('%',:query, '%') " +
+            "OR a.content iLIKE CONCAT('%', :query, '%')")
     List<Article> searchArticles(@Param("query") String query, Sort sort);
 
     @Query(value = "SELECT * FROM Article a WHERE " +
-                "a.title LIKE CONCAT('%',:query, '%') " +
-                "OR a.content LIKE CONCAT('%', :query, '%')",
+                "a.title iLIKE CONCAT('%',:query, '%') " +
+                "OR a.content iLIKE CONCAT('%', :query, '%')",
             countQuery = "SELECT count(*) FROM Article a WHERE " +
-                    "a.title LIKE CONCAT('%',:query, '%') " +
-                    "OR a.content LIKE CONCAT('%', :query, '%')",
+                    "a.title iLIKE CONCAT('%',:query, '%') " +
+                    "OR a.content iLIKE CONCAT('%', :query, '%')",
             nativeQuery = true)
     Page<Article> searchArticlesWithPagination(@Param("query") String query, Pageable pageable);
 

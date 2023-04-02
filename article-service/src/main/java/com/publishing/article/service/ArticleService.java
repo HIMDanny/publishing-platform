@@ -103,12 +103,25 @@ public class ArticleService extends ArticleCommonService{
     Article foundArticleInDb = articleRepository.findById(id)
         .orElseThrow(() -> new ArticleException(String.format("Article with id %d cannot be found", id)));
 
-    foundArticleInDb.setTitle(articleRequestDto.getTitle());
-    foundArticleInDb.setContent(articleRequestDto.getContent());
+    if(articleRequestDto == null)
+      return mapToArticleDTO(foundArticleInDb);
+
+    String title = articleRequestDto.getTitle();
+    if(title != null)
+      foundArticleInDb.setTitle(title);
+    String content = articleRequestDto.getContent();
+    if(content != null)
+      foundArticleInDb.setContent(content);
     if(mainImage != null)
       foundArticleInDb.setMainImagePath(mainImage.getOriginalFilename());
-    foundArticleInDb.setAuthorId(articleRequestDto.getAuthorId());
-    foundArticleInDb.setCategoryId(articleRequestDto.getCategoryId());
+
+
+    Integer authorId = articleRequestDto.getAuthorId();
+    if (authorId != null)
+      foundArticleInDb.setAuthorId(authorId);
+    Integer categoryId = articleRequestDto.getCategoryId();
+    if (categoryId != null)
+      foundArticleInDb.setCategoryId(categoryId);
 
     Article updatedArticle = articleRepository.save(foundArticleInDb);
 

@@ -22,9 +22,5 @@ public class ArticleRequestDto{
     private Integer authorId;
     private Integer categoryId;
 
-    // @Email takes regex
-    // @Min, @Max
-    // @Pattern
-    // @NotBlank = @NotNull + @NotEmpty
 
 }
