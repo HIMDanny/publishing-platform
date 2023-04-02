@@ -5,23 +5,20 @@ spring:
     gateway:
       routes:
         - id: article-service
-          uri: http://localhost:8086
+          uri: lb://article
           predicates:
             - Path=/api/v1/articles/**
         - id: category-service
-          uri: http://localhost:8087
+          uri: lb://category
           predicates:
             - Path=/api/v1/categories/**
         - id: user-service
-          uri: http://localhost:8080
+          uri: lb://user
           predicates:
             - Path=/api/v1/users/**
     discovery:
       enabled: true
-    config:
-      uri: http://localhost:8091
-server:
-  port: 8091
+
 eureka:
   client:
     serviceUrl:
