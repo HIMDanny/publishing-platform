@@ -19,9 +19,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="article-service" target="17" />
+      <module name="article-service" target="19" />
       <module name="Jwt-service" target="17" />
-      <module name="user-service" target="17" />
+      <module name="user-service" target="19" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

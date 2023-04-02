@@ -1,20 +1,32 @@
-server:
-  port: 8091
 spring:
   application:
-    name: api-gateway
+    name: API-GATEWAY
   cloud:
     gateway:
       routes:
-        - id: article
-          uri: lb://localhost:8086
+        - id: article-service
+          uri: http://localhost:8086
           predicates:
-            - Path:/api/v1/articles/**
-        - id: user
-          uri: lb://localhost:8080
+            - Path=/api/v1/articles/**
+        - id: category-service
+          uri: http://localhost:8087
           predicates:
-            - Path:/api/v1/users/**
-        - id: category
-          uri: lb://localhost:8087
+            - Path=/api/v1/categories/**
+        - id: user-service
+          uri: http://localhost:8080
           predicates:
-            - Path:/api/v1/categories/**
+            - Path=/api/v1/users/**
+    discovery:
+      enabled: true
+    config:
+      uri: http://localhost:8091
+server:
+  port: 8091
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
