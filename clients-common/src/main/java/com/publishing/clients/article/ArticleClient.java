@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(
-        name = "article-service",
-        url = "localhost:8086"
-)
+@FeignClient("article")
 public interface ArticleClient {
 
     @GetMapping(value = "/dev/api/v1/articles", params = "userId")
