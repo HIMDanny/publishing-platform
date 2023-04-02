@@ -61,6 +61,9 @@ public class CategoryService extends CategoryCommonService{
         .orElseThrow(
             () -> new CategoryException(String.format("Category with id %d cannot be found", id)));
 
+    if(categoryRequestDto == null || categoryRequestDto.getName().isBlank())
+      return mapToDto(foundCategoryInDb);
+
     foundCategoryInDb.setName(categoryRequestDto.getName());
     Category updatedCategory = categoryRepository.save(foundCategoryInDb);
     updatedCategory.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
@@ -79,9 +82,9 @@ public class CategoryService extends CategoryCommonService{
     return true;
   }
 
-    public CategoryResponseDto getCategoryResponse(Integer id) {
+    public CategoryResponseDto getCategoryResponse(Integer id) throws CategoryException {
       Category category = categoryRepository.findById(id)
-              .orElseThrow(() -> new IllegalArgumentException(String.format("Category with id %d cannot be found", id)));
+              .orElseThrow(() -> new CategoryException(String.format("Category with id %d cannot be found", id)));
       return CategoryResponseDto.builder()
               .id(category.getId())
               .name(category.getName())

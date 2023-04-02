@@ -16,7 +16,7 @@ public class CategoryDevController {
 
     @GetMapping("{categoryId}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryResponseDto getCategoryResponse(@PathVariable("categoryId") Integer categoryId) {
+    public CategoryResponseDto getCategoryResponse(@PathVariable("categoryId") Integer categoryId) throws CategoryException {
         return categoryService.getCategoryResponse(categoryId);
     }
 

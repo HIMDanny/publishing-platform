@@ -25,6 +25,7 @@ public class Category {
             generator = "category_sequence"
     )
     private Integer id;
+    @Column(unique = true)
     private String name;
     @Transient
     private ArticlePageResponseDto page;

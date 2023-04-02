@@ -13,13 +13,13 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     @Query("SELECT c FROM Category c WHERE " +
-            "c.name LIKE CONCAT('%', :query, '%')")
+            "c.name iLIKE CONCAT('%', :query, '%')")
     List<Category> searchCategories(@Param("query") String query, Sort sort);
 
     @Query(value = "SELECT * FROM category c WHERE " +
-                "c.name LIKE CONCAT('%', :query, '%')",
+                "c.name iLIKE CONCAT('%', :query, '%')",
             countQuery = "SELECT count(*) FROM category c WHERE " +
-                    "c.name LIKE CONCAT('%', :query, '%')",
+                    "c.name iLIKE CONCAT('%', :query, '%')",
             nativeQuery = true)
     Page<Category> searchCategoriesWithPagination(@Param("query") String query,
                                                   Pageable pageable);

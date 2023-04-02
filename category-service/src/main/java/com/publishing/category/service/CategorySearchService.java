@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,10 @@ public class CategorySearchService extends CategoryCommonService{
     private final ArticleClient articleClient;
 
     public List<EntityCategoryResponseDto> searchCategories(String value, String fieldVal, String dirVal){
+
+        if(value.isBlank()){
+            return new ArrayList<>();
+        }
 
         fieldVal = (fieldVal == null) ? "id" : fieldVal;
         String field = paramsValidator.getCorrectValue(fieldVal);
@@ -45,6 +50,10 @@ public class CategorySearchService extends CategoryCommonService{
     }
 
     public CategoryPageResponseDto searchCategoriesWithPagination(String value, PaginationParameters params){
+
+        if(value.isBlank()){
+            return new CategoryPageResponseDto();
+        }
 
         params.setField(paramsValidator.getCorrectValue(params.getField()));
 

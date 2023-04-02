@@ -10,6 +10,7 @@ import com.publishing.exception.CategoryException;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +37,14 @@ public class CategoryController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Integer saveCategory(@RequestBody CategoryRequestDto categoryRequestDto){
+  public Integer saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto){
     return categoryService.saveCategory(categoryRequestDto);
   }
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public EntityCategoryResponseDto updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryRequestDto categoryRequestDto)
+  public EntityCategoryResponseDto updateCategory(@PathVariable("id") Integer id, @RequestBody(required = false) CategoryRequestDto categoryRequestDto)
       throws CategoryException {
-    // TODO: handle exception
     return categoryService.updateCategory(id, categoryRequestDto);
   }
 
