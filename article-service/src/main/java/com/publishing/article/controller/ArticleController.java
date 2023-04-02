@@ -2,6 +2,7 @@ package com.publishing.article.controller;
 
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
+import com.publishing.article.service.TagService;
 import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import com.publishing.exception.ArticleException;
@@ -23,6 +24,7 @@ public class ArticleController {
 
   private final ArticleService articleService;
   private final FileStorageService fileStorageService;
+  private final TagService tagService;
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
@@ -41,7 +43,8 @@ public class ArticleController {
   @ResponseStatus(HttpStatus.CREATED)
   public Integer saveArticle(@Valid ArticleRequestDto articleRequestDto,
                              @RequestParam("mainImage")MultipartFile mainImage,
-                             @RequestParam(value = "images", required = false)MultipartFile[] images){
+                             @RequestParam(value = "images", required = false)MultipartFile[] images,
+                             @RequestParam(value = "tags", required = false) String[] tags){
 
     Integer articleId = articleService.saveArticle(articleRequestDto, mainImage.getOriginalFilename());
     String fileName = fileStorageService.storeFile(articleId, mainImage);
@@ -51,6 +54,10 @@ public class ArticleController {
               .forEach(image -> fileStorageService.storeFile(articleId, image));
     }
 
+    if(tags != null){
+      tagService.saveTags(articleId, tags);
+    }
+
     return articleId;
   }
 
@@ -58,9 +65,12 @@ public class ArticleController {
   @ResponseStatus(HttpStatus.OK)
   public EntityArticleResponseDto updateArticle(@PathVariable("id") Integer id, @RequestParam(required = false) ArticleRequestDto articleRequestDto,
                                                 @RequestParam(value = "mainImage", required = false)MultipartFile file,
-                                                @RequestParam(value = "images", required = false)MultipartFile[] images)
+                                                @RequestParam(value = "images", required = false)MultipartFile[] images,
+                                                @RequestParam(value = "tags", required = false) String[] tags)
       throws ArticleException {
     // TODO: handle exception
+
+    EntityArticleResponseDto entityArticleResponseDto = articleService.updateArticle(id, articleRequestDto, file);
 
     if(file != null){
       String fileName = fileStorageService.storeFile(id, file);
@@ -71,7 +81,11 @@ public class ArticleController {
               .forEach(image -> fileStorageService.storeFile(id, image));
     }
 
-    return articleService.updateArticle(id, articleRequestDto, file);
+    if(tags != null){
+      tagService.saveTags(id, tags);
+    }
+
+    return entityArticleResponseDto;
   }
 
   @DeleteMapping("{id}")
