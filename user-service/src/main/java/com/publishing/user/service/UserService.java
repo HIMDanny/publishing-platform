@@ -30,13 +30,13 @@ public class UserService extends UserServiceCommon {
     private final ArticleClient articleClient;
     private final UserPaginationParametersValidator paramsValidator;
 
-    public EntityUserResponseDto getUserById(Integer id, PaginationParameters paginationParameters) {
+    public EntityUserResponseDto getUserById(Integer id, PaginationParameters paginationParameters) throws CustomUserException {
 
         paginationParameters.setField(paramsValidator.getCorrectValue(paginationParameters.getField()).getHqlField());
 
         // TODO: add custom exception
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+                .orElseThrow(() -> new CustomUserException("User is not found"));
 
         user.setPage(articleClient.getArticleResponsesByUserWithPagination(
                 id,
@@ -46,9 +46,9 @@ public class UserService extends UserServiceCommon {
         return mapToDto(user);
     }
 
-    public EntityUserResponseDto getUserByEmail(String email) {
+    public EntityUserResponseDto getUserByEmail(String email) throws CustomUserException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+                .orElseThrow(() -> new CustomUserException("User is not found"));
 
         user.setPage(articleClient.getArticleResponsesByUserWithPagination(
                 user.getId(),
@@ -124,16 +124,23 @@ public class UserService extends UserServiceCommon {
         return savedUser.getId();
     }
 
-    public EntityUserResponseDto updateUser(Integer id, UserRequestDto userRequestDto, MultipartFile image) {
+    public EntityUserResponseDto updateUser(Integer id, UserRequestDto userRequestDto, MultipartFile image) throws CustomUserException {
         User fetchedUser = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+                .orElseThrow(() -> new CustomUserException("User is not found"));
 
-        // TODO check if first name is valid
-        fetchedUser.setFirstName(userRequestDto.getFirstName());
-        // TODO check if last name is valid
-        fetchedUser.setLastName(userRequestDto.getLastName());
-        // TODO check if email is valid
-        fetchedUser.setEmail(userRequestDto.getEmail());
+
+        String firstName = userRequestDto.getFirstName();
+        if(firstName != null && !firstName.isBlank())
+            fetchedUser.setFirstName(firstName);
+
+        String lastName = userRequestDto.getLastName();
+        if(lastName != null && !lastName.isBlank())
+            fetchedUser.setLastName(lastName);
+        String email = userRequestDto.getEmail();
+        if(email != null && !email.isBlank())
+            fetchedUser.setEmail(email);
+        // TODO implement email check
+
         if(image != null)
           fetchedUser.setImage(image.getOriginalFilename());
 
@@ -153,14 +160,17 @@ public class UserService extends UserServiceCommon {
         return mapToDto(fetchedUser);
     }
 
-    public boolean deleteUser(Integer id) {
+    public boolean deleteUser(Integer id) throws CustomUserException {
+        if(userRepository.findById(id).isEmpty()){
+            throw new CustomUserException(String.format("User with id %d cannot be found", id));
+        }
         userRepository.deleteById(id);
         return userRepository.findById(id).isEmpty();
     }
 
     public UserResponseDto getUserResponse(Integer id) throws CustomUserException {
         User userInDb = userRepository.findById(id)
-                .orElseThrow(() -> new CustomUserException("User is not found"));
+                .orElseThrow(() -> new CustomUserException(String.format("User with id %d cannot be found", id)));
         return UserResponseDto.builder()
                 .id(userInDb.getId())
                 .firstName(userInDb.getFirstName())
@@ -168,13 +178,13 @@ public class UserService extends UserServiceCommon {
                 .build();
     }
 
-    public EntityUserResponseDto getUserWithLikedArticles(Integer id, PaginationParameters paginationParameters) {
+    public EntityUserResponseDto getUserWithLikedArticles(Integer id, PaginationParameters paginationParameters) throws CustomUserException {
 
         paginationParameters.setField(paramsValidator.getCorrectValue(paginationParameters.getField()).getHqlField());
 
         // TODO: add custom exception
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+                .orElseThrow(() -> new CustomUserException(String.format("User with id %d cannot be found", id)));
 
         user.setPage(articleClient.getLikedArticlesByUserWithPagination(
                 id,
@@ -184,13 +194,13 @@ public class UserService extends UserServiceCommon {
         return mapToDto(user);
     }
 
-    public EntityUserResponseDto getUserWithBookmarkedArticles(Integer id, PaginationParameters paginationParameters) {
+    public EntityUserResponseDto getUserWithBookmarkedArticles(Integer id, PaginationParameters paginationParameters) throws CustomUserException {
 
         paginationParameters.setField(paramsValidator.getCorrectValue(paginationParameters.getField()).getHqlField());
 
         // TODO: add custom exception
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User is not found"));
+                .orElseThrow(() -> new CustomUserException(String.format("User with id %d cannot be found", id)));
 
         user.setPage(articleClient.getBookmarkedArticlesByUserWithPagination(
                 id,

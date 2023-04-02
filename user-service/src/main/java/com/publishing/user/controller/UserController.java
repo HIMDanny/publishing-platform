@@ -2,10 +2,12 @@ package com.publishing.user.controller;
 
 import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.user.dto.UserRequestDto;
+import com.publishing.exception.CustomUserException;
 import com.publishing.file.service.FileStorageService;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
 import com.publishing.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,19 +33,19 @@ public class UserController {
 
   @GetMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public EntityUserResponseDto getUser(@PathVariable("id") Integer id){
+  public EntityUserResponseDto getUser(@PathVariable("id") Integer id) throws CustomUserException {
     return userService.getUserById(id, PaginationParameters.builder().field("numberOfViews").build());
   }
 
   @GetMapping(params = "email")
   @ResponseStatus(HttpStatus.OK)
-  public EntityUserResponseDto getByEmail(@RequestParam("email") String email){
+  public EntityUserResponseDto getByEmail(@RequestParam("email") String email) throws CustomUserException {
     return userService.getUserByEmail(email);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Integer saveUser(UserRequestDto user,
+  public Integer saveUser(@Valid UserRequestDto user,
                           @RequestParam("image")MultipartFile image){
     Integer userId = userService.saveUser(user, image.getOriginalFilename());
     String fileName = fileStorageService.storeFile(userId, image);
@@ -52,8 +54,8 @@ public class UserController {
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public EntityUserResponseDto updateUser(@PathVariable("id") Integer id, UserRequestDto user,
-                                          @RequestParam(value = "image", required = false)MultipartFile image){
+  public EntityUserResponseDto updateUser(@PathVariable("id") Integer id, @RequestParam(required = false) UserRequestDto user,
+                                          @RequestParam(value = "image", required = false)MultipartFile image) throws CustomUserException {
     if(image != null) {
       String fileName = fileStorageService.storeFile(id, image);
     }
@@ -62,7 +64,7 @@ public class UserController {
 
   @DeleteMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
-  public boolean deleteUser(@PathVariable("id") Integer id){
+  public boolean deleteUser(@PathVariable("id") Integer id) throws CustomUserException {
     return userService.deleteUser(id);
   }
 
@@ -77,21 +79,21 @@ public class UserController {
   @GetMapping("{id}/articles")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getUserArticles(@PathVariable("id") Integer id,
-                                                       PaginationParameters paginationParameters) {
+                                                       PaginationParameters paginationParameters) throws CustomUserException {
     return userService.getUserById(id, paginationParameters);
   }
 
   @GetMapping("{id}/articles/likes")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getUserArticlesLike(@PathVariable("id") Integer id,
-                                                   PaginationParameters paginationParameters){
+                                                   PaginationParameters paginationParameters) throws CustomUserException {
     return userService.getUserWithLikedArticles(id, paginationParameters);
   }
 
   @GetMapping("{id}/articles/bookmarks")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto getUserArticlesBookmarks(@PathVariable("id") Integer id,
-                                                   PaginationParameters paginationParameters){
+                                                   PaginationParameters paginationParameters) throws CustomUserException {
     return userService.getUserWithBookmarkedArticles(id, paginationParameters);
   }
 

@@ -15,16 +15,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   Optional<User> findByEmail(String email);
 
   @Query(value = "SELECT u FROM app_user u WHERE u.firstName " +
-                 "LIKE CONCAT('%', :value, '%') " +
-                 "OR u.lastName LIKE CONCAT('%', :value, '%')")
+                 "iLIKE CONCAT('%', :value, '%') " +
+                 "OR u.lastName iLIKE CONCAT('%', :value, '%')")
   List<User> searchUsers(@Param("value") String value, Sort sort);
 
   @Query(value = "SELECT * FROM app_user u WHERE u.first_name " +
-                  "LIKE CONCAT('%', :value, '%') " +
-                  "OR u.last_name LIKE CONCAT('%', :value, '%')",
+                  "iLIKE CONCAT('%', :value, '%') " +
+                  "OR u.last_name iLIKE CONCAT('%', :value, '%')",
           countQuery = "SELECT count(*) FROM app_user u WHERE u.first_name " +
-                  "LIKE CONCAT('%', :value, '%') " +
-                  "OR u.last_name LIKE CONCAT('%', :value, '%')",
+                  "iLIKE CONCAT('%', :value, '%') " +
+                  "OR u.last_name iLIKE CONCAT('%', :value, '%')",
           nativeQuery = true)
   Page<User> searchUserWithPagination(@Param("value") String value, Pageable pageable);
 }
