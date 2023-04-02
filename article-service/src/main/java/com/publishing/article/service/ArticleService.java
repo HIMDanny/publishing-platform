@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.publishing.util.ArticlePaginationParametersValidator;
-import com.publishing.validators.ObjectsValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +39,6 @@ public class ArticleService extends ArticleCommonService{
   private final ArticlePaginationParametersValidator paramsValidator;
   private final UserClient userClient;
   private final CategoryClient categoryClient;
-  private final ObjectsValidator<ArticleRequestDto> articleValidator;
 
   public EntityArticleResponseDto getArticle(Integer id) throws ArticleException{
     // TODO: handle exception
@@ -76,7 +74,6 @@ public class ArticleService extends ArticleCommonService{
   }
 
   public Integer saveArticle(ArticleRequestDto articleRequestDto, String fileName){
-    Set<String> violations = articleValidator.validate(articleRequestDto);
 
     long numberOfWords = articleRequestDto.getContent().split(" ").length;
     int minutesToRead = (int) Math.ceil(numberOfWords / 200.0);
