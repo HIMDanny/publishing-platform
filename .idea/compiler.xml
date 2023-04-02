@@ -18,6 +18,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="apigateway" target="17" />
       <module name="article-service" target="19" />
       <module name="Jwt-service" target="17" />
       <module name="User-service" target="17" />
