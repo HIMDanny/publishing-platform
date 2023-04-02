@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.5</version>
     <relativePath/>
   </parent>
 
@@ -31,11 +31,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>19</maven.compiler.source>
-    <maven.compiler.target>19</maven.compiler.target>
-    <spring.boot.version>3.0.1</spring.boot.version>
-    <spring.boot.plugin.version>3.0.1</spring.boot.plugin.version>
-    <spring.cloud.version>2022.0.1</spring.cloud.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <spring.boot.version>3.0.5</spring.boot.version>
+    <spring.boot.plugin.version>3.0.5</spring.boot.plugin.version>
+    <spring.cloud.version>2022.0.2</spring.cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -93,4 +93,15 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <repositories>
+    <repository>
+      <id>netflix-candidates</id>
+      <name>Netflix Candidates</name>
+      <url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 </project>
