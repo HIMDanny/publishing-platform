@@ -1,6 +1,7 @@
 package com.publishing.exception.handler;
 
 import com.publishing.exception.CategoryException;
+import com.publishing.exception.NameNotUniqueException;
 import com.publishing.exception.dto.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,14 @@ public class ApplicationExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NameNotUniqueException.class)
+    public Map<String, String> handleInvalidName(NameNotUniqueException ex){
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("name", ex.getMessage());
         return errorMap;
     }
 

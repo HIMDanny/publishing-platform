@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.publishing.exception.NameNotUniqueException;
 import com.publishing.util.CategoryPaginationParametersValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,14 +50,14 @@ public class CategoryService extends CategoryCommonService{
     return getListOfCategoryDTOS(categoryRepository.findAll());
   }
 
-  public Integer saveCategory(CategoryRequestDto categoryRequestDto){
-    // TODO check if there is category with this name
+  public Integer saveCategory(CategoryRequestDto categoryRequestDto) throws NameNotUniqueException {
+    checkNameForUnique(categoryRequestDto.getName());
     return categoryRepository.save(Category.builder()
         .name(categoryRequestDto.getName())
         .build()).getId();
   }
 
-  public EntityCategoryResponseDto updateCategory(Integer id, CategoryRequestDto categoryRequestDto) throws CategoryException {
+  public EntityCategoryResponseDto updateCategory(Integer id, CategoryRequestDto categoryRequestDto) throws CategoryException, NameNotUniqueException {
     Category foundCategoryInDb = categoryRepository.findById(id)
         .orElseThrow(
             () -> new CategoryException(String.format("Category with id %d cannot be found", id)));
@@ -65,6 +66,7 @@ public class CategoryService extends CategoryCommonService{
       return mapToDto(foundCategoryInDb);
 
     foundCategoryInDb.setName(categoryRequestDto.getName());
+    checkNameForUnique(foundCategoryInDb.getName());
     Category updatedCategory = categoryRepository.save(foundCategoryInDb);
     updatedCategory.setPage(articleClient.getArticleResponsesByCategoryWithPagination(
             id,
@@ -137,5 +139,11 @@ public class CategoryService extends CategoryCommonService{
       mapWithCategoriesByLetter.add(new LetterSortingCategoriesDto(letter, categoryResponseDtoList));
     }
     return mapWithCategoriesByLetter;
+  }
+
+  private void checkNameForUnique(String name) throws NameNotUniqueException {
+    if(categoryRepository.findByName(name).isPresent()){
+      throw new NameNotUniqueException(String.format("Category with name %s is already exist", name));
+    }
   }
 }

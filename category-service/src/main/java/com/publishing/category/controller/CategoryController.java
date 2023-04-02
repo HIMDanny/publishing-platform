@@ -10,6 +10,7 @@ import com.publishing.exception.CategoryException;
 import java.util.List;
 import java.util.Map;
 
+import com.publishing.exception.NameNotUniqueException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,14 +38,14 @@ public class CategoryController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Integer saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto){
+  public Integer saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto) throws NameNotUniqueException {
     return categoryService.saveCategory(categoryRequestDto);
   }
 
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public EntityCategoryResponseDto updateCategory(@PathVariable("id") Integer id, @RequestBody(required = false) CategoryRequestDto categoryRequestDto)
-      throws CategoryException {
+          throws CategoryException, NameNotUniqueException {
     return categoryService.updateCategory(id, categoryRequestDto);
   }
 
