@@ -8,3 +8,4 @@
 /authentication-service/
 /images/
 /article-service/src/main/resources/application.yml
+/apigateway/target/
