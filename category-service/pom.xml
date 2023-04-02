@@ -51,11 +51,6 @@
       <artifactId>guava</artifactId>
       <version>31.1-jre</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-sleuth</artifactId>
-      <version>3.0.1</version>
-    </dependency>
   </dependencies>
 
 </project>
