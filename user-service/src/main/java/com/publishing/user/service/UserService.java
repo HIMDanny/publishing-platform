@@ -6,17 +6,21 @@ import com.publishing.clients.user.dto.UserAuthResponseDto;
 import com.publishing.clients.user.dto.UserRequestDto;
 import com.publishing.clients.user.dto.UserResponseDto;
 import com.publishing.exception.CustomUserException;
+import com.publishing.exception.EmailNotUniqueException;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
 import com.publishing.user.model.User;
 import com.publishing.user.repo.UserRepository;
 import com.publishing.util.FileStorageProperties;
 import com.publishing.util.UserPaginationParametersValidator;
+import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -108,8 +112,7 @@ public class UserService extends UserServiceCommon {
                 .collect(Collectors.toList());
     }
 
-    public Integer saveUser(UserRequestDto userRequest, String imageName) {
-        // TODO check if there is user with this email
+    public Integer saveUser(UserRequestDto userRequest, String imageName) throws EmailNotUniqueException {
 
         // TODO if password is not easy
         User user = User.builder()
@@ -120,14 +123,17 @@ public class UserService extends UserServiceCommon {
                 .image(imageName)
                 .role("USER")
                 .build();
+
+        checkEmailForUnique(user.getEmail());
+
         User savedUser = userRepository.save(user);
+
         return savedUser.getId();
     }
 
-    public EntityUserResponseDto updateUser(Integer id, UserRequestDto userRequestDto, MultipartFile image) throws CustomUserException {
+    public EntityUserResponseDto updateUser(Integer id, UserRequestDto userRequestDto, MultipartFile image) throws CustomUserException, EmailNotUniqueException {
         User fetchedUser = userRepository.findById(id)
                 .orElseThrow(() -> new CustomUserException("User is not found"));
-
 
         String firstName = userRequestDto.getFirstName();
         if(firstName != null && !firstName.isBlank())
@@ -139,7 +145,6 @@ public class UserService extends UserServiceCommon {
         String email = userRequestDto.getEmail();
         if(email != null && !email.isBlank())
             fetchedUser.setEmail(email);
-        // TODO implement email check
 
         if(image != null)
           fetchedUser.setImage(image.getOriginalFilename());
@@ -148,6 +153,8 @@ public class UserService extends UserServiceCommon {
             // TODO if password is not the same and not easy
             fetchedUser.setPassword(userRequestDto.getPassword());
         }
+
+        checkEmailForUnique(fetchedUser.getEmail());
 
         userRepository.saveAndFlush(fetchedUser);
 
@@ -208,5 +215,11 @@ public class UserService extends UserServiceCommon {
         ));
 
         return mapToDto(user);
+    }
+
+    private void checkEmailForUnique(String email) throws EmailNotUniqueException {
+        if(userRepository.findByEmail(email).isPresent()){
+            throw new EmailNotUniqueException(String.format("User with email %s is already registered", email));
+        }
     }
 }

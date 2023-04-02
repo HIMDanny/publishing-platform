@@ -3,6 +3,7 @@ package com.publishing.user.controller;
 import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.user.dto.UserRequestDto;
 import com.publishing.exception.CustomUserException;
+import com.publishing.exception.EmailNotUniqueException;
 import com.publishing.file.service.FileStorageService;
 import com.publishing.user.dto.EntityUserResponseDto;
 import com.publishing.user.dto.UserPageResponseDto;
@@ -46,7 +47,7 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Integer saveUser(@Valid UserRequestDto user,
-                          @RequestParam("image")MultipartFile image){
+                          @RequestParam("image")MultipartFile image) throws EmailNotUniqueException {
     Integer userId = userService.saveUser(user, image.getOriginalFilename());
     String fileName = fileStorageService.storeFile(userId, image);
     return userId;
@@ -55,11 +56,14 @@ public class UserController {
   @PutMapping("{id}")
   @ResponseStatus(HttpStatus.OK)
   public EntityUserResponseDto updateUser(@PathVariable("id") Integer id, @RequestParam(required = false) UserRequestDto user,
-                                          @RequestParam(value = "image", required = false)MultipartFile image) throws CustomUserException {
+                                          @RequestParam(value = "image", required = false)MultipartFile image) throws CustomUserException, EmailNotUniqueException {
+    EntityUserResponseDto entityUserResponseDto = userService.updateUser(id, user, image);
+
     if(image != null) {
       String fileName = fileStorageService.storeFile(id, image);
     }
-    return userService.updateUser(id, user, image);
+
+    return entityUserResponseDto;
   }
 
   @DeleteMapping("{id}")

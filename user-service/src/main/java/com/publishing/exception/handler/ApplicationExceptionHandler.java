@@ -1,6 +1,7 @@
 package com.publishing.exception.handler;
 
 import com.publishing.exception.CustomUserException;
+import com.publishing.exception.EmailNotUniqueException;
 import com.publishing.exception.dto.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,17 @@ public class ApplicationExceptionHandler {
         return errorMap;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EmailNotUniqueException.class)
+    public Map<String, String> handleInvalidEmail(EmailNotUniqueException ex){
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("email", ex.getMessage());
+        return errorMap;
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CustomUserException.class)
-    public ResponseEntity<ApiException> handleArticleException(CustomUserException ex){
+    public ResponseEntity<ApiException> handleUserException(CustomUserException ex){
 
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(
