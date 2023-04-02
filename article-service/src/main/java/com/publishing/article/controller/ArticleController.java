@@ -3,26 +3,18 @@ package com.publishing.article.controller;
 import com.publishing.article.service.ArticleService;
 import com.publishing.article.dto.ArticleRequestDto;
 import com.publishing.clients.PaginationParameters;
-import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import com.publishing.exception.ArticleException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.publishing.file.service.FileStorageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/v1/articles")

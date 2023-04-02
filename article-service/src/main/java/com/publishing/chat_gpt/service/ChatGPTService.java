@@ -6,7 +6,6 @@ import com.publishing.chat_gpt.http_entities.CompletionRequest;
 import com.publishing.chat_gpt.http_entities.CompletionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
