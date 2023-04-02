@@ -7,12 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="User-service" />
         <module name="clients-common" />
         <module name="authentication-service" />
         <module name="category-service" />
         <module name="Article-service" />
-        <module name="article-service" />
         <module name="user-service" />
         <module name="eureka-server" />
         <module name="notification-service" />
@@ -20,11 +18,15 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="article-service" target="19" />
       <module name="Jwt-service" target="17" />
+      <module name="User-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Article-service" options="-parameters" />
+      <module name="User-service" options="-parameters" />
       <module name="article-service" options="-parameters" />
       <module name="authentication-service" options="-parameters" />
       <module name="category-service" options="-parameters" />
