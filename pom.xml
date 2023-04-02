@@ -24,6 +24,7 @@
     <module>authentication-service</module>
     <module>user-service</module>
     <module>article-service</module>
+    <module>apigateway</module>
   </modules>
 
   <name>publishing-platform</name>
