@@ -33,7 +33,10 @@ public class AuthenticationService {
             .role(Role.USER.name())
             .build();
 
-    userClient.saveUser(userResponse);
+    userClient.saveUser(UserRequestDto.builder().firstName(
+            userResponse.getFirstName()).lastName(userResponse.getLastName())
+            .email(userResponse.getEmail()).password(userResponse.getPassword())
+            .build(), null);
 
     UserDetailsImpl userDetails = getUserDetails(userResponse);
 
