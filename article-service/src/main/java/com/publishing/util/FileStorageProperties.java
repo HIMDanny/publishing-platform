@@ -6,6 +6,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 
 @Component
 public class FileStorageProperties {
@@ -13,12 +14,9 @@ public class FileStorageProperties {
     private String uploadDir;
 
     public String getUploadDir() {
-        try {
-            String classpath = ResourceUtils.getFile("classpath:").getAbsolutePath();
-            return classpath + File.separator + uploadDir;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        String classpath = getClass().getClassLoader().getResource(uploadDir).getPath();
+        return classpath;
+
     }
 
     public void setUploadDir(String uploadDir) {
