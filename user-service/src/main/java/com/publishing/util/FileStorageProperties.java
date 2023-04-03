@@ -23,12 +23,8 @@ public class FileStorageProperties {
     }
 
     public String getAbsoluteUploadDir(){
-        try {
-            String classpath = ResourceUtils.getFile("classpath:").getAbsolutePath();
-            return classpath + File.separator + uploadDir;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        String classpath = getClass().getClassLoader().getResource(uploadDir).getPath();
+        return classpath;
     }
 
     public void setUploadDir(String uploadDir) {
