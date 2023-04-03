@@ -35,6 +35,7 @@
       <module name="clients-common" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="publishing-platform" options="" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
