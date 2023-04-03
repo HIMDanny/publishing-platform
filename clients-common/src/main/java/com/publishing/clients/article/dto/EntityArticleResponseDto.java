@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class EntityArticleResponseDto {
     private String title;
     private String content;
     private String mainImagePath;
+    private String imagesDir;
     private LocalDateTime publishingDate;
     private Integer minutesToRead;
     private Integer numberOfViews = 0;

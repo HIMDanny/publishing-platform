@@ -1,14 +1,12 @@
 package com.publishing.clients;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@Builder
 public class PaginationParameters {
     private Integer page;
     private Integer pageSize;
