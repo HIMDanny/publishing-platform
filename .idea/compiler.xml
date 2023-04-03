@@ -12,7 +12,6 @@
         <module name="authentication-service" />
         <module name="category-service" />
         <module name="article-service" />
-        <module name="user-service" />
         <module name="eureka-server" />
         <module name="notification-service" />
       </profile>
@@ -20,11 +19,12 @@
     <bytecodeTargetLevel>
       <module name="apigateway" target="17" />
       <module name="Article-service" target="17" />
-      <module name="user-service" target="19" />
+      <module name="user-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Article-service" options="-parameters" />
       <module name="User-service" options="-parameters" />
       <module name="article-service" options="-parameters" />
       <module name="authentication-service" options="-parameters" />
