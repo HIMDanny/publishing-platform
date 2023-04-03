@@ -7,13 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@FeignClient(
-        name = "category-service",
-        url = "localhost:8087"
-)
+@FeignClient("category")
 public interface CategoryClient {
 
-    @GetMapping("dev/api/v1/categories/{categoryId}")
+    @GetMapping(value = "dev/api/v1/categories/{categoryId}")
     @ResponseStatus(HttpStatus.OK)
     CategoryResponseDto getCategoryResponse(@PathVariable("categoryId") Integer categoryId);
 

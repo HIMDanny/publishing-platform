@@ -1,4 +1,3 @@
-
 package com.publishing.clients.article.dto;
 
 import com.publishing.clients.category.dto.CategoryResponseDto;
@@ -16,6 +15,7 @@ public class EntityArticleResponseDto {
     private String title;
     private String content;
     private String mainImagePath;
+    private String imagesDir;
     private LocalDateTime publishingDate;
     private Integer minutesToRead;
     private Integer numberOfViews = 0;
