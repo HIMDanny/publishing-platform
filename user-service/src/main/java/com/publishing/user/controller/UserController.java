@@ -47,7 +47,7 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Integer saveUser(@Valid UserRequestDto user,
-                          @RequestParam("image")MultipartFile image) throws EmailNotUniqueException {
+                          @RequestParam(value = "image", required = false)MultipartFile image) throws EmailNotUniqueException {
     Integer userId = userService.saveUser(user, image.getOriginalFilename());
     String fileName = fileStorageService.storeFile(userId, image);
     return userId;

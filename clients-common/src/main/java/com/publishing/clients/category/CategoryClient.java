@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @FeignClient("category")
 public interface CategoryClient {
 
-    @GetMapping("dev/api/v1/categories/{categoryId}")
+    @GetMapping(value = "dev/api/v1/categories/{categoryId}")
     @ResponseStatus(HttpStatus.OK)
     CategoryResponseDto getCategoryResponse(@PathVariable("categoryId") Integer categoryId);
 
