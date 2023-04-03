@@ -1,38 +1,44 @@
 services:
-  postgres:
-    container_name: postgres
+  postgres-publishing:
+    container_name: postgres-publishing
     image: postgres
     environment:
       POSTGRES_USER: mike
       POSTGRES_PASSWORD: password
-      PGDATA: /var/lib/postgresql/data
+      PGDATA: /data/postgres
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgres-publishing:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - postgres-publishing
     restart: unless-stopped
-
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
+  eureka-server:
+    container_name: eureka-server
+    image: misharyduk/eureka-server
     ports:
-      - "5050:80"
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
-      - postgres
-    restart: unless-stopped
+      - spring
+  apigateway:
+    container_name: apigateway
+    image: misharyduk/apigateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - eureka-server
 
 networks:
-  postgres:
+  postgres-publishing:
+    driver: bridge
+  spring:
     driver: bridge
 
 volumes:
-  postgres:
-  pgadmin:
+  postgres-publishing:
