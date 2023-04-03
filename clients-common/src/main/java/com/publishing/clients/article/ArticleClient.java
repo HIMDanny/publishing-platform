@@ -1,6 +1,5 @@
 package com.publishing.clients.article;
 
-import com.publishing.clients.PaginationParameters;
 import com.publishing.clients.article.dto.ArticlePageResponseDto;
 import com.publishing.clients.article.dto.EntityArticleResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,6 +13,9 @@ import java.util.Map;
 
 @FeignClient("article")
 public interface ArticleClient {
+    @GetMapping(value = "/dev/api/v1/articles", params = "categoryId")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EntityArticleResponseDto> getArticleResponsesByCategory(@RequestParam("categoryId") Integer categoryId);
 
     @GetMapping(value = "/dev/api/v1/articles", params = "userId")
     @ResponseStatus(HttpStatus.OK)
@@ -35,6 +37,7 @@ public interface ArticleClient {
             @RequestParam Map<String, String> paginationParameters
     );
 
+
     @GetMapping(value = "/dev/api/v1/articles/likes",
             params = {"userId", "field", "page", "pageSize", "direction"})
     @ResponseStatus(HttpStatus.OK)
@@ -48,5 +51,4 @@ public interface ArticleClient {
     ArticlePageResponseDto getBookmarkedArticlesByUserWithPagination(
             @RequestParam("userId") Integer userId,
             @RequestParam Map<String, String> paginationParameters);
-
 }
