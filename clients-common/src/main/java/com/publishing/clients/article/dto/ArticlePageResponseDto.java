@@ -1,3 +1,4 @@
+
 package com.publishing.clients.article.dto;
 
 import lombok.*;
