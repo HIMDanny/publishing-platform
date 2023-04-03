@@ -11,7 +11,6 @@
         <module name="clients-common" />
         <module name="authentication-service" />
         <module name="category-service" />
-        <module name="Article-service" />
         <module name="article-service" />
         <module name="user-service" />
         <module name="eureka-server" />
@@ -20,7 +19,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="apigateway" target="17" />
+      <module name="Article-service" target="17" />
       <module name="Jwt-service" target="17" />
+      <module name="User-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
