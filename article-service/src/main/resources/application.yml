@@ -34,4 +34,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 openai:
-  api_key: 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
+  api_key: secret
