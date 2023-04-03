@@ -1,21 +1,25 @@
 package com.publishing.clients.user;
 
-import com.publishing.clients.auth.RegisterRequest;
+import com.publishing.clients.user.dto.UserRequestDto;
 import java.util.Optional;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(
-        value = "http://localhost:8080"
-)
+import com.publishing.clients.user.dto.UserAuthResponseDto;
+import com.publishing.clients.user.dto.UserResponseDto;
+import jakarta.validation.Valid;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+@FeignClient("user")
 public interface UserClient {
 
-    @PostMapping("api/v1/user")
-    boolean saveUser(@RequestBody RegisterRequest user);
+    @PostMapping("api/v1/users")
+    Integer saveUser(UserRequestDto user, @RequestParam(value = "image", required = false) MultipartFile image);
 
-    @GetMapping("api/v1/user/{email}")
-    Optional<RegisterRequest> getByEmail(@PathVariable String email);
+    @GetMapping("dev/api/v1/users")
+    UserAuthResponseDto getByEmailToAuthenticate(@RequestParam("email") String email);
+
+    @GetMapping("dev/api/v1/users/{id}")
+    UserResponseDto getUserResponse(@PathVariable("id") Integer id);
 }
