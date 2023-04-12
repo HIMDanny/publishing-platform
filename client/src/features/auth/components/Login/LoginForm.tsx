@@ -1,3 +1,4 @@
+import Field from '@components/Field/Field';
 import Button from '@components/UI/Button';
 import { Link } from 'react-router-dom';
 
@@ -8,10 +9,7 @@ const LoginForm = () => {
       <div className="my-8">Icons</div>
       <form className="w-full max-w-sm text-center">
         <div className="flex flex-col gap-4">
-          <input
-            className="rounded-md border"
-            type="email"
-          />
+          <Field />
           <input
             className="rounded-md border"
             type="text"
