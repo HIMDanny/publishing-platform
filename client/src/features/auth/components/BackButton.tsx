@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 const BackButton = () => (
   <Link
     to=".."
-    className="group flex w-fit items-center gap-2"
+    className="group flex w-fit items-center gap-1"
   >
     <svg
-      className="transition-transform group-hover:-translate-x-[2px]"
       xmlns="http://www.w3.org/2000/svg"
-      width="12"
+      width="18"
       height="18"
-      viewBox="0 0 12 18"
+      viewBox="0 0 18 18"
       fill="none"
+      className="transition-transform group-hover:-translate-x-[2px]"
     >
       <path
-        d="M10.4942 0.192356L0.825488 8.53064C0.54873 8.76931 0.54873 9.22888 0.825488 9.47009L10.4942 17.8084C10.8548 18.1181 11.3829 17.8388 11.3829 17.3386V0.662083C11.3829 0.161887 10.8548 -0.117409 10.4942 0.192356Z"
+        d="M12.1114 2.9024L5.41763 8.67506C5.22603 8.84029 5.22603 9.15845 5.41763 9.32545L12.1114 15.0981C12.361 15.3126 12.7266 15.1192 12.7266 14.7729V3.2276C12.7266 2.88131 12.361 2.68795 12.1114 2.9024Z"
         fill="black"
         fillOpacity="0.85"
       />
