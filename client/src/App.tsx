@@ -1,3 +1,4 @@
+import Authentication from 'pages/Authentication';
 import CategoriesPage from 'pages/Categories';
 import HomePage from 'pages/Home';
 import RootLayout from 'pages/Root';
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
         element: <WritePage />,
       },
     ],
+  },
+  {
+    path: '/auth',
+    element: <Authentication />,
   },
 ]);
 
