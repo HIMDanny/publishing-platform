@@ -2,12 +2,13 @@ import Field from '@components/Field/Field';
 import Button from '@components/UI/Button';
 import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
+import AuthIcons from '../AuthIcons';
 
 const LoginForm = () => {
   return (
     <div className="flex flex-col items-center">
       <h3>Log In</h3>
-      <div className="my-8">Icons</div>
+      <AuthIcons />
       <Formik
         initialValues={{
           email: '',
