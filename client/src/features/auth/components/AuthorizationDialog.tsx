@@ -2,7 +2,6 @@ import { useSearchParams } from 'react-router-dom';
 import LoginContent from './Login/LoginContent';
 import SignupContent from './Signup/SignupContent';
 import classNames from 'classnames';
-import { AnimatePresence } from 'framer-motion';
 const AuthorizationDialog = () => {
   const [searchParams] = useSearchParams();
 
@@ -18,9 +17,7 @@ const AuthorizationDialog = () => {
           },
         )}
       />
-      <AnimatePresence>
-        {isLogin ? <LoginContent /> : <SignupContent />}
-      </AnimatePresence>
+      {isLogin ? <LoginContent /> : <SignupContent />}
     </div>
   );
 };
