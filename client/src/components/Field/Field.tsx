@@ -1,11 +1,34 @@
-import TextField from './TextField';
+import PasswordField, { type PasswordFieldProps } from './PasswordField';
+import TextField, { type TextFieldProps } from './TextField';
 
-const Field = () => {
-  return (
-    <TextField
-      label="Name"
-      labelProps={{ className: 'bg-gray-50' }}
-    />
-  );
+export type FieldProps = TextFieldProps | PasswordFieldProps;
+
+const Field: React.FC<FieldProps> = ({ type, ...props }) => {
+  switch (type) {
+    case 'text':
+    case 'email':
+      return (
+        <TextField
+          type={type}
+          {...props}
+        />
+      );
+
+    case 'password':
+      return (
+        <PasswordField
+          type={type}
+          {...props}
+        />
+      );
+
+    default:
+      return (
+        <TextField
+          type="text"
+          {...props}
+        />
+      );
+  }
 };
 export default Field;
