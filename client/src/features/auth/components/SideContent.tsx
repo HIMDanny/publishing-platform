@@ -1,5 +1,7 @@
 import Button from '@components/UI/Button';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { animation } from '@features/auth/utils/auth-content-animation';
 
 export type SideContentProps = {
   title: string;
@@ -15,7 +17,11 @@ const SideContent: React.FC<SideContentProps> = ({
   navigateTo,
 }) => {
   return (
-    <div className="isolate px-16 pt-20 pb-8 text-center text-gray-100">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={animation}
+      className="isolate px-16 pt-20 pb-8 text-center text-gray-100"
+    >
       <h3>{title}</h3>
       <p className="mt-9 mb-10 text-gray-100 text-opacity-70">{body}</p>
       <Button
@@ -24,7 +30,7 @@ const SideContent: React.FC<SideContentProps> = ({
         component={Link}
         to={navigateTo}
       />
-    </div>
+    </motion.div>
   );
 };
 export default SideContent;

@@ -1,16 +1,22 @@
 import LoginForm from './LoginForm';
 import BackButton from '../BackButton';
 import SideContent from '../SideContent';
+import { motion } from 'framer-motion';
+import { animation } from '@features/auth/utils/auth-content-animation';
 
 const LoginContent = () => {
   return (
     <>
-      <div className="px-16 pt-20 pb-8">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={animation}
+        className="px-16 pt-20 pb-8"
+      >
         <LoginForm />
         <div className="mt-9">
           <BackButton />
         </div>
-      </div>
+      </motion.div>
       <SideContent
         title="Welcome Back!"
         body="In case you are not signed up, click on the button below to start your
