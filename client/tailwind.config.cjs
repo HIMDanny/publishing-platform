@@ -18,6 +18,9 @@ module.exports = {
           '3xl': '1720px',
         },
       },
+      colors: {
+        error: '#D90A0A',
+      },
     },
   },
   plugins: [require('prettier-plugin-tailwindcss')],
