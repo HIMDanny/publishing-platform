@@ -1,5 +1,6 @@
 import Authentication from 'pages/Authentication';
 import CategoriesPage from 'pages/Categories';
+import ErrorPage from 'pages/Error';
 import HomePage from 'pages/Home';
 import RootLayout from 'pages/Root';
 import WritePage from 'pages/Write';
@@ -9,6 +10,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       {
