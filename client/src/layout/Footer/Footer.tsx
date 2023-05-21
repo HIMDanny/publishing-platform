@@ -6,7 +6,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-800 pb-9 pt-16 text-white">
-      <div className="container">
+      <div className="container mx-auto">
         <div className="flex items-center justify-between">
           <NavigationList />
           <SocialsList />
