@@ -38,3 +38,18 @@
 		@apply text-xl font-medium
 	}
 }
+
+@layer utilities {
+	.background-error {
+		background-image: url('./assets/lines.svg');
+		background-position: right;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	@media (min-width: 1400px) {
+		.background-error {
+			background-size: contain;
+		}
+	}
+}
