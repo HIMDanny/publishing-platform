@@ -6,7 +6,7 @@ const Hero = () => {
     <section
       className={classNames(
         'flex h-screen items-center bg-gray-800',
-        `bg-[url(./hero-section-unauthorized-bg.png)] bg-cover bg-center bg-no-repeat`,
+        `bg-[url(./large-bg-with-lights.png)] bg-cover bg-center bg-no-repeat`,
       )}
     >
       <div className="container mx-auto">
