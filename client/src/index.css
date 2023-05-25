@@ -6,36 +6,54 @@
 @tailwind utilities;
 
 @layer base {
-	:is(h1, h2, h3, h4) {
-		@apply font-archivo
-	}
-
-	:is(h1, h2) {
-		@apply font-light
-	}
-
 	h1 {
-		@apply text-8xl
+		@apply heading-1
 	}
 
 	h2 {
-		@apply text-6xl
+		@apply heading-2
 	}
 
 	h3 {
-		@apply text-5xl
+		@apply heading-3
 	}
 
 	h4 {
-		@apply text-[2.125rem]
+		@apply heading-4
 	}
 
 	h5 {
-		@apply text-2xl
+		@apply heading-5
 	}
 
 	h6 {
-		@apply text-xl font-medium
+		@apply heading-6
+	}
+}
+
+@layer components {
+	.heading-1 {
+		@apply text-8xl font-archivo font-light;
+	}
+
+	.heading-2 {
+		@apply text-6xl font-archivo font-light;
+	}
+
+	.heading-3 {
+		@apply text-5xl font-archivo;
+	}
+
+	.heading-4 {
+		@apply text-[2.125rem] font-archivo;
+	}
+
+	.heading-5 {
+		@apply text-2xl;
+	}
+
+	.heading-6 {
+		@apply text-xl font-medium;
 	}
 }
 
